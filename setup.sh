@@ -8,3 +8,4 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 ln -s ${pwd}/aerospace/.aerospace.toml ~/.aerospace.toml
 
 ln -s "$(pwd)/sketchybar" ~/.config/sketchybar
+ln -s "$(pwd)/ghostty" ~/.config/ghostty
