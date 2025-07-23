@@ -10,6 +10,9 @@ ln -s ${pwd}/aerospace/.aerospace.toml ~/.aerospace.toml
 ln -s "$(pwd)/sketchybar" ~/.config/sketchybar
 ln -s "$(pwd)/ghostty" ~/.config/ghostty
 
+ln -s "$(pwd)/jankyborders" ~/.config/borders
+
+
 gh extension install dlvhdr/gh-dash
 
 eval "$(starship init zsh)"
