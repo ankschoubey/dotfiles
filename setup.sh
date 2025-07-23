@@ -11,3 +11,6 @@ ln -s "$(pwd)/sketchybar" ~/.config/sketchybar
 ln -s "$(pwd)/ghostty" ~/.config/ghostty
 
 gh extension install dlvhdr/gh-dash
+
+eval "$(starship init zsh)"
+
