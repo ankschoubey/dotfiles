@@ -9,7 +9,9 @@ after-login-command = []
 # You can use it to add commands that run after AeroSpace startup.
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = []
+after-startup-command = [
+    'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=1.0',
+]
 
 # Start AeroSpace at login
 start-at-login = true
@@ -70,12 +72,12 @@ preset = 'qwerty'
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-inner.horizontal = [{ monitor.main = 5 }, { monitor."some-pattern" = 5 }, 5]
-inner.vertical = [{ monitor.main = 5 }, { monitor."some-pattern" = 5 }, 5]
-outer.left = [{ monitor.main = 5 }, { monitor."some-pattern" = 5 }, 5]
-outer.bottom = [{ monitor.main = 5 }, { monitor."some-pattern" = 5 }, 5]
-outer.top = [{ monitor.main = 7 }, { monitor."some-pattern" = 35 }, 7]
-outer.right = [{ monitor.main = 5 }, { monitor."some-pattern" = 5 }, 5]
+inner.horizontal = [{ monitor.main = 5 }, { monitor.secondary = 5 }, 5]
+inner.vertical = [{ monitor.main = 5 }, { monitor.secondary = 5 }, 5]
+outer.left = [{ monitor.main = 5 }, { monitor.secondary = 5 }, 5]
+outer.bottom = [{ monitor.main = 5 }, { monitor.secondary = 5 }, 5]
+outer.top = [{ monitor.main = 10 }, { monitor.secondary = 35 }, 7]
+outer.right = [{ monitor.main = 5 }, { monitor.secondary = 5 }, 5]
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
