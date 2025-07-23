@@ -5,4 +5,4 @@ stow .
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-ln -s aerospace/.aerospace.toml ~/.aerospace.toml
+ln -s ${pwd}/aerospace/.aerospace.toml ~/.aerospace.toml
