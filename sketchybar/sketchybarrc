@@ -90,6 +90,10 @@ sketchybar --add item space_separator left \
   script="$PLUGIN_DIR/space_windows.sh" \
   --subscribe space_separator aerospace_workspace_change front_app_switched space_windows_change
 
+# Add app count indicator
+sketchybar --add item app_count right \
+  --set app_count update_freq=2 script="$PLUGIN_DIR/app_count.sh"
+
 # Front app!!
 sketchybar --add item front_app left \
   --set front_app icon.drawing=off \
@@ -121,6 +125,7 @@ sketchybar --add item clock right \
   label.font="Hack Nerd Font:Italic:13.0" \
   icon.color=0x44FFFFFF \
   label.color=0x44FFFFFF
+
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
