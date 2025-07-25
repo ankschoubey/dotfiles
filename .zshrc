@@ -47,6 +47,10 @@ function sw() {
 #neofetch
 alias ls='ls -lh --color=always | fzf'
 alias vi='nvim'
+alias ge="gemini"
+alias gey="gemini --yolo"
+alias c='claude'
+alias c2='claude --dangeriously-skip-permissions'
 
 zinit cdreplay -q
 

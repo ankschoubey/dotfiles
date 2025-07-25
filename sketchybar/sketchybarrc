@@ -10,7 +10,25 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 # If you are looking for other colors, see the color picker:
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
-sketchybar --bar position=top height=40 blur_radius=30 color=0x40000000
+# Color Palette
+BLACK=0xff1a1b26
+WHITE=0xffa9b1d6
+MAGENTA=0xffbb9af7
+BLUE=0xff7aa2f7
+CYAN=0xff7dcfff
+GREEN=0xff9ece6a
+YELLOW=0xffe0af68
+ORANGE=0xffff9e64
+RED=0xfff7768e
+GREY=0xff444b6a
+TRANSPARENT=0x00000000
+
+# Bar and item styling
+sketchybar --bar position=top \
+               height=35 \
+               color=0x401a1b26 \
+               blur_radius=30 \
+               shadow=on \
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
@@ -22,8 +40,8 @@ default=(
   padding_right=5
   icon.font="Hack Nerd Font:Bold:17.0"
   label.font="SF Pro:Semibold:17.0"
-  icon.color=0xffffffff
-  label.color=0xffffffff
+  icon.color=$WHITE
+  label.color=$WHITE
   icon.padding_left=4
   icon.padding_right=4
   label.padding_left=4
@@ -44,22 +62,22 @@ for sid in $(aerospace list-workspaces --monitor 1); do
     --subscribe space.$sid aerospace_workspace_change \
     --set space.$sid \
     drawing=off \
-    background.color=0x44ffffff \
+    background.color=$TRANSPARENT \
     background.corner_radius=5 \
     background.drawing=on \
-    background.border_color=0xAAFFFFFF \
+    background.border_color=$BLUE \
     background.border_width=0 \
     background.height=25 \
     icon="$sid" \
     icon.padding_left=10 \
     icon.shadow.distance=4 \
-    icon.shadow.color=0xA0000000 \
+    icon.shadow.color=$GREY \
     label.font="sketchybar-app-font:Regular:16.0" \
     label.padding_right=20 \
     label.padding_left=0 \
     label.y_offset=-1 \
     label.shadow.drawing=off \
-    label.shadow.color=0xA0000000 \
+    label.shadow.color=$GREY \
     label.shadow.distance=4 \
     click_script="aerospace workspace $sid" \
     script="$CONFIG_DIR/plugins/aerospace.sh $sid"
@@ -85,6 +103,7 @@ done
 sketchybar --add item space_separator left \
   --set space_separator icon="→" \
   icon.padding_left=4 \
+  icon.color=$BLUE \
   label.drawing=off \
   background.drawing=off \
   script="$PLUGIN_DIR/space_windows.sh" \
@@ -92,7 +111,8 @@ sketchybar --add item space_separator left \
 
 # Add app count indicator
 sketchybar --add item app_count right \
-  --set app_count update_freq=2 script="$PLUGIN_DIR/app_count.sh"
+  --set app_count update_freq=2 script="$PLUGIN_DIR/app_count.sh" \
+  icon.color=$BLUE \
 
 # Front app!!
 sketchybar --add item front_app left \
@@ -113,6 +133,8 @@ sketchybar --add item front_app left \
 
 sketchybar --add item clock right \
   --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
+  icon.color=$BLUE \
+  label.color=$BLUE \
   # --add item volume right \
   # --set volume script="$PLUGIN_DIR/volume.sh" \
   # --subscribe volume volume_change \
