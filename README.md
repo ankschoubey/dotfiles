@@ -10,3 +10,7 @@ git clone https://github.com/ankschoubey/dotfiles.git $HOME/Documents/Github/dot
 cd $HOME/Documents/Github/dotfiles
 ./setup.sh
 ```
+
+Inspirations:
+- https://www.youtube.com/watch?v=ud7YxC33Z3w
+- 

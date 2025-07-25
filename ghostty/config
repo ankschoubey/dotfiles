@@ -67,11 +67,11 @@ term = xterm-256color
 theme = MaterialDarker
 
 font-family = JetBrainsMonoNL
-font-size = 20
-theme = GruvboxDarkHard
+font-size = 16
+theme = tokyonight
 shell-integration-features = no-cursor,sudo,no-title
 cursor-style = block
-adjust-cell-height = 35%
+adjust-cell-height = 0%
 background-opacity = 0.96
 background-blur-radius = 40
 
@@ -82,8 +82,6 @@ window-padding-balance = true
 window-save-state = always
 macos-titlebar-style=transparent
 window-colorspace = "display-p3"
-background = 1C2021
-foreground = d4be98
 
 # keybindings
 keybind = cmd+s>r=reload_config
