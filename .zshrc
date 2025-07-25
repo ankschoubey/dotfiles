@@ -46,6 +46,7 @@ function sw() {
 
 #neofetch
 alias ls='ls -lh --color=always | fzf'
+alias vi='nvim'
 
 zinit cdreplay -q
 
