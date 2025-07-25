@@ -26,7 +26,7 @@ TRANSPARENT=0x00000000
 # Bar and item styling
 sketchybar --bar position=top \
                height=35 \
-               color=0x401a1b26 \
+               color=0x801a1b26 \
                blur_radius=30 \
                shadow=on \
 
@@ -109,17 +109,24 @@ sketchybar --add item space_separator left \
   script="$PLUGIN_DIR/space_windows.sh" \
   --subscribe space_separator aerospace_workspace_change front_app_switched space_windows_change
 
-# Add app count indicator
-sketchybar --add item app_count right \
-  --set app_count update_freq=2 script="$PLUGIN_DIR/app_count.sh" \
-  icon.color=$BLUE \
-
 # Front app!!
 sketchybar --add item front_app left \
   --set front_app icon.drawing=on \
   icon.font="sketchybar-app-font:Regular:16.0" \
   script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched
+
+sketchybar --add item front_app_context_separator left \
+  --set front_app_context_separator icon="|" \
+  icon.color=$GREY \
+  label.drawing=off \
+  background.drawing=off
+
+sketchybar --add item context left \n           --set context script="/Users/ankushchoubey/Documents/Github/dotfiles-1/sketchybar/plugins/context.sh" \n                         icon.drawing=off \n                         label.drawing=on \n                         icon.color=$WHITE \n                         icon.padding_left=10 \n                         label.color=$WHITE \n                         label.padding_right=10 \n                         icon.font="Hack Nerd Font:Regular:16.0" \n           --subscribe context aerospace_workspace_change
+sketchybar --add item app_count right \
+  --set app_count update_freq=2 script="$PLUGIN_DIR/app_count.sh" \
+  icon.color=$BLUE \
+
 
 ##### Adding Right Items #####
 # In the same way as the left items we can add items to the right side.
