@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # Colors taken from tokyonight theme
+magenta="0xffbb9af7"
+grey="0xff444b6a"
 red="0xfff7768e"
 blue="0xff7aa2f7"
 
