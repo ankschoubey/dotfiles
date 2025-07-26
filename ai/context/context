@@ -142,7 +142,33 @@ add_task() {
 list_tasks() {
   local task_file=$(_get_task_file_path)
   if [ -f "$task_file" ]; then
-    printf "${BLUE}Tasks for %s (Workspace %s):${NC}\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
+    printf "${BLUE}Tasks for %s (Workspace %s):\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
+    while IFS= read -r line; do
+      local id=$(echo "$line" | awk '{print $1}')
+      local status=$(echo "$line" | awk '{print $2}')
+      local desc=$(echo "$line" | cut -d' ' -f3-)
+      case "$status" in
+        todo)
+          echo -e "  ${YELLOW}[ ] ($id) $desc${NC}"
+          ;;
+        in_progress)
+          echo -e "  ${CYAN}[>] ($id) $desc${NC}"
+          ;;
+        completed)
+          echo -e "  ${GREEN}[x] ($id) $desc${NC}"
+          ;;
+      esac
+    done <<< "$(_read_tasks)"
+  else
+    echo -e "${YELLOW}No tasks for $(get_current_workspace_name) (Workspace $(get_workspace_name)).${NC}"
+  fi
+}
+
+# Helper to format tasks for fzf preview
+_list_tasks_formatted_for_fzf() {
+  local task_file=$(_get_task_file_path)
+  if [ -f "$task_file" ]; then
+    printf "${BLUE}Tasks for %s (Workspace %s):\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
     while IFS= read -r line; do
       local id=$(echo "$line" | awk '{print $1}')
       local status=$(echo "$line" | awk '{print $2}')
@@ -172,10 +198,22 @@ _fzf_task_selector() {
     return 1
   fi
 
-  local selected_task=$(cat "$task_file" | fzf --with-nth=3.. --delimiter=' ' --prompt="Select a task: ")
+  local selected_task=$(cat "$task_file" | fzf --with-nth=3.. --delimiter=' ' --prompt="Select a task: " --preview="$0 _preview-task-details {}")
   if [ -n "$selected_task" ]; then
     echo "$(echo "$selected_task" | awk '{print $1}')"
   fi
+}
+
+# Helper to preview a single task's details for fzf
+_preview_task_details() {
+  local task_id=$(echo "$1" | awk '{print $1}')
+  local task_file=$(_get_task_file_path)
+  grep "^$task_id " "$task_file" | while IFS= read -r line; do
+    local id=$(echo "$line" | awk '{print $1}')
+    local status=$(echo "$line" | awk '{print $2}')
+    local desc=$(echo "$line" | cut -d' ' -f3-)
+    printf "ID: %s\nStatus: %s\nDescription: %s\n" "$id" "$status" "$desc"
+  done
 }
 
 # Update task status (in_progress or completed)
@@ -253,7 +291,7 @@ main() {
     shift # Remove 'current' from arguments
     if [ -z "$1" ]; then
       # No subcommand, show fzf menu
-      local action=$(echo -e "Add Task\nList Tasks\nMark In Progress\nMark Complete\nRemove Task" | fzf --prompt="Select action: ")
+      local action=$(echo -e "Add Task\nList Tasks\nMark In Progress\nMark Complete\nRemove Task" | fzf --prompt="Select action: " --preview="$0 _preview-tasks")
       case "$action" in
         "Add Task")
           add_task
@@ -299,6 +337,10 @@ main() {
           ;;
       esac
     fi
+  elif [ "$1" = "_preview-tasks" ]; then
+    _list_tasks_formatted_for_fzf
+  elif [ "$1" = "_preview-task-details" ]; then
+    _preview_task_details "$2"
   else
     echo -e "${RED}Usage: context [set|get|clear|switch] [name]${NC}"
     echo -e "${RED}       context current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]${NC}"
