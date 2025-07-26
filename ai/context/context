@@ -291,27 +291,30 @@ main() {
     shift # Remove 'current' from arguments
     if [ -z "$1" ]; then
       # No subcommand, show fzf menu
-      local action=$(echo -e "Add Task\nList Tasks\nMark In Progress\nMark Complete\nRemove Task" | fzf --prompt="Select action: " --preview="$0 _preview-tasks")
-      case "$action" in
-        "Add Task")
-          add_task
-          ;;
-        "List Tasks")
-          list_tasks
-          ;;
-        "Mark In Progress")
-          update_task_status "" "in_progress"
-          ;;
-        "Mark Complete")
-          update_task_status "" "completed"
-          ;;
-        "Remove Task")
-          remove_task
-          ;;
-        *)
-          echo -e "${YELLOW}Action cancelled.${NC}" >&2
-          ;;
-      esac
+      while true; do
+        local action=$(echo -e "Add Task\nMark In Progress\nMark Complete\nRemove Task\nExit" | fzf --prompt="Select action: " --preview="$0 _preview-tasks")
+        case "$action" in
+          "Add Task")
+            add_task
+            ;;
+          "Mark In Progress")
+            update_task_status "" "in_progress"
+            ;;
+          "Mark Complete")
+            update_task_status "" "completed"
+            ;;
+          "Remove Task")
+            remove_task
+            ;;
+          "Exit")
+            break
+            ;;
+          *)
+            echo -e "${YELLOW}Action cancelled.${NC}" >&2
+            break
+            ;;
+        esac
+      done
     else
       # Subcommand provided
       case "$1" in
