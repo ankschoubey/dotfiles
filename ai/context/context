@@ -54,6 +54,33 @@ clear_workspace_name() {
   fi
 }
 
+# Helper to get task file content for a specific workspace
+_get_task_file_content_for_workspace() {
+  local workspace_id="$1"
+  local task_file="$TASKS_STORAGE_PATH/$workspace_id.tasks"
+  if [ -f "$task_file" ]; then
+    printf "${BLUE}Tasks for Workspace %s:\n" "$workspace_id"
+    while IFS= read -r line; do
+      local id=$(echo "$line" | awk '{print $1}')
+      local status=$(echo "$line" | awk '{print $2}')
+      local desc=$(echo "$line" | cut -d' ' -f3-)
+      case "$status" in
+        todo)
+          echo -e "  ${YELLOW}[ ] ($id) $desc${NC}"
+          ;;
+        in_progress)
+          echo -e "  ${CYAN}[>] ($id) $desc${NC}"
+          ;;
+        completed)
+          echo -e "  ${GREEN}[x] ($id) $desc${NC}"
+          ;;
+      esac
+    done <<< "$(cat "$task_file")"
+  else
+    echo -e "${YELLOW}No tasks for Workspace $workspace_id.${NC}"
+  fi
+}
+
 # Function to list all saved contexts
 list_all_contexts() {
   local contexts_list=""
@@ -66,7 +93,12 @@ list_all_contexts() {
   done
 
   if [ -n "$contexts_list" ]; then
-    local selected_context=$(echo -e "$contexts_list" | fzf --with-nth=2.. --delimiter=' ')
+    local selected_context=$(echo -e "$contexts_list" | fzf \
+      --with-nth=2.. \
+      --delimiter=' ' \
+      --prompt="Select a context: " \
+      --preview="$0 _preview-context-tasks {1}" \
+      --preview-window="up")
     if [ -n "$selected_context" ]; then
       local selected_workspace_id=$(echo "$selected_context" | awk '{print $1}')
       aerospace workspace "$selected_workspace_id"
@@ -356,6 +388,8 @@ main() {
     fi
   elif [ "$1" = "_preview-tasks" ]; then
     _list_tasks_formatted_for_fzf
+  elif [ "$1" = "_preview-context-tasks" ]; then
+    _get_task_file_content_for_workspace "$2"
   elif [ "$1" = "_preview-task-details" ]; then
     _preview_task_details "$2"
   else
