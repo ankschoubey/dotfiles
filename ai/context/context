@@ -80,7 +80,7 @@ _get_next_task_id() {
   local task_file=$(_get_task_file_path)
   if [ -f "$task_file" ]; then
     # Get the max ID and add 1, or start from 1 if no tasks
-    local max_id=$(awk -F' ' '{print $1}' "$task_file" | sort -nr | head -n 1)
+    local max_id=$(awk -F' ' '{print $1}' "$task_file" 2>/dev/null | sort -nr | head -n 1)
     if [ -z "$max_id" ]; then
       echo 1
     else
@@ -130,7 +130,8 @@ add_task() {
 list_tasks() {
   local task_file=$(_get_task_file_path)
   if [ -f "$task_file" ]; then
-    echo "Tasks for $(get_current_workspace_name) (Workspace $(get_workspace_name)):\n"
+    echo "Tasks for $(get_current_workspace_name) (Workspace $(get_workspace_name)):
+"
     while IFS= read -r line; do
       local id=$(echo "$line" | awk '{print $1}')
       local status=$(echo "$line" | awk '{print $2}')
@@ -162,20 +163,20 @@ update_task_status() {
   fi
 
   local updated=false
-  local new_tasks=""
+  local new_tasks_content=""
   while IFS= read -r line; do
     local id=$(echo "$line" | awk '{print $1}')
     if [ "$id" = "$task_id" ]; then
       local desc=$(echo "$line" | cut -d' ' -f3-)
-      new_tasks+="$id $new_status $desc\n"
+      new_tasks_content+="$id $new_status $desc\n"
       updated=true
     else
-      new_tasks+="$line\n"
+      new_tasks_content+="$line\n"
     fi
   done <<< "$(_read_tasks)"
 
   if [ "$updated" = true ]; then
-    echo -e "$new_tasks" | sed 's/\n$//' | _write_tasks # Remove trailing newline before writing
+    _write_tasks "$(echo -e "$new_tasks_content" | sed 's/\n$//')"
     echo "Task $task_id marked as $new_status."
   else
     echo "Task $task_id not found." >&2
@@ -191,18 +192,18 @@ remove_task() {
   fi
 
   local removed=false
-  local new_tasks=""
+  local new_tasks_content=""
   while IFS= read -r line; do
     local id=$(echo "$line" | awk '{print $1}')
     if [ "$id" = "$task_id" ]; then
       removed=true
     else
-      new_tasks+="$line\n"
+      new_tasks_content+="$line\n"
     fi
   done <<< "$(_read_tasks)"
 
   if [ "$removed" = true ]; then
-    echo -e "$new_tasks" | sed 's/\n$//' | _write_tasks # Remove trailing newline before writing
+    _write_tasks "$(echo -e "$new_tasks_content" | sed 's/\n$//')"
     echo "Task $task_id removed."
   else
     echo "Task $task_id not found." >&2
