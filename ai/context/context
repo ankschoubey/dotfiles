@@ -101,27 +101,36 @@ _get_task_file_content_for_workspace() {
 
 # Function to list all saved contexts
 list_all_contexts() {
-  local contexts_list=""
-  for file in "$STORAGE_PATH"/*; do
-    if [ -f "$file" ]; then
-      local workspace_id=$(basename "$file")
-      local custom_name=$(cat "$file")
-      if _has_in_progress_task "$workspace_id"; then
-        custom_name="$custom_name [>]"
+  while true; do
+    local contexts_list=""
+    for file in "$STORAGE_PATH"/*; do
+      if [ -f "$file" ]; then
+        local workspace_id=$(basename "$file")
+        local custom_name=$(cat "$file")
+        if _has_in_progress_task "$workspace_id"; then
+          custom_name="$custom_name [>]"
+        fi
+        contexts_list+="$workspace_id $custom_name\n"
       fi
-      contexts_list+="$workspace_id $custom_name\n"
-    fi
-  done
+    done
 
-  if [ -n "$contexts_list" ]; then
-    local selected_context=$(echo -e "$contexts_list" | fzf       --with-nth=2..       --delimiter=' '       --prompt="Select a context: "       --preview="$0 _preview-context-tasks {1}"       --preview-window="up"       --layout=reverse)
-    if [ -n "$selected_context" ]; then
+    local menu_options="${contexts_list}Exit"
+
+    local selected_context=$(echo -e "$menu_options" | fzf       --with-nth=2..       --delimiter=' '       --prompt="Select a context to switch to, or Exit: "       --preview="$0 _preview-context-tasks {1}"       --preview-window="up"       --layout=reverse)
+
+    if [ -z "$selected_context" ]; then
+      # User pressed Ctrl-C or Esc
+      echo -e "${YELLOW}Context switch cancelled.${NC}" >&2
+      break
+    elif [ "$selected_context" = "Exit" ]; then
+      echo -e "${GREEN}Exiting context switcher.${NC}"
+      break
+    else
       local selected_workspace_id=$(echo "$selected_context" | awk '{print $1}')
       aerospace workspace "$selected_workspace_id"
+      echo -e "${GREEN}Switched to workspace: $(get_current_workspace_name) (ID: $selected_workspace_id)${NC}"
     fi
-  else
-    echo "No contexts saved." >&2
-  fi
+  done
 }
 
 # --- Task Management Functions ---
