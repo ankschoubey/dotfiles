@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Color Codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
 # Get the absolute path of the script's directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
@@ -111,8 +120,11 @@ _write_tasks() {
 add_task() {
   local description="$*"
   if [ -z "$description" ]; then
-    echo "Usage: ctx current add <description>" >&2
-    return 1
+    read -p "Enter task description: " description
+    if [ -z "$description" ]; then
+      echo -e "${RED}Task description cannot be empty.${NC}" >&2
+      return 1
+    fi
   fi
   local task_id=$(_get_next_task_id)
   local new_task_line="$task_id todo $description"
@@ -123,32 +135,46 @@ add_task() {
   else
     _write_tasks "$current_tasks\n$new_task_line"
   fi
-  echo "Task added: $new_task_line"
+  echo -e "${GREEN}Task added: $new_task_line${NC}"
 }
 
 # List tasks for the current workspace
 list_tasks() {
   local task_file=$(_get_task_file_path)
   if [ -f "$task_file" ]; then
-    printf "Tasks for %s (Workspace %s):\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
+    printf "${BLUE}Tasks for %s (Workspace %s):${NC}\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
     while IFS= read -r line; do
       local id=$(echo "$line" | awk '{print $1}')
       local status=$(echo "$line" | awk '{print $2}')
       local desc=$(echo "$line" | cut -d' ' -f3-)
       case "$status" in
         todo)
-          echo "  [ ] ($id) $desc"
+          echo -e "  ${YELLOW}[ ] ($id) $desc${NC}"
           ;;
         in_progress)
-          echo "  [>] ($id) $desc"
+          echo -e "  ${CYAN}[>] ($id) $desc${NC}"
           ;;
         completed)
-          echo "  [x] ($id) $desc"
+          echo -e "  ${GREEN}[x] ($id) $desc${NC}"
           ;;
       esac
     done <<< "$(_read_tasks)"
   else
-    echo "No tasks for $(get_current_workspace_name) (Workspace $(get_workspace_name))."
+    echo -e "${YELLOW}No tasks for $(get_current_workspace_name) (Workspace $(get_workspace_name)).${NC}"
+  fi
+}
+
+# Helper to select a task using fzf
+_fzf_task_selector() {
+  local task_file=$(_get_task_file_path)
+  if [ ! -f "$task_file" ] || [ -z "$(cat "$task_file")" ]; then
+    echo -e "${YELLOW}No tasks to select.${NC}" >&2
+    return 1
+  fi
+
+  local selected_task=$(cat "$task_file" | fzf --with-nth=3.. --delimiter=' ' --prompt="Select a task: ")
+  if [ -n "$selected_task" ]; then
+    echo "$(echo "$selected_task" | awk '{print $1}')"
   fi
 }
 
@@ -156,9 +182,11 @@ list_tasks() {
 update_task_status() {
   local task_id="$1"
   local new_status="$2"
-  if [ -z "$task_id" ] || [ -z "$new_status" ]; then
-    echo "Usage: ctx current [progress|complete] <task_id>" >&2
-    return 1
+  if [ -z "$task_id" ]; then
+    task_id=$(_fzf_task_selector)
+    if [ -z "$task_id" ]; then
+      return 1
+    fi
   fi
 
   local updated=false
@@ -176,9 +204,9 @@ update_task_status() {
 
   if [ "$updated" = true ]; then
     _write_tasks "$(echo -e "$new_tasks_content" | sed 's/\n$//')"
-    echo "Task $task_id marked as $new_status."
+    echo -e "${GREEN}Task $task_id marked as $new_status.${NC}"
   else
-    echo "Task $task_id not found." >&2
+    echo -e "${RED}Task $task_id not found.${NC}" >&2
   fi
 }
 
@@ -186,8 +214,10 @@ update_task_status() {
 remove_task() {
   local task_id="$1"
   if [ -z "$task_id" ]; then
-    echo "Usage: ctx current remove <task_id>" >&2
-    return 1
+    task_id=$(_fzf_task_selector)
+    if [ -z "$task_id" ]; then
+      return 1
+    fi
   fi
 
   local removed=false
@@ -203,9 +233,9 @@ remove_task() {
 
   if [ "$removed" = true ]; then
     _write_tasks "$(echo -e "$new_tasks_content" | sed 's/\n$//')"
-    echo "Task $task_id removed."
+    echo -e "${GREEN}Task $task_id removed.${NC}"
   else
-    echo "Task $task_id not found." >&2
+    echo -e "${RED}Task $task_id not found.${NC}" >&2
   fi
 }
 
@@ -221,31 +251,57 @@ main() {
     list_all_contexts
   elif [ "$1" = "current" ]; then
     shift # Remove 'current' from arguments
-    case "$1" in
-      add)
-        shift # Remove 'add'
-        add_task "$@"
-        ;;
-      list)
-        list_tasks
-        ;;
-      progress)
-        update_task_status "$2" "in_progress"
-        ;;
-      complete)
-        update_task_status "$2" "completed"
-        ;;
-      remove)
-        remove_task "$2"
-        ;;
-      *)
-        echo "Usage: ctx current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]" >&2
-        return 1
-        ;;
-    esac
+    if [ -z "$1" ]; then
+      # No subcommand, show fzf menu
+      local action=$(echo -e "Add Task\nList Tasks\nMark In Progress\nMark Complete\nRemove Task" | fzf --prompt="Select action: ")
+      case "$action" in
+        "Add Task")
+          add_task
+          ;;
+        "List Tasks")
+          list_tasks
+          ;;
+        "Mark In Progress")
+          update_task_status "" "in_progress"
+          ;;
+        "Mark Complete")
+          update_task_status "" "completed"
+          ;;
+        "Remove Task")
+          remove_task
+          ;;
+        *)
+          echo -e "${YELLOW}Action cancelled.${NC}" >&2
+          ;;
+      esac
+    else
+      # Subcommand provided
+      case "$1" in
+        add)
+          shift # Remove 'add'
+          add_task "$@"
+          ;;
+        list)
+          list_tasks
+          ;;
+        progress)
+          update_task_status "$2" "in_progress"
+          ;;
+        complete)
+          update_task_status "$2" "completed"
+          ;;
+        remove)
+          remove_task "$2"
+          ;;
+        *)
+          echo -e "${RED}Usage: ctx current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]${NC}" >&2
+          return 1
+          ;;
+      esac
+    fi
   else
-    echo "Usage: context [set|get|clear|switch] [name]"
-    echo "       context current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]"
+    echo -e "${RED}Usage: context [set|get|clear|switch] [name]${NC}"
+    echo -e "${RED}       context current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]${NC}"
   fi
 }
 
