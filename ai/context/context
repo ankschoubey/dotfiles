@@ -5,10 +5,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
 # Use the script's directory as the base for the storage path
 STORAGE_PATH="$SCRIPT_DIR/../../../.aerospace-context"
+TASKS_STORAGE_PATH="$STORAGE_PATH/tasks"
 
-# Ensure the storage directory exists
+# Ensure the storage directories exist
 if [ ! -d "$STORAGE_PATH" ]; then
   mkdir -p "$STORAGE_PATH"
+fi
+if [ ! -d "$TASKS_STORAGE_PATH" ]; then
+  mkdir -p "$TASKS_STORAGE_PATH"
 fi
 
 # Function to get the current workspace name
@@ -63,6 +67,148 @@ list_all_contexts() {
   fi
 }
 
+# --- Task Management Functions ---
+
+# Helper to get the task file path for the current workspace
+_get_task_file_path() {
+  local current_workspace=$(get_workspace_name)
+  echo "$TASKS_STORAGE_PATH/$current_workspace.tasks"
+}
+
+# Helper to get the next available task ID
+_get_next_task_id() {
+  local task_file=$(_get_task_file_path)
+  if [ -f "$task_file" ]; then
+    # Get the max ID and add 1, or start from 1 if no tasks
+    local max_id=$(awk -F' ' '{print $1}' "$task_file" | sort -nr | head -n 1)
+    if [ -z "$max_id" ]; then
+      echo 1
+    else
+      echo $((max_id + 1))
+    fi
+  else
+    echo 1
+  fi
+}
+
+# Helper to read tasks from the current workspace's task file
+_read_tasks() {
+  local task_file=$(_get_task_file_path)
+  if [ -f "$task_file" ]; then
+    cat "$task_file"
+  else
+    echo "" # Return empty string if file doesn't exist
+  fi
+}
+
+# Helper to write tasks to the current workspace's task file
+_write_tasks() {
+  local task_file=$(_get_task_file_path)
+  echo -n "$1" > "$task_file"
+}
+
+# Add a new task
+add_task() {
+  local description="$*"
+  if [ -z "$description" ]; then
+    echo "Usage: ctx current add <description>" >&2
+    return 1
+  fi
+  local task_id=$(_get_next_task_id)
+  local new_task_line="$task_id todo $description"
+  local current_tasks=$(_read_tasks)
+  
+  if [ -z "$current_tasks" ]; then
+    _write_tasks "$new_task_line"
+  else
+    _write_tasks "$current_tasks\n$new_task_line"
+  fi
+  echo "Task added: $new_task_line"
+}
+
+# List tasks for the current workspace
+list_tasks() {
+  local task_file=$(_get_task_file_path)
+  if [ -f "$task_file" ]; then
+    echo "Tasks for $(get_current_workspace_name) (Workspace $(get_workspace_name)):\n"
+    while IFS= read -r line; do
+      local id=$(echo "$line" | awk '{print $1}')
+      local status=$(echo "$line" | awk '{print $2}')
+      local desc=$(echo "$line" | cut -d' ' -f3-)
+      case "$status" in
+        todo)
+          echo "  [ ] ($id) $desc"
+          ;;
+        in_progress)
+          echo "  [>] ($id) $desc"
+          ;;
+        completed)
+          echo "  [x] ($id) $desc"
+          ;;
+      esac
+    done <<< "$(_read_tasks)"
+  else
+    echo "No tasks for $(get_current_workspace_name) (Workspace $(get_workspace_name))."
+  fi
+}
+
+# Update task status (in_progress or completed)
+update_task_status() {
+  local task_id="$1"
+  local new_status="$2"
+  if [ -z "$task_id" ] || [ -z "$new_status" ]; then
+    echo "Usage: ctx current [progress|complete] <task_id>" >&2
+    return 1
+  fi
+
+  local updated=false
+  local new_tasks=""
+  while IFS= read -r line; do
+    local id=$(echo "$line" | awk '{print $1}')
+    if [ "$id" = "$task_id" ]; then
+      local desc=$(echo "$line" | cut -d' ' -f3-)
+      new_tasks+="$id $new_status $desc\n"
+      updated=true
+    else
+      new_tasks+="$line\n"
+    fi
+  done <<< "$(_read_tasks)"
+
+  if [ "$updated" = true ]; then
+    echo -e "$new_tasks" | sed 's/\n$//' | _write_tasks # Remove trailing newline before writing
+    echo "Task $task_id marked as $new_status."
+  else
+    echo "Task $task_id not found." >&2
+  fi
+}
+
+# Remove a task
+remove_task() {
+  local task_id="$1"
+  if [ -z "$task_id" ]; then
+    echo "Usage: ctx current remove <task_id>" >&2
+    return 1
+  fi
+
+  local removed=false
+  local new_tasks=""
+  while IFS= read -r line; do
+    local id=$(echo "$line" | awk '{print $1}')
+    if [ "$id" = "$task_id" ]; then
+      removed=true
+    else
+      new_tasks+="$line\n"
+    fi
+  done <<< "$(_read_tasks)"
+
+  if [ "$removed" = true ]; then
+    echo -e "$new_tasks" | sed 's/\n$//' | _write_tasks # Remove trailing newline before writing
+    echo "Task $task_id removed."
+  else
+    echo "Task $task_id not found." >&2
+  fi
+}
+
 # Main function
 main() {
   if [ "$1" = "set" ]; then
@@ -73,9 +219,33 @@ main() {
     clear_workspace_name
   elif [ "$1" = "switch" ]; then
     list_all_contexts
+  elif [ "$1" = "current" ]; then
+    shift # Remove 'current' from arguments
+    case "$1" in
+      add)
+        shift # Remove 'add'
+        add_task "$@"
+        ;;
+      list)
+        list_tasks
+        ;;
+      progress)
+        update_task_status "$2" "in_progress"
+        ;;
+      complete)
+        update_task_status "$2" "completed"
+        ;;
+      remove)
+        remove_task "$2"
+        ;;
+      *)
+        echo "Usage: ctx current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]" >&2
+        return 1
+        ;;
+    esac
   else
-    echo "Usage: context [set|get|clear] [name]"
-    echo "       context switch"
+    echo "Usage: context [set|get|clear|switch] [name]"
+    echo "       context current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]"
   fi
 }
 
