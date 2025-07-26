@@ -122,7 +122,36 @@ sketchybar --add item front_app_context_separator left \
   label.drawing=off \
   background.drawing=off
 
-sketchybar --add item context left \n           --set context script="/Users/ankushchoubey/Documents/Github/dotfiles-1/sketchybar/plugins/context.sh" \n                         icon.drawing=off \n                         label.drawing=on \n                         icon.color=$WHITE \n                         icon.padding_left=10 \n                         label.color=$WHITE \n                         label.padding_right=10 \n                         icon.font="Hack Nerd Font:Regular:16.0" \n           --subscribe context aerospace_workspace_change
+sketchybar --add item context_main right \
+           --set context_main script="/Users/ankushchoubey/Documents/Github/dotfiles-1/sketchybar/plugins/context.sh" \
+                         icon.drawing=off \
+                         label.drawing=on \
+                         background.drawing=on \
+                         background.color=$GREY \
+                         background.corner_radius=5 \
+                         icon.color=$WHITE \
+                         icon.padding_left=10 \
+                         label.color=$WHITE \
+                         label.padding_right=10 \
+                         icon.font="Hack Nerd Font:Regular:16.0" \
+                         drawing=off \
+           --subscribe context_main aerospace_workspace_change
+
+sketchybar --add item context_secondary center \
+           --set context_secondary script="/Users/ankushchoubey/Documents/Github/dotfiles-1/sketchybar/plugins/context.sh" \
+                         icon.drawing=off \
+                         label.drawing=on \
+                         background.drawing=on \
+                         background.color=$GREY \
+                         background.corner_radius=5 \
+                         icon.color=$WHITE \
+                         icon.padding_left=10 \
+                         label.color=$WHITE \
+                         label.padding_right=10 \
+                         icon.font="Hack Nerd Font:Regular:16.0" \
+                         drawing=off \
+           --subscribe context_secondary aerospace_workspace_change
+
 sketchybar --add item app_count right \
   --set app_count update_freq=2 script="$PLUGIN_DIR/app_count.sh" \
   icon.color=$BLUE \
