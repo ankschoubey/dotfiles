@@ -104,7 +104,7 @@ _read_tasks() {
 # Helper to write tasks to the current workspace's task file
 _write_tasks() {
   local task_file=$(_get_task_file_path)
-  echo -n "$1" > "$task_file"
+  printf "%b" "$1" > "$task_file"
 }
 
 # Add a new task
@@ -130,8 +130,7 @@ add_task() {
 list_tasks() {
   local task_file=$(_get_task_file_path)
   if [ -f "$task_file" ]; then
-    echo "Tasks for $(get_current_workspace_name) (Workspace $(get_workspace_name)):
-"
+    printf "Tasks for %s (Workspace %s):\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
     while IFS= read -r line; do
       local id=$(echo "$line" | awk '{print $1}')
       local status=$(echo "$line" | awk '{print $2}')
