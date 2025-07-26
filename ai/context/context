@@ -454,6 +454,15 @@ _check_and_update_monitor_status() {
   fi
 }
 
+# Reset all contexts and tasks
+reset_all_contexts_and_tasks() {
+  echo -e "${YELLOW}Resetting all contexts and tasks...${NC}"
+  rm -rf "$STORAGE_PATH"/*
+  rm -rf "$TASKS_STORAGE_PATH"/*
+  rm -rf "$SCRIPT_DIR/monitor_logs"/*
+  echo -e "${GREEN}All contexts, tasks, and monitor logs have been removed.${NC}"
+}
+
 # Start monitoring a task
 start_monitor_for_task() {
   local task_id="$1"
@@ -512,6 +521,8 @@ main() {
     clear_workspace_name
   elif [ "$1" = "switch" ]; then
     list_all_contexts
+  elif [ "$1" = "reset" ]; then
+    reset_all_contexts_and_tasks
   elif [ "$1" = "current" ]; then
     shift # Remove 'current' from arguments
 
