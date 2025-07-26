@@ -191,7 +191,8 @@ list_tasks() {
   _check_and_update_monitor_status
   local task_file=$(_get_task_file_path)
   if [ -f "$task_file" ]; then
-    printf "${BLUE}Tasks for %s (Workspace %s):\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
+    printf "${BLUE}Tasks for %s (Workspace %s):\n"
+"$(get_current_workspace_name)" "$(get_workspace_name)"
     while IFS= read -r line; do
       local id=$(echo "$line" | awk '{print $1}')
       local status=$(echo "$line" | awk '{print $2}')
@@ -222,7 +223,7 @@ list_tasks() {
           echo -e "  ${RED}[!] ($id) $display_desc${NC}"
           ;;
         stopped)
-          echo -e "  ${YELLOW}[S] ($id) $display_desc${NC}"
+          echo -e "  ${BLUE}[S] ($id) $display_desc${NC}"
           ;;
       esac
     done <<< "$(_read_tasks)"
@@ -267,7 +268,7 @@ _list_tasks_formatted_for_fzf() {
           echo -e "  ${RED}[!] ($id) $display_desc${NC}"
           ;;
         stopped)
-          echo -e "  ${YELLOW}[S] ($id) $display_desc${NC}"
+          echo -e "  ${BLUE}[S] ($id) $display_desc${NC}"
           ;;
       esac
     done <<< "$(_read_tasks)"
@@ -307,7 +308,16 @@ _preview_task_details() {
       local monitor_log_file="$SCRIPT_DIR/monitor_logs/task_${id}_${monitor_script_name%.*}.log"
       if [ -f "$monitor_log_file" ]; then
         printf "\n--- Monitor Output (Live) ---\n"
-        tail -f "$monitor_log_file" | jq -r '.message + " (Status: " + .status + ")"'
+        while true; do
+          # Check if the log file still exists and the monitor process is running
+          if [ ! -f "$monitor_log_file" ] || ! kill -0 "$monitor_pid" 2>/dev/null; then
+            echo "Monitor stopped or log file removed."
+            break
+          fi
+          # Read the last line and format it
+          tail -n 1 "$monitor_log_file" | jq -r '.message + " (Status: " + .status + ")"'
+          sleep 0.5 # Update every 0.5 seconds
+        done
       else
         printf "\n--- Monitor Log Not Found ---\n"
       fi
