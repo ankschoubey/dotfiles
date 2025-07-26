@@ -41,6 +41,28 @@ clear_workspace_name() {
   fi
 }
 
+# Function to list all saved contexts
+list_all_contexts() {
+  local contexts_list=""
+  for file in "$STORAGE_PATH"/*; do
+    if [ -f "$file" ]; then
+      local workspace_id=$(basename "$file")
+      local custom_name=$(cat "$file")
+      contexts_list+="$workspace_id $custom_name\n"
+    fi
+  done
+
+  if [ -n "$contexts_list" ]; then
+    local selected_context=$(echo -e "$contexts_list" | fzf --with-nth=2.. --delimiter=' ')
+    if [ -n "$selected_context" ]; then
+      local selected_workspace_id=$(echo "$selected_context" | awk '{print $1}')
+      aerospace workspace "$selected_workspace_id"
+    fi
+  else
+    echo "No contexts saved." >&2
+  fi
+}
+
 # Main function
 main() {
   if [ "$1" = "set" ]; then
@@ -49,8 +71,11 @@ main() {
     get_current_workspace_name
   elif [ "$1" = "clear" ]; then
     clear_workspace_name
+  elif [ "$1" = "get-all" ]; then
+    list_all_contexts
   else
     echo "Usage: context [set|get|clear] [name]"
+    echo "       context get-all"
   fi
 }
 
