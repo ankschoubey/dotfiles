@@ -198,7 +198,7 @@ _fzf_task_selector() {
     return 1
   fi
 
-  local selected_task=$(cat "$task_file" | fzf --with-nth=3.. --delimiter=' ' --prompt="Select a task: " --preview="$0 _preview-task-details {}")
+  local selected_task=$(cat "$task_file" | fzf --with-nth=3.. --delimiter=' ' --prompt="Select a task: " --preview="$0 _preview-task-details {}" --layout=reverse --preview-window="$FZF_PREVIEW_WINDOW_LAYOUT")
   if [ -n "$selected_task" ]; then
     echo "$(echo "$selected_task" | awk '{print $1}')"
   fi
@@ -234,7 +234,6 @@ update_task_status() {
     if [ "$id" = "$task_id" ]; then
       local desc=$(echo "$line" | cut -d' ' -f3-)
       new_tasks_content+="$id $new_status $desc\n"
-      updated=true
     else
       new_tasks_content+="$line\n"
     fi
@@ -279,6 +278,8 @@ remove_task() {
 
 # Main function
 main() {
+  local FZF_PREVIEW_WINDOW_LAYOUT="down"
+
   if [ "$1" = "set" ]; then
     set_workspace_name "$2"
   elif [ "$1" = "get" ]; then
@@ -289,10 +290,20 @@ main() {
     list_all_contexts
   elif [ "$1" = "current" ]; then
     shift # Remove 'current' from arguments
+
+    # Check for optional layout argument
+    if [ "$1" = "td" ]; then
+      FZF_PREVIEW_WINDOW_LAYOUT="down"
+      shift
+    elif [ "$1" = "lr" ]; then
+      FZF_PREVIEW_WINDOW_LAYOUT="right"
+      shift
+    fi
+
     if [ -z "$1" ]; then
       # No subcommand, show fzf menu
       while true; do
-        local action=$(echo -e "Add Task\nMark In Progress\nMark Complete\nRemove Task\nExit" | fzf --prompt="Select action: " --preview="$0 _preview-tasks")
+        local action=$(echo -e "Add Task\nMark In Progress\nMark Complete\nRemove Task\nExit" | fzf --prompt="Select action: " --preview="$0 _preview-tasks" --layout=reverse --preview-window="$FZF_PREVIEW_WINDOW_LAYOUT")
         case "$action" in
           "Add Task")
             add_task
@@ -335,7 +346,7 @@ main() {
           remove_task "$2"
           ;;
         *)
-          echo -e "${RED}Usage: ctx current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]${NC}" >&2
+          echo -e "${RED}Usage: ctx current [td|lr] [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]${NC}" >&2
           return 1
           ;;
       esac
@@ -346,7 +357,7 @@ main() {
     _preview_task_details "$2"
   else
     echo -e "${RED}Usage: context [set|get|clear|switch] [name]${NC}"
-    echo -e "${RED}       context current [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]${NC}"
+    echo -e "${RED}       context current [td|lr] [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]${NC}"
   fi
 }
 
