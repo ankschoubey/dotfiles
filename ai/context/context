@@ -71,11 +71,11 @@ main() {
     get_current_workspace_name
   elif [ "$1" = "clear" ]; then
     clear_workspace_name
-  elif [ "$1" = "get-all" ]; then
+  elif [ "$1" = "switch" ]; then
     list_all_contexts
   else
     echo "Usage: context [set|get|clear] [name]"
-    echo "       context get-all"
+    echo "       context switch"
   fi
 }
 
