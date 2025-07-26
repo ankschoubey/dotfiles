@@ -54,6 +54,17 @@ clear_workspace_name() {
   fi
 }
 
+# Helper to check if a workspace has an in-progress task
+_has_in_progress_task() {
+  local workspace_id="$1"
+  local task_file="$TASKS_STORAGE_PATH/$workspace_id.tasks"
+  if [ -f "$task_file" ]; then
+    grep -q " in_progress " "$task_file"
+    return $?
+  fi
+  return 1
+}
+
 # Helper to get task file content for a specific workspace
 _get_task_file_content_for_workspace() {
   local workspace_id="$1"
@@ -88,6 +99,9 @@ list_all_contexts() {
     if [ -f "$file" ]; then
       local workspace_id=$(basename "$file")
       local custom_name=$(cat "$file")
+      if _has_in_progress_task "$workspace_id"; then
+        custom_name="$custom_name [>]"
+      fi
       contexts_list+="$workspace_id $custom_name\n"
     fi
   done
@@ -98,7 +112,8 @@ list_all_contexts() {
       --delimiter=' ' \
       --prompt="Select a context: " \
       --preview="$0 _preview-context-tasks {1}" \
-      --preview-window="up")
+      --preview-window="up" \
+      --layout=default)
     if [ -n "$selected_context" ]; then
       local selected_workspace_id=$(echo "$selected_context" | awk '{print $1}')
       aerospace workspace "$selected_workspace_id"
