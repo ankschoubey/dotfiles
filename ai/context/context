@@ -124,7 +124,7 @@ add_task() {
     if [ -z "$description" ]; then
       echo -e "${RED}Task description cannot be empty.${NC}" >&2
       return 1
-    fi
+    fi # Added missing fi
   fi
   local task_id=$(_get_next_task_id)
   local new_task_line="$task_id todo $description"
@@ -234,6 +234,7 @@ update_task_status() {
     if [ "$id" = "$task_id" ]; then
       local desc=$(echo "$line" | cut -d' ' -f3-)
       new_tasks_content+="$id $new_status $desc\n"
+      updated=true
     else
       new_tasks_content+="$line\n"
     fi
@@ -278,7 +279,8 @@ remove_task() {
 
 # Main function
 main() {
-  local FZF_PREVIEW_WINDOW_LAYOUT="down"
+  local FZF_PREVIEW_WINDOW_LAYOUT="up"
+  local FZF_LAYOUT_OPTION="--layout=reverse"
 
   if [ "$1" = "set" ]; then
     set_workspace_name "$2"
@@ -293,17 +295,18 @@ main() {
 
     # Check for optional layout argument
     if [ "$1" = "td" ]; then
-      FZF_PREVIEW_WINDOW_LAYOUT="down"
+      FZF_PREVIEW_WINDOW_LAYOUT="up"
       shift
     elif [ "$1" = "lr" ]; then
       FZF_PREVIEW_WINDOW_LAYOUT="right"
+      FZF_LAYOUT_OPTION="--layout=reverse"
       shift
     fi
 
     if [ -z "$1" ]; then
       # No subcommand, show fzf menu
       while true; do
-        local action=$(echo -e "Add Task\nMark In Progress\nMark Complete\nRemove Task\nExit" | fzf --prompt="Select action: " --preview="$0 _preview-tasks" --layout=reverse --preview-window="$FZF_PREVIEW_WINDOW_LAYOUT")
+        local action=$(echo -e "Add Task\nMark In Progress\nMark Complete\nRemove Task\nExit" | fzf --prompt="Select action: " --preview="$0 _preview-tasks" "$FZF_LAYOUT_OPTION" --preview-window="$FZF_PREVIEW_WINDOW_LAYOUT")
         case "$action" in
           "Add Task")
             add_task
