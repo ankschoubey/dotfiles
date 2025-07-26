@@ -188,6 +188,7 @@ add_task() {
 
 # List tasks for the current workspace
 list_tasks() {
+  _check_and_update_monitor_status
   local task_file=$(_get_task_file_path)
   if [ -f "$task_file" ]; then
     printf "${BLUE}Tasks for %s (Workspace %s):\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
@@ -199,6 +200,7 @@ list_tasks() {
       local monitor_pid=$(echo "$line" | awk '{print $5}')
 
       local display_desc="$desc"
+      # Only show [M] if actively monitoring
       if [ "$status" = "monitoring" ] && [ -n "$monitor_script_name" ]; then
         display_desc="$desc ${MAGENTA}[M]${NC}"
       fi
@@ -215,6 +217,12 @@ list_tasks() {
           ;;
         monitoring)
           echo -e "  ${MAGENTA}[M] ($id) $display_desc${NC}"
+          ;;
+        error)
+          echo -e "  ${RED}[!] ($id) $display_desc${NC}"
+          ;;
+        stopped)
+          echo -e "  ${YELLOW}[S] ($id) $display_desc${NC}"
           ;;
       esac
     done <<< "$(_read_tasks)"
@@ -225,6 +233,7 @@ list_tasks() {
 
 # Helper to format tasks for fzf preview
 _list_tasks_formatted_for_fzf() {
+  _check_and_update_monitor_status
   local task_file=$(_get_task_file_path)
   if [ -f "$task_file" ]; then
     printf "${BLUE}Tasks for %s (Workspace %s):\n" "$(get_current_workspace_name)" "$(get_workspace_name)"
@@ -236,6 +245,7 @@ _list_tasks_formatted_for_fzf() {
       local monitor_pid=$(echo "$line" | awk '{print $5}')
 
       local display_desc="$desc"
+      # Only show [M] if actively monitoring
       if [ "$status" = "monitoring" ] && [ -n "$monitor_script_name" ]; then
         display_desc="$desc ${MAGENTA}[M]${NC}"
       fi
@@ -252,6 +262,12 @@ _list_tasks_formatted_for_fzf() {
           ;;
         monitoring)
           echo -e "  ${MAGENTA}[M] ($id) $display_desc${NC}"
+          ;;
+        error)
+          echo -e "  ${RED}[!] ($id) $display_desc${NC}"
+          ;;
+        stopped)
+          echo -e "  ${YELLOW}[S] ($id) $display_desc${NC}"
           ;;
       esac
     done <<< "$(_read_tasks)"
@@ -291,7 +307,7 @@ _preview_task_details() {
       local monitor_log_file="$SCRIPT_DIR/monitor_logs/task_${id}_${monitor_script_name%.*}.log"
       if [ -f "$monitor_log_file" ]; then
         printf "\n--- Monitor Output (Live) ---\n"
-        tail -n 10 "$monitor_log_file" | jq -r '.message + " (Status: " + .status + ")"'
+        tail -f "$monitor_log_file" | jq -r '.message + " (Status: " + .status + ")"'
       else
         printf "\n--- Monitor Log Not Found ---\n"
       fi
@@ -370,6 +386,64 @@ remove_task() {
   fi
 }
 
+# Check and update status of monitored tasks
+_check_and_update_monitor_status() {
+  local task_file=$(_get_task_file_path)
+  if [ ! -f "$task_file" ]; then
+    return 0
+  fi
+
+  local updated_tasks_content=""
+  local tasks_changed=false
+
+  while IFS= read -r line; do
+    local id=$(echo "$line" | awk '{print $1}')
+    local status=$(echo "$line" | awk '{print $2}')
+    local desc=$(echo "$line" | cut -d' ' -f3-)
+    local monitor_script_name=$(echo "$line" | awk '{print $4}')
+    local monitor_pid=$(echo "$line" | awk '{print $5}')
+
+    if [ "$status" = "monitoring" ] && [ -n "$monitor_script_name" ] && [ -n "$monitor_pid" ]; then
+      local monitor_log_file="$SCRIPT_DIR/monitor_logs/task_${id}_${monitor_script_name%.*}.log"
+      local current_monitor_status="running"
+
+      # Check if monitor process is still running
+      if ! kill -0 "$monitor_pid" 2>/dev/null; then
+        current_monitor_status="stopped" # Process is no longer running
+      elif [ -f "$monitor_log_file" ]; then
+        # Read last line of log and parse status
+        local last_log_entry=$(tail -n 1 "$monitor_log_file" 2>/dev/null)
+        if [ -n "$last_log_entry" ]; then
+          local parsed_status=$(echo "$last_log_entry" | jq -r '.status' 2>/dev/null)
+          if [ "$parsed_status" = "completed" ] || [ "$parsed_status" = "error" ]; then
+            current_monitor_status="$parsed_status"
+          fi
+        fi
+      fi
+
+      if [ "$current_monitor_status" = "completed" ] || [ "$current_monitor_status" = "error" ] || [ "$current_monitor_status" = "stopped" ]; then
+        # Update task status and remove monitor info
+        local new_task_status="completed" # Default to completed if monitor finished
+        if [ "$current_monitor_status" = "error" ]; then
+          new_task_status="error"
+        elif [ "$current_monitor_status" = "stopped" ]; then
+          new_task_status="stopped"
+        fi
+        updated_tasks_content+="$id $new_task_status $(echo "$desc" | sed 's/ \[.*\] \[.*\]$//')\n"
+        tasks_changed=true
+      else
+        updated_tasks_content+="$line\n"
+      fi
+    else
+      updated_tasks_content+="$line\n"
+    fi
+  done <<< "$(_read_tasks)"
+
+  if [ "$tasks_changed" = true ]; then
+    _write_tasks "$(echo -e "$updated_tasks_content" | sed 's/\n$//')"
+  fi
+}
+
 # Start monitoring a task
 start_monitor_for_task() {
   local task_id="$1"
@@ -442,6 +516,7 @@ main() {
     fi
 
     if [ -z "$1" ]; then
+      _check_and_update_monitor_status
       # No subcommand, show fzf menu
       while true; do
         local action=$(echo -e "Add Task\nMark In Progress\nMark Complete\nRemove Task\nMonitor Task\nExit" | fzf --prompt="Select action: " --preview="$0 _preview-tasks" "$FZF_LAYOUT_OPTION" --preview-window="$FZF_PREVIEW_WINDOW_LAYOUT")
