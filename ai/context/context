@@ -9,6 +9,13 @@ MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
+# Check for jq dependency
+if ! command -v jq &> /dev/null
+then
+    echo -e "${RED}Error: jq is not installed. Please install it to use the monitor feature (e.g., brew install jq).${NC}" >&2
+    exit 1
+fi
+
 # Get the absolute path of the script's directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
@@ -188,15 +195,26 @@ list_tasks() {
       local id=$(echo "$line" | awk '{print $1}')
       local status=$(echo "$line" | awk '{print $2}')
       local desc=$(echo "$line" | cut -d' ' -f3-)
+      local monitor_script_name=$(echo "$line" | awk '{print $4}')
+      local monitor_pid=$(echo "$line" | awk '{print $5}')
+
+      local display_desc="$desc"
+      if [ "$status" = "monitoring" ] && [ -n "$monitor_script_name" ]; then
+        display_desc="$desc ${MAGENTA}[M]${NC}"
+      fi
+
       case "$status" in
         todo)
-          echo -e "  ${YELLOW}[ ] ($id) $desc${NC}"
+          echo -e "  ${YELLOW}[ ] ($id) $display_desc${NC}"
           ;;
         in_progress)
-          echo -e "  ${CYAN}[>] ($id) $desc${NC}"
+          echo -e "  ${CYAN}[>] ($id) $display_desc${NC}"
           ;;
         completed)
-          echo -e "  ${GREEN}[x] ($id) $desc${NC}"
+          echo -e "  ${GREEN}[x] ($id) $display_desc${NC}"
+          ;;
+        monitoring)
+          echo -e "  ${MAGENTA}[M] ($id) $display_desc${NC}"
           ;;
       esac
     done <<< "$(_read_tasks)"
@@ -214,15 +232,26 @@ _list_tasks_formatted_for_fzf() {
       local id=$(echo "$line" | awk '{print $1}')
       local status=$(echo "$line" | awk '{print $2}')
       local desc=$(echo "$line" | cut -d' ' -f3-)
+      local monitor_script_name=$(echo "$line" | awk '{print $4}')
+      local monitor_pid=$(echo "$line" | awk '{print $5}')
+
+      local display_desc="$desc"
+      if [ "$status" = "monitoring" ] && [ -n "$monitor_script_name" ]; then
+        display_desc="$desc ${MAGENTA}[M]${NC}"
+      fi
+
       case "$status" in
         todo)
-          echo -e "  ${YELLOW}[ ] ($id) $desc${NC}"
+          echo -e "  ${YELLOW}[ ] ($id) $display_desc${NC}"
           ;;
         in_progress)
-          echo -e "  ${CYAN}[>] ($id) $desc${NC}"
+          echo -e "  ${CYAN}[>] ($id) $display_desc${NC}"
           ;;
         completed)
-          echo -e "  ${GREEN}[x] ($id) $desc${NC}"
+          echo -e "  ${GREEN}[x] ($id) $display_desc${NC}"
+          ;;
+        monitoring)
+          echo -e "  ${MAGENTA}[M] ($id) $display_desc${NC}"
           ;;
       esac
     done <<< "$(_read_tasks)"
@@ -253,7 +282,20 @@ _preview_task_details() {
     local id=$(echo "$line" | awk '{print $1}')
     local status=$(echo "$line" | awk '{print $2}')
     local desc=$(echo "$line" | cut -d' ' -f3-)
+    local monitor_script_name=$(echo "$line" | awk '{print $4}')
+    local monitor_pid=$(echo "$line" | awk '{print $5}')
+
     printf "ID: %s\nStatus: %s\nDescription: %s\n" "$id" "$status" "$desc"
+
+    if [ "$status" = "monitoring" ] && [ -n "$monitor_script_name" ]; then
+      local monitor_log_file="$SCRIPT_DIR/monitor_logs/task_${id}_${monitor_script_name%.*}.log"
+      if [ -f "$monitor_log_file" ]; then
+        printf "\n--- Monitor Output (Live) ---\n"
+        tail -n 10 "$monitor_log_file" | jq -r '.message + " (Status: " + .status + ")"'
+      else
+        printf "\n--- Monitor Log Not Found ---\n"
+      fi
+    fi
   done
 }
 
@@ -261,6 +303,9 @@ _preview_task_details() {
 update_task_status() {
   local task_id="$1"
   local new_status="$2"
+  local monitor_script_name="${3:-}"
+  local monitor_pid="${4:-}"
+
   if [ -z "$task_id" ]; then
     task_id=$(_fzf_task_selector)
     if [ -z "$task_id" ]; then
@@ -273,8 +318,15 @@ update_task_status() {
   while IFS= read -r line; do
     local id=$(echo "$line" | awk '{print $1}')
     if [ "$id" = "$task_id" ]; then
-      local desc=$(echo "$line" | cut -d' ' -f3-)
-      new_tasks_content+="$id $new_status $desc\n"
+      local current_desc=$(echo "$line" | cut -d' ' -f3-)
+      # Remove any existing monitor info from the description
+      current_desc=$(echo "$current_desc" | sed 's/ \[.*\] \[.*\]$//')
+
+      local new_line="$id $new_status $current_desc"
+      if [ "$new_status" = "monitoring" ] && [ -n "$monitor_script_name" ] && [ -n "$monitor_pid" ]; then
+        new_line="$new_line $monitor_script_name $monitor_pid"
+      fi
+      new_tasks_content+="$new_line\n"
       updated=true
     else
       new_tasks_content+="$line\n"
@@ -318,6 +370,51 @@ remove_task() {
   fi
 }
 
+# Start monitoring a task
+start_monitor_for_task() {
+  local task_id="$1"
+  if [ -z "$task_id" ]; then
+    task_id=$(_fzf_task_selector)
+    if [ -z "$task_id" ]; then
+      return 1
+    fi
+  fi
+
+  local monitor_scripts_dir="$SCRIPT_DIR/monitor"
+  local available_monitors=""
+  for file in "$monitor_scripts_dir"/*; do
+    if [ -f "$file" ] && [ -x "$file" ]; then
+      available_monitors+="$(basename "$file")\n"
+    fi
+  done
+
+  if [ -z "$available_monitors" ]; then
+    echo -e "${RED}No executable monitor scripts found in $monitor_scripts_dir.${NC}" >&2
+    return 1
+  fi
+
+  local selected_monitor=$(echo -e "$available_monitors" | fzf --prompt="Select a monitor script: ")
+  if [ -z "$selected_monitor" ]; then
+    echo -e "${YELLOW}Monitor selection cancelled.${NC}" >&2
+    return 1
+  fi
+
+  local monitor_script_path="$monitor_scripts_dir/$selected_monitor"
+  local monitor_log_dir="$SCRIPT_DIR/monitor_logs"
+  mkdir -p "$monitor_log_dir"
+  local monitor_log_file="$monitor_log_dir/task_${task_id}_${selected_monitor%.*}.log"
+
+  read -p "Enter arguments for $selected_monitor (e.g., '60' for timer): " monitor_args
+
+  # Run the monitor script in the background
+  nohup "$monitor_script_path" "$monitor_args" "$task_id" > /dev/null 2>&1 &
+  local monitor_pid=$!
+
+  # Update task status to monitoring
+  update_task_status "$task_id" "monitoring" "$selected_monitor" "$monitor_pid"
+  echo -e "${GREEN}Task $task_id is now being monitored by $selected_monitor (PID: $monitor_pid). Log: $monitor_log_file${NC}"
+}
+
 # Main function
 main() {
   local FZF_PREVIEW_WINDOW_LAYOUT="up"
@@ -347,7 +444,7 @@ main() {
     if [ -z "$1" ]; then
       # No subcommand, show fzf menu
       while true; do
-        local action=$(echo -e "Add Task\nMark In Progress\nMark Complete\nRemove Task\nExit" | fzf --prompt="Select action: " --preview="$0 _preview-tasks" "$FZF_LAYOUT_OPTION" --preview-window="$FZF_PREVIEW_WINDOW_LAYOUT")
+        local action=$(echo -e "Add Task\nMark In Progress\nMark Complete\nRemove Task\nMonitor Task\nExit" | fzf --prompt="Select action: " --preview="$0 _preview-tasks" "$FZF_LAYOUT_OPTION" --preview-window="$FZF_PREVIEW_WINDOW_LAYOUT")
         case "$action" in
           "Add Task")
             add_task
@@ -360,6 +457,9 @@ main() {
             ;;
           "Remove Task")
             remove_task
+            ;;
+          "Monitor Task")
+            start_monitor_for_task ""
             ;;
           "Exit")
             break
@@ -389,8 +489,11 @@ main() {
         remove)
           remove_task "$2"
           ;;
+        monitor)
+          start_monitor_for_task "$2"
+          ;;
         *)
-          echo -e "${RED}Usage: ctx current [td|lr] [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>]${NC}" >&2
+          echo -e "${RED}Usage: ctx current [td|lr] [add <description>|list|progress <task_id>|complete <task_id>|remove <task_id>|monitor <task_id>]${NC}" >&2
           return 1
           ;;
       esac
