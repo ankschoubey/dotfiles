@@ -129,11 +129,13 @@ sketchybar --add item context_main right \
                          background.drawing=on \
                          background.color=$GREY \
                          background.corner_radius=5 \
+                         background.height=25 \
                          icon.color=$WHITE \
                          icon.padding_left=10 \
                          label.color=$WHITE \
                          label.padding_right=10 \
                          icon.font="Hack Nerd Font:Regular:16.0" \
+                         label.y_offset=-1 \
                          drawing=off \
            --subscribe context_main aerospace_workspace_change
 
@@ -144,11 +146,13 @@ sketchybar --add item context_secondary center \
                          background.drawing=on \
                          background.color=$GREY \
                          background.corner_radius=5 \
+                         background.height=25 \
                          icon.color=$WHITE \
                          icon.padding_left=10 \
                          label.color=$WHITE \
                          label.padding_right=10 \
                          icon.font="Hack Nerd Font:Regular:16.0" \
+                         label.y_offset=-1 \
                          drawing=off \
            --subscribe context_secondary aerospace_workspace_change
 
