@@ -107,13 +107,7 @@ list_all_contexts() {
   done
 
   if [ -n "$contexts_list" ]; then
-    local selected_context=$(echo -e "$contexts_list" | fzf \
-      --with-nth=2.. \
-      --delimiter=' ' \
-      --prompt="Select a context: " \
-      --preview="$0 _preview-context-tasks {1}" \
-      --preview-window="up" \
-      --layout=default)
+    local selected_context=$(echo -e "$contexts_list" | fzf       --with-nth=2..       --delimiter=' '       --prompt="Select a context: "       --preview="$0 _preview-context-tasks {1}"       --preview-window="up"       --layout=reverse)
     if [ -n "$selected_context" ]; then
       local selected_workspace_id=$(echo "$selected_context" | awk '{print $1}')
       aerospace workspace "$selected_workspace_id"
