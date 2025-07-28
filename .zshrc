@@ -78,3 +78,6 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 alias ctx=/Users/ankushchoubey/Documents/Github/dotfiles-1/ai/context/context
+
+# Load local zshrc if it exists
+[-f ~/.local-zshrc] && source ~/.local-zshrc
