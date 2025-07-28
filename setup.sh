@@ -15,6 +15,9 @@ ln -s "$SCRIPT_DIR/neofetch" ~/.config/neofetch
 
 ln -s "$SCRIPT_DIR/jankyborders" ~/.config/borders
 
+if [ -f ~/.zshrc ] && [ ! -L ~/.zshrc ]; then
+  mv ~/.zshrc ~/.local-zshrc
+fi
 ln -s "$SCRIPT_DIR/.zshrc" ~/.zshrc
 
 gh extension install dlvhdr/gh-dash
