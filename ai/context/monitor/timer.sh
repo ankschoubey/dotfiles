@@ -5,7 +5,9 @@
 
 DURATION=${1:-0}
 TASK_ID=${2:-"unknown"}
-MONITOR_LOG_FILE="/Users/ankushchoubey/Documents/Github/dotfiles-1/ai/context/monitor_logs/task_${TASK_ID}_timer.log"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
+MONITOR_LOG_FILE="$DOTFILES_ROOT/ai/context/monitor_logs/task_${TASK_ID}_timer.log"
 
 # Ensure the log directory exists
 mkdir -p "$(dirname "$MONITOR_LOG_FILE")"

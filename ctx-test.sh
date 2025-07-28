@@ -1,6 +1,8 @@
 #!/bin/bash
 
-CONTEXT_PATH="/Users/ankushchoubey/Documents/Github/dotfiles-1/ai/context/context"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_ROOT="$SCRIPT_DIR"
+CONTEXT_PATH="$DOTFILES_ROOT/ai/context/context"
 
 echo "--- Starting ctx current test ---"
 

@@ -77,7 +77,11 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-alias ctx=/Users/ankushchoubey/Documents/Github/dotfiles-1/ai/context/context
+
+export DOTFILES_ROOT="${${(%):-%x}:A:h}"
+alias ctx="$DOTFILES_ROOT/ai/context/context"
 
 # Load local zshrc if it exists
-[-f ~/.local-zshrc] && source ~/.local-zshrc
+if [[ -f ~/.local-zshrc ]]; then
+    source ~/.local-zshrc
+fi

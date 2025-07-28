@@ -5,16 +5,17 @@ stow .
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-ln -s ${pwd}/aerospace/.aerospace.toml ~/.aerospace.toml
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ln -s "$SCRIPT_DIR/aerospace/.aerospace.toml" ~/.aerospace.toml
 
-ln -s "$(pwd)/sketchybar" ~/.config/sketchybar
-ln -s "$(pwd)/ghostty" ~/.config/ghostty
-ln -s "$(pwd)/neofetch" ~/.config/neofetch
+ln -s "$SCRIPT_DIR/sketchybar" ~/.config/sketchybar
+ln -s "$SCRIPT_DIR/ghostty" ~/.config/ghostty
+ln -s "$SCRIPT_DIR/neofetch" ~/.config/neofetch
 
 
-ln -s "$(pwd)/jankyborders" ~/.config/borders
+ln -s "$SCRIPT_DIR/jankyborders" ~/.config/borders
 
-ln -s "$(pwd)/.zshrc" ~/.zshrc
+ln -s "$SCRIPT_DIR/.zshrc" ~/.zshrc
 
 gh extension install dlvhdr/gh-dash
 

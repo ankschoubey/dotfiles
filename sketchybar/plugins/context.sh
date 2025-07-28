@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Get the name of the current workspace
-WORKSPACE_NAME=$(/Users/ankushchoubey/Documents/Github/dotfiles-1/ai/context/context get)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
+WORKSPACE_NAME=$($DOTFILES_ROOT/ai/context/context get)
 
 # Get the focused monitor ID
 FOCUSED_MONITOR_ID=$(aerospace list-monitors --focused | awk '{print $1}')
