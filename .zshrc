@@ -28,17 +28,17 @@ zinit snippet OMZP::sudo
 
 autoload -U compinit && compinit
 
-starship preset jetpack -o ~/.config/starship.toml
+starship preset tokyo-night -o ~/.config/starship.toml
 
 # Aliases
 
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
+# function y() {
+# 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+# 	yazi "$@" --cwd-file="$tmp"
+# 	IFS= read -r -d '' cwd < "$tmp"
+# 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+# 	rm -f -- "$tmp"
+# }
 
 function sw() {
   aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "/Applications/Aerospace.app/Contents/MacOS/aerospace focus --window-id {1}")+abort'
@@ -47,7 +47,7 @@ function sw() {
 #neofetch
 export DOTFILES_ROOT="${${(%):-%x}:A:h}"
 
-alias ls='ls -lh --color=always | fzf'
+alias ls='ls -lh --color=always'
 alias vi='nvim'
 alias ge="gemini"
 alias gey="gemini --yolo"
