@@ -4,14 +4,13 @@
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
-after-login-command = []
 
 # You can use it to add commands that run after AeroSpace startup.
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
-    'exec-and-forget sketchybar',
-    'exec-and-forget borders',
+    'exec-and-forget brew services start sketchybar',
+    'exec-and-forget brew services start borders',
 ]
 
 # Start AeroSpace at login
@@ -23,10 +22,10 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
-# You can set 0 to disable the padding feature
+# You can set 0 to disable the› padding feature
 accordion-padding = 0
 
-# Possible values: tiles|accordion
+# Possible values: tiles|accordion™
 default-root-container-layout = 'tiles'
 
 # Possible values: horizontal|vertical|auto

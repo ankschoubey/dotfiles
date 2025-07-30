@@ -44,6 +44,7 @@
 # resize-overlay-duration = 4s 200ms
 
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
+keybind = global:ctrl+§=toggle_quick_terminal
 
 # Merges titlebar with contents
 macos-titlebar-style = native
@@ -124,3 +125,4 @@ keybind = cmd+s>e=equalize_splits
 copy-on-select = clipboard
 
 macos-titlebar-style = tabs
+

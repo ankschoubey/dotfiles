@@ -41,16 +41,19 @@ function y() {
 }
 
 function sw() {
-  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "/Applications/Aerospace.app/Contents/MacOS/aerospace focus --window-id {1}")+abort'
 }
 
 #neofetch
+export DOTFILES_ROOT="${${(%):-%x}:A:h}"
+
 alias ls='ls -lh --color=always | fzf'
 alias vi='nvim'
 alias ge="gemini"
 alias gey="gemini --yolo"
 alias c='claude'
-alias c2='claude --dangeriously-skip-permissions'
+alias cy='claude --dangeriously-skip-permissions'
+alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
 
 zinit cdreplay -q
 
@@ -78,7 +81,6 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
-export DOTFILES_ROOT="${${(%):-%x}:A:h}"
 alias ctx="$DOTFILES_ROOT/ai/context/context"
 
 # Load local zshrc if it exists
