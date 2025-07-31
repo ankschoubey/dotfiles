@@ -28,3 +28,6 @@ eval "$(starship init zsh)"
 
 # Disable window animations https://nikitabobko.github.io/AeroSpace/goodies#disable-open-animations
 defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
+
+# Enable repeat keys
+defaults write -g ApplePressAndHoldEnabled O
