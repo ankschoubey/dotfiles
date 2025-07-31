@@ -27,7 +27,7 @@ TRANSPARENT=0x00000000
 sketchybar --bar position=top \
                height=35 \
                color=0x801a1b26 \
-               blur_radius=30 \
+               blur_radius=00 \
                shadow=on \
 
 ##### Changing Defaults #####
