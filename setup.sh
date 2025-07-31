@@ -14,6 +14,7 @@ ln -s "$SCRIPT_DIR/neofetch" ~/.config/neofetch
 
 
 ln -s "$SCRIPT_DIR/jankyborders" ~/.config/borders
+ln -s "$SCRIPT_DIR/starship/tokyo-night.toml" ~/.config/starship.toml
 
 if [ -f ~/.zshrc ] && [ ! -L ~/.zshrc ]; then
   mv ~/.zshrc ~/.local-zshrc
@@ -24,3 +25,6 @@ gh extension install dlvhdr/gh-dash
 
 eval "$(starship init zsh)"
 
+
+# Disable window animations https://nikitabobko.github.io/AeroSpace/goodies#disable-open-animations
+defaults write -g NSAutomaticWindowAnimationsEnabled -bool false

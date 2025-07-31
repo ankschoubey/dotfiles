@@ -155,6 +155,12 @@ alt-shift-9 = 'move-node-to-workspace 9 --focus-follows-window'
 
 alt-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -a "Arc" || open -a "Safari"'
 alt-i = 'exec-and-forget [ -d "/Applications/Idea.app" ] && open -a "Idea" || open -a "VSCode"'
+alt-s = '''exec-and-forget osascript -e '
+tell application "Terminal"
+    do script "sw"
+    activate
+end tell'
+'''
 alt-t = 'exec-and-forget open -a /Applications/Trello.app'
 
 alt-shift-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -n "Arc" || open -n "Safari"'

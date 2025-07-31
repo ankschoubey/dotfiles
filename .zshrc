@@ -41,19 +41,25 @@ starship preset tokyo-night -o ~/.config/starship.toml
 # }
 
 function sw() {
-  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "/Applications/Aerospace.app/Contents/MacOS/aerospace focus --window-id {1}")+abort'
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
+  osascript -e 'quit app "Terminal"'  
 }
-
+function title {
+  printf "\033]0;%s\007" "$1"
+}
 #neofetch
 export DOTFILES_ROOT="${${(%):-%x}:A:h}"
 
 alias ls='ls -lh --color=always'
 alias vi='nvim'
+alias vim='nvim'
 alias ge="gemini"
 alias gey="gemini --yolo"
 alias c='claude'
 alias cy='claude --dangeriously-skip-permissions'
 alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
+alias todo='title "Inbox 📥"; vim TODO.md'
+alias n='todo'
 
 zinit cdreplay -q
 

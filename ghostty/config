@@ -47,8 +47,8 @@ keybind = global:ctrl+grave_accent=toggle_quick_terminal
 keybind = global:ctrl+§=toggle_quick_terminal
 
 # Merges titlebar with contents
-macos-titlebar-style = native
-macos-titlebar-style = transparent
+# macos-titlebar-style = native
+# macos-titlebar-style = transparent
 
 # Old school terminal size
 window-width = 80
@@ -59,7 +59,7 @@ window-padding-x = 8
 window-padding-y = 0,2
 
 # Don't hang around
-quit-after-last-window-closed = true
+quit-after-last-window-closed = false
 
 # Fixes issues with Ctrl-R
 term = xterm-256color
@@ -81,7 +81,7 @@ mouse-scroll-multiplier = 2
 
 window-padding-balance = true
 window-save-state = always
-macos-titlebar-style=transparent
+#  macos-titlebar-style=transparent 
 window-colorspace = "display-p3"
 
 # keybindings

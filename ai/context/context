@@ -39,6 +39,7 @@ get_workspace_name() {
 # Function to set the name for the current workspace
 set_workspace_name() {
   local workspace_name="$1"
+  printf "\033]0;%s\007" "$1"
   local current_workspace=$(get_workspace_name)
   echo "$workspace_name" > "$STORAGE_PATH/$current_workspace"
 }
