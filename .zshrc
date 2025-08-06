@@ -61,6 +61,30 @@ alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
 alias todo='title "Inbox 📥"; vim TODO.md'
 alias n='todo'
 alias editConfig='code $DOTFILES_ROOT'
+alias work="timer 60m && say 'Mola verme zamanı dostum! Kalk ve biraz yürüyüşe çık! Biraz su iç!' \
+                && terminal-notifier -message 'Pomodoro'\
+        -title 'Work Timer is up! Take a Break 😊'\
+        -appIcon 'http://vjeantet.fr/images/logo.png' \
+        -sound Crystal"
+
+alias rest="timer 10m && say 'Mola bitti, hadi ders çalışma zamanı' \
+                && terminal-notifier -message 'Pomodoro'\
+        -title 'Break is over! Get back to work 😬'\
+        -appIcon 'http://vjeantet.fr/images/logo.png' \
+        -sound Crystal"
+w() {
+    timer "${1}m" && terminal-notifier -message 'Pomodoro'\
+        -title 'Work Timer is up! Take a Break 😊'\
+        -appIcon '~/Pictures/pumpkin.jpg'\
+        -sound Crystal
+}
+
+r() {
+    timer "${1}m" && terminal-notifier -message 'Pomodoro'\
+        -title 'Break is over! Get back to work 😬'\
+        -appIcon '~/Pictures/pumpkin.jpg'\
+        -sound Crystal
+}
 
 zinit cdreplay -q
 
