@@ -63,16 +63,16 @@ alias n='todo'
 alias editConfig='code $DOTFILES_ROOT'
 work() {
   # usage: work 10m, work 60s etc. Default is 20m
-  timer "${1:-20m}" && terminal-notifier -message 'Pomodoro'\
-        -title 'Work Timer is up! Take a Break 😊'\
-        -appIcon '~/Pictures/pumpkin.png'\
+  timer "${1:-20m}" && terminal-notifier -message 'QUAK 🦆'\
+        -title 'Work Timer is up! Take a Break 🦆'\
+        -appIcon '$DOTFILES_ROOT/wallpaper/beautiful-mountains-landscape.jpg'\
         -sound Crystal
 }
 
 rest() {
   # usage: rest 10m, rest 60s etc. Default is 5m
-  timer "${1:-5m}" && terminal-notifier -message 'Pomodoro'\
-        -title 'Break is over! Get back to work 😬'\
+  timer "${1:-5m}" && terminal-notifier -message 'FUEL 🚀'\
+        -title 'Break is over! Get back to work 🚀'\
         -appIcon '~/Pictures/pumpkin.png'\
         -sound Crystal
 }
