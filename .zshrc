@@ -60,6 +60,7 @@ alias cy='claude --dangeriously-skip-permissions'
 alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
 alias todo='title "Inbox 📥"; vim TODO.md'
 alias n='todo'
+alias editConfig='code $DOTFILES_ROOT'
 
 zinit cdreplay -q
 

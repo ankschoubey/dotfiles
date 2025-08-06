@@ -20,11 +20,12 @@ if [ -f ~/.zshrc ] && [ ! -L ~/.zshrc ]; then
   mv ~/.zshrc ~/.local-zshrc
 fi
 ln -s "$SCRIPT_DIR/.zshrc" ~/.zshrc
-
+ln -s "$SCRIPT_DIR/.local-zshrc" ~/.local-zshrc
 gh extension install dlvhdr/gh-dash
 
 eval "$(starship init zsh)"
 
+kubectl version --client
 
 # Disable window animations https://nikitabobko.github.io/AeroSpace/goodies#disable-open-animations
 defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
