@@ -11,7 +11,7 @@ options=(
   inactive_color="$blue"
   hidpi=on
   style=round
-  width=0.0
+  width=6.0
   blacklist="Screen Studio"
 )
 

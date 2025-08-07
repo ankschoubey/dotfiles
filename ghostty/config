@@ -81,7 +81,6 @@ mouse-scroll-multiplier = 2
 
 window-padding-balance = true
 window-save-state = always
-#  macos-titlebar-style=transparent 
 window-colorspace = "display-p3"
 
 # keybindings
@@ -124,5 +123,5 @@ keybind = cmd+s>e=equalize_splits
 # other
 copy-on-select = clipboard
 
-macos-titlebar-style = tabs
-
+macos-titlebar-style = hidden 
+window-decoration = none

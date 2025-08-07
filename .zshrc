@@ -110,3 +110,5 @@ alias ctx="$DOTFILES_ROOT/ai/context/context"
 if [[ -f ~/.local-zshrc ]]; then
     source ~/.local-zshrc
 fi
+
+alias r='sh ./scripts/$(ls ./scripts | fzf)'
