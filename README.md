@@ -15,3 +15,5 @@ Inspirations:
 - https://www.youtube.com/watch?v=ud7YxC33Z3w
 - zoxide has forever improved the way I navigate in the terminal.
   - https://www.youtube.com/watch?v=aghxkpyRVDY
+
+IdeaVimRC: https://www.cyberwizard.io/posts/the-ultimate-ideavim-setup/

@@ -60,7 +60,7 @@ alias cy='claude --dangeriously-skip-permissions'
 alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
 alias todo='title "Inbox 📥"; vim TODO.md'
 alias n='todo'
-alias editConfig='code $DOTFILES_ROOT'
+alias editConfig='vi $DOTFILES_ROOT'
 work() {
   # usage: work 10m, work 60s etc. Default is 20m
   timer "${1:-20m}" && terminal-notifier -message 'QUAK 🦆'\

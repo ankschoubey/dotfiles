@@ -11,6 +11,7 @@
 after-startup-command = [
     'exec-and-forget brew services start sketchybar',
     'exec-and-forget brew services start borders',
+    'exec-and-forget open -a Breaktimer',
 ]
 
 # Start AeroSpace at login
@@ -129,6 +130,9 @@ alt-shift-l = 'move right'
 alt-shift-minus = 'resize smart -50'
 alt-shift-equal = 'resize smart +50'
 
+# Reload config
+alt-shift-r = 'reload-config'
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
@@ -162,7 +166,8 @@ tell application "Terminal"
 end tell'
 '''
 alt-t = 'exec-and-forget open -a /Applications/Trello.app'
-
+alt-n = 'exec-and-forget pgrep -x Heynote > /dev/null || open -a Heynote'
+# alt-n = 'exec-and-forget open -a /Applications/Heynote.app'
 alt-shift-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -n "Arc" || open -n "Safari"'
 
 
@@ -184,32 +189,28 @@ alt-tab = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-alt-shift-semicolon = 'mode service'
-
+alt-shift-s= 'mode service'
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
-esc = ['reload-config', 'mode main']
-r = ['flatten-workspace-tree', 'mode main'] # reset layout
-f = [
-    'layout floating tiling',
-    'mode main',
-] # Toggle between floating and tiling layout
-backspace = ['close-all-windows-but-current', 'mode main']
+  esc = ['reload-config', 'mode main']
+  r = ['flatten-workspace-tree', 'mode main'] # reset layout
+  f = ['layout floating tiling','mode main'] # Toggle between floating and tiling layout
+  backspace = ['close-all-windows-but-current', 'mode main']
 
 # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 #s = ['layout sticky tiling', 'mode main']
 
-alt-shift-h = ['join-with left', 'mode main']
-alt-shift-j = ['join-with down', 'mode main']
-alt-shift-k = ['join-with up', 'mode main']
-alt-shift-l = ['join-with right', 'mode main']
+  alt-shift-h = ['join-with left', 'mode main']
+  alt-shift-j = ['join-with down', 'mode main']
+  alt-shift-k = ['join-with up', 'mode main']
+  alt-shift-l = ['join-with right', 'mode main']
 
 
 ## Remove if ot working
-# [[on-window-detected]]
-# if.app-id = 'com.amazon.Amazon-Chime'
-# run = 'layout floating'
+ # [[on-window-detected]]
+# if.app-id = 'com.heynote.app'
+# run = 'exec-and-forget $DOTFILES_ROOT/scripts/handle_heynote.sh'
 
 # Later added this as well:
 # [[on-window-detected]]
