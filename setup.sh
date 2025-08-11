@@ -12,7 +12,6 @@ ln -s "$SCRIPT_DIR/sketchybar" ~/.config/sketchybar
 ln -s "$SCRIPT_DIR/ghostty" ~/.config/ghostty
 ln -s "$SCRIPT_DIR/neofetch" ~/.config/neofetch
 
-
 ln -s "$SCRIPT_DIR/jankyborders" ~/.config/borders
 ln -s "$SCRIPT_DIR/starship/tokyo-night.toml" ~/.config/starship.toml
 
@@ -21,6 +20,7 @@ if [ -f ~/.zshrc ] && [ ! -L ~/.zshrc ]; then
 fi
 ln -s "$SCRIPT_DIR/.zshrc" ~/.zshrc
 ln -s "$SCRIPT_DIR/.local-zshrc" ~/.local-zshrc
+ln -s "$SCRIPT_DIR/.ideavimrc" ~/.ideavimrc
 gh extension install dlvhdr/gh-dash
 
 eval "$(starship init zsh)"
@@ -32,3 +32,4 @@ defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 
 # Enable repeat keys
 defaults write -g ApplePressAndHoldEnabled O
+
