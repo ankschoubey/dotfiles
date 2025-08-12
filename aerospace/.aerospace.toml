@@ -24,7 +24,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the› padding feature
-accordion-padding = 0
+accordion-padding = 300
 
 # Possible values: tiles|accordion™
 default-root-container-layout = 'tiles'
@@ -110,6 +110,15 @@ outer.right = [{ monitor.main = 10 }, { monitor.secondary = 10 }, 5]
 # end tell'
 # '''
 
+
+alt-ctrl-shift-f = 'fullscreen'
+alt-ctrl-f = 'layout floating tiling'
+
+alt-shift-left = 'join-with left'
+alt-shift-down = 'join-with down'
+alt-shift-up = 'join-with up'
+alt-shift-right = 'join-with right'
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
@@ -166,9 +175,8 @@ tell application "Terminal"
 end tell'
 '''
 alt-t = 'exec-and-forget open -a /Applications/Trello.app'
-alt-n = 'exec-and-forget pgrep -x Heynote > /dev/null || open -a Heynote'
+alt-n = 'exec-and-forget /Users/ankushchoubey/Documents/Github/dotfiles-1/scripts/handle_inbox.sh'
 # alt-n = 'exec-and-forget open -a /Applications/Heynote.app'
-alt-shift-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -n "Arc" || open -n "Safari"'
 
 
 [workspace-to-monitor-force-assignment]
@@ -200,12 +208,6 @@ alt-shift-s= 'mode service'
 
 # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 #s = ['layout sticky tiling', 'mode main']
-
-  alt-shift-h = ['join-with left', 'mode main']
-  alt-shift-j = ['join-with down', 'mode main']
-  alt-shift-k = ['join-with up', 'mode main']
-  alt-shift-l = ['join-with right', 'mode main']
-
 
 ## Remove if ot working
  # [[on-window-detected]]

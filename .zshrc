@@ -78,6 +78,20 @@ rest() {
 }
 alias w='work'
 alias r='rest'
+function kubectl() { echo "+ kubectl $@" >&2; command kubectl "$@"; }
+
+notify() {
+    title=${1:-"Stream"}
+    prev=""
+    while IFS= read -r line; do
+        echo "$line"
+        if [ "$line" != "$prev" ]; then
+            terminal-notifier -title "$title" -message "$line"
+            prev="$line"
+        fi
+    done
+}
+
 zinit cdreplay -q
 
 # History
@@ -112,3 +126,5 @@ if [[ -f ~/.local-zshrc ]]; then
 fi
 
 alias r='sh ./scripts/$(ls ./scripts | fzf)'
+
+[ -f "$DOTFILES_ROOT/.kubectl_aliases" ] && source "$DOTFILES_ROOT/.kubectl_aliases"
