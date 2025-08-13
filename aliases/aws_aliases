@@ -1,0 +1,1 @@
+alias asl-ss='aws sso login --sso-session'

@@ -63,7 +63,7 @@ alias n='todo'
 alias editConfig='vi $DOTFILES_ROOT'
 
 alias cat='bat'
-alias ls='exa'
+alias ls='eza'
 
 work() {
   # usage: work 10m, work 60s etc. Default is 20m
@@ -130,6 +130,12 @@ if [[ -f ~/.local-zshrc ]]; then
     source ~/.local-zshrc
 fi
 
-alias r='sh ./scripts/$(ls ./scripts | fzf)'
+alias s='sh ./scripts/$(ls ./scripts | fzf)'
 
-[ -f "$DOTFILES_ROOT/.kubectl_aliases" ] && source "$DOTFILES_ROOT/.kubectl_aliases"
+# [ -f "$DOTFILES_ROOT/.kubectl_aliases" ] && source "$DOTFILES_ROOT/.kubectl_aliases
+
+# Source all files in the aliases directory
+for alias_file in "$DOTFILES_ROOT/aliases/"*;
+do
+  [ -f "$alias_file" ] && source "$alias_file"
+done

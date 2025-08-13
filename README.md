@@ -17,3 +17,5 @@ Inspirations:
   - https://www.youtube.com/watch?v=aghxkpyRVDY
 
 IdeaVimRC: https://www.cyberwizard.io/posts/the-ultimate-ideavim-setup/
+
+https://github.com/ahmetb/kubectl-aliases?tab=readme-ov-file
