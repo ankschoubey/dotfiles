@@ -1,4 +1,4 @@
-alias kcsC-c-n='kubectl config set-context --current --namespace='
+kcsC-c-n() { kubectl config set-context --current --namespace="$1"; }
 alias krrd='kubectl rollout restart deployments';
 alias krsd='kubectl rollout status deployments';
 alias kl-aC-p='kubectl logs --all-containers --prefix'
