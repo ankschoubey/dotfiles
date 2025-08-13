@@ -61,6 +61,10 @@ alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
 alias todo='title "Inbox 📥"; vim TODO.md'
 alias n='todo'
 alias editConfig='vi $DOTFILES_ROOT'
+
+alias cat='bat'
+alias ls='exa'
+
 work() {
   # usage: work 10m, work 60s etc. Default is 20m
   timer "${1:-20m}" && terminal-notifier -message 'QUAK 🦆'\
@@ -78,6 +82,7 @@ rest() {
 }
 alias w='work'
 alias r='rest'
+
 function kubectl() { echo "+ kubectl $@" >&2; command kubectl "$@"; }
 
 notify() {
