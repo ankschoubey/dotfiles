@@ -1,1 +1,1 @@
-alias asl-ss='aws sso login --sso-session'
+alias asl-sS='aws sso login --sso-session'
