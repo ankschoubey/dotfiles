@@ -1,3 +1,4 @@
+
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
@@ -130,7 +131,69 @@ if [[ -f ~/.local-zshrc ]]; then
     source ~/.local-zshrc
 fi
 
-alias s='sh ./scripts/$(ls ./scripts | fzf)'
+if [[ -f "$DOTFILES_ROOT/.local-zshrc" ]]; then
+    source "$DOTFILES_ROOT/.local-zshrc"
+fi
+
+
+
+s() {
+    
+    
+    
+    
+
+    local script_dirs=("./scripts" "$DOTFILES_ROOT/scripts")
+    
+    local script_name="$1"
+    
+    local script_path=""
+
+    if [ $# -eq 0 ]; then
+        
+        local selected_script
+        selected_script=$(find "${script_dirs[@]}" -maxdepth 1 -type f -print | fzf)
+        if [ -n "$selected_script" ]; then
+            
+            bash "$selected_script"
+        else
+        fi
+        return
+    fi
+
+    
+    for dir in "${script_dirs[@]}"; do
+        
+        if [ -f "$dir/$script_name" ]; then
+            script_path="$dir/$script_name"
+            
+            break
+        elif [ -f "$dir/$script_name.sh" ]; then
+            script_path="$dir/$script_name.sh"
+            
+            break
+        else
+            
+        fi
+    done
+
+    if [ -n "$script_path" ]; then
+        
+        shift
+        bash "$script_path" "$@"
+    else
+        
+        local selected_script
+        selected_script=$(find "${script_dirs[@]}" -maxdepth 1 -type f -print | fzf --query="$1")
+        if [ -n "$selected_script" ]; then
+            
+            shift
+            bash "$selected_script" "$@"
+        else
+        fi
+    fi
+    
+}
 
 # [ -f "$DOTFILES_ROOT/.kubectl_aliases" ] && source "$DOTFILES_ROOT/.kubectl_aliases
 
