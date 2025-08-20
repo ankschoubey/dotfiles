@@ -63,6 +63,8 @@ alias todo='title "Inbox 📥"; vim TODO.md'
 alias n='todo'
 alias editConfig='vi $DOTFILES_ROOT'
 
+alias d2='dayone2 --journal cli-import'
+
 alias cat='bat'
 alias ls='eza'
 
@@ -131,10 +133,9 @@ if [[ -f ~/.local-zshrc ]]; then
     source ~/.local-zshrc
 fi
 
-if [[ -f "$DOTFILES_ROOT/.local-zshrc" ]]; then
-    source "$DOTFILES_ROOT/.local-zshrc"
+if [[ -f "$DOTFILES_ROOT/.local_zshrc" ]]; then
+    source "$DOTFILES_ROOT/.local_zshrc"
 fi
-
 
 
 s() {
@@ -202,3 +203,12 @@ for alias_file in "$DOTFILES_ROOT/aliases/"*;
 do
   [ -f "$alias_file" ] && source "$alias_file"
 done
+
+set -o vi # Set VIM Mode in Terminal
+
+t2d() {
+  "$DOTFILES_ROOT/scripts/download-trello-card.sh" "$1" && \
+  "$DOTFILES_ROOT/scripts/import-to-dayone.sh" "$1"
+}
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"

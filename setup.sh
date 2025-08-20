@@ -18,9 +18,13 @@ ln -s "$SCRIPT_DIR/starship/tokyo-night.toml" ~/.config/starship.toml
 if [ -f ~/.zshrc ] && [ ! -L ~/.zshrc ]; then
   mv ~/.zshrc ~/.local-zshrc
 fi
+mkdir -p ~/config
 ln -s "$SCRIPT_DIR/.zshrc" ~/.zshrc
 ln -s "$SCRIPT_DIR/.local-zshrc" ~/.local-zshrc
 ln -s "$SCRIPT_DIR/.ideavimrc" ~/.ideavimrc
+ln -s "$SCRIPT_DIR/.vimrc" ~/.vimrc
+ln -s "$SCRIPT_DIR/nvim" ~/.config/nvim
+ln -s "$SCRIPT_DIR/tmux" ~/.config/tmux
 gh extension install dlvhdr/gh-dash
 
 eval "$(starship init zsh)"
@@ -33,3 +37,14 @@ defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 # Enable repeat keys
 defaults write -g ApplePressAndHoldEnabled O
 
+# Delete nvim
+
+rm -rf ~/.config/nvim
+rm -rf ~/.local/share/nvim
+rm -rf ~/.local/state/nvim
+
+# Day one fix Just in case CLIKit failure
+ln -s "/Applications/Day One.app/Contents/Frameworks" /usr/local/Frameworks
+
+# jenv: https://www.jenv.be/
+jenv enable-plugin export

@@ -10,3 +10,4 @@ gcloud/
 jgit/
 simple-update-notifier/
 .local-zshrc
+.local_zshrc
