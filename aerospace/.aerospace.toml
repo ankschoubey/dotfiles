@@ -111,7 +111,7 @@ outer.right = [{ monitor.main = 10 }, { monitor.secondary = 10 }, 5]
 # '''
 
 
-alt-ctrl-shift-f = 'fullscreen'
+alt-shift-f = 'fullscreen'
 alt-ctrl-f = 'layout floating tiling'
 
 alt-shift-left = 'join-with left'
