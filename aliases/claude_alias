@@ -1,0 +1,2 @@
+alias c='claude update && claude'
+alias cs='vim ~/.claude'

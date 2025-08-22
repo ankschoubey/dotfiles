@@ -56,8 +56,6 @@ alias vi='nvim'
 alias vim='nvim'
 alias ge="gemini"
 alias gey="gemini --yolo"
-alias c='claude'
-alias cy='claude --dangeriously-skip-permissions'
 alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
 alias todo='title "Inbox 📥"; vim TODO.md'
 alias n='todo'
@@ -87,6 +85,9 @@ alias w='work'
 alias r='rest'
 
 function kubectl() { echo "+ kubectl $@" >&2; command kubectl "$@"; }
+function aws() { echo "+ aws $@" >&2; command aws "$@"; }
+function claude() { echo "+ claude $@" >&2; command claude "$@"; }
+function gemini() { echo "+ gemini $@" >&2; command gemini "$@"; }
 
 notify() {
     title=${1:-"Stream"}
