@@ -29,6 +29,14 @@ sketchybar --bar position=top \
                color=0x801a1b26 \
                blur_radius=00 \
                shadow=on \
+               corner_radius=10 \
+               border_width=1 \
+               border_color=0x1A7aa2f7 \
+               margin=8 \
+               y_offset=5 \
+
+
+
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
