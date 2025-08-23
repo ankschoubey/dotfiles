@@ -1,0 +1,28 @@
+_get_idea_path() {
+  if [ -d "/Applications/IntelliJ IDEA Ultimate.app" ]; then
+    echo "/Applications/IntelliJ IDEA Ultimate.app"
+  elif [ -d "/Applications/IntelliJ IDEA.app" ]; then
+    echo "/Applications/IntelliJ IDEA.app"
+  else
+    echo "/Applications/IntelliJ IDEA CE.app"
+  fi
+}
+
+alias ia=idea
+
+iaf() {
+  local idea_path=$(_get_idea_path)
+  "$idea_path/Contents/bin/format.sh" "$@"
+}
+
+iai() {
+  local idea_path=$(_get_idea_path)
+  "$idea_path/Contents/bin/inspect.sh" "$@"
+}
+
+hook-format-git-diff-idea() {
+  local files=$(git diff --name-only)
+  if [ -n "$files" ]; then
+    iaf "$@" $files
+  fi
+}

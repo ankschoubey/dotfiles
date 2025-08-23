@@ -103,7 +103,7 @@ notify() {
 
 idea() {
   if [ -x "/Applications/IntelliJ IDEA Ultimate.app/Contents/MacOS/idea" ]; then
-    "/Applications/IntelliJ IDEA Ultimate.app/Contents/MacOS/idea" "$@"
+    "/Applications/IntelliJ IDEA.app/Contents/MacOS/idea" "$@"
   else
     "/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea" "$@"
   fi
