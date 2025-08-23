@@ -1,0 +1,7 @@
+
+alias tl='tmux ls'
+alias tnS-d-s='tmux new-session -d -s'
+alias tsK='tmux send-keys'
+alias ta='tmux attach'
+alias tnW='tmux new-window'
+
