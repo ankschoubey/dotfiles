@@ -25,6 +25,7 @@ ln -s "$SCRIPT_DIR/.ideavimrc" ~/.ideavimrc
 ln -s "$SCRIPT_DIR/.vimrc" ~/.vimrc
 ln -s "$SCRIPT_DIR/nvim" ~/.config/nvim
 ln -s "$SCRIPT_DIR/tmux" ~/.config/tmux
+ln -s "$SCRIPT_DIR/.ideavimrc" ~/.config/ideavim/ideavimrc
 gh extension install dlvhdr/gh-dash
 
 eval "$(starship init zsh)"
