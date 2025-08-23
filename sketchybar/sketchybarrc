@@ -29,7 +29,7 @@ sketchybar --bar position=top \
                color=0x801a1b26 \
                blur_radius=00 \
                shadow=on \
-               corner_radius=10 \
+               corner_radius=13 \
                border_width=1 \
                border_color=0x1A7aa2f7 \
                margin=8 \
@@ -71,7 +71,7 @@ for sid in $(aerospace list-workspaces --monitor 1); do
     --set space.$sid \
     drawing=off \
     background.color=$TRANSPARENT \
-    background.corner_radius=5 \
+    background.corner_radius=10 \
     background.drawing=on \
     background.border_color=$BLUE \
     background.border_width=0 \
@@ -136,7 +136,7 @@ sketchybar --add item context_main right \
                          label.drawing=on \
                          background.drawing=on \
                          background.color=$GREY \
-                         background.corner_radius=5 \
+                         background.corner_radius=10 \
                          background.height=25 \
                          icon.color=$WHITE \
                          icon.padding_left=10 \
@@ -153,7 +153,7 @@ sketchybar --add item context_secondary center \
                          label.drawing=on \
                          background.drawing=on \
                          background.color=$GREY \
-                         background.corner_radius=5 \
+                         background.corner_radius=10 \
                          background.height=25 \
                          icon.color=$WHITE \
                          icon.padding_left=10 \
