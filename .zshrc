@@ -61,7 +61,9 @@ alias todo='title "Inbox 📥"; vim TODO.md'
 alias n='todo'
 alias editConfig='vi $DOTFILES_ROOT'
 
-alias d2='dayone2 --journal cli-import'
+alias d2='dayone2'
+alias d2u="awk 'NF {print \"dayone://view?entryId=\" $6}'"
+alias d2o='d2u && xargs open'
 
 alias cat='bat'
 alias ls='eza'
