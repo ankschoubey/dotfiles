@@ -1,0 +1,4 @@
+# custom IntelliJ IDEA VM options (expand/override 'bin/idea.vmoptions')
+
+
+-Dnosplash=true
