@@ -50,7 +50,7 @@ CARD_URL=$(jq -r '.shortUrl' "$JSON_FILE")
 # --- Content Formatting ---
 
 # 1. Title Header
-TITLE_HEADER="# ${CARD_NAME}"
+TITLE_HEADER="# 🎴 ${CARD_NAME}"
 
 # 2. Metadata section
 METADATA="${CARD_URL} : ${BOARD_NAME} → ${LIST_NAME}"
@@ -127,7 +127,7 @@ DAYONE_CMD=("dayone2" "new")
 DAYONE_CMD+=("--journal" "cli-import")
 
 # Add tags
-DAYONE_CMD+=("--tags" "$BOARD_NAME" "$LIST_NAME")
+DAYONE_CMD+=("--tags" "$BOARD_NAME" "$LIST_NAME" "linkedToTrello")
 
 # Add attachments
 ATTACHMENT_DIR="${EXPORT_DIR}/attachments"
