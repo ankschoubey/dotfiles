@@ -26,6 +26,9 @@ ln -s "$SCRIPT_DIR/.vimrc" ~/.vimrc
 ln -s "$SCRIPT_DIR/nvim" ~/.config/nvim
 ln -s "$SCRIPT_DIR/tmux" ~/.config/tmux
 ln -s "$SCRIPT_DIR/.ideavimrc" ~/.config/ideavim/ideavimrc
+ln -s "$SCRIPT_DIR/ai/kent-beck-agent.md" ~/.claude/CLAUDE.md
+ln -s "$SCRIPT_DIR/ai/kent-beck-agent.md" ~/.gemini/GEMINI.md
+
 gh extension install dlvhdr/gh-dash
 
 eval "$(starship init zsh)"
@@ -49,3 +52,6 @@ ln -s "/Applications/Day One.app/Contents/Frameworks" /usr/local/Frameworks
 
 # jenv: https://www.jenv.be/
 jenv enable-plugin export
+
+# download latest kent-beck's AGENT.md
+curl -o ./ai/kent-beck-agent.md https://raw.githubusercontent.com/KentBeck/BPlusTree3/refs/heads/main/rust/docs/CLAUDE.md

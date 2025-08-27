@@ -11,7 +11,7 @@
 after-startup-command = [
     'exec-and-forget brew services start sketchybar',
     'exec-and-forget brew services start borders',
-    'exec-and-forget open -a Breaktimer',
+  #'exec-and-forget open -a Breaktimer',
 ]
 
 # Start AeroSpace at login
@@ -149,9 +149,6 @@ alt-3 = 'workspace 3'
 alt-4 = 'workspace 4'
 alt-5 = 'workspace 5'
 alt-6 = 'workspace 6'
-alt-7 = 'workspace 7'
-alt-8 = 'workspace 8'
-alt-9 = 'workspace 9'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 # --focus-follows-window is used to ensure workspace changes to trigger the callback for sketchybar to update
@@ -161,20 +158,10 @@ alt-shift-3 = 'move-node-to-workspace 3 --focus-follows-window'
 alt-shift-4 = 'move-node-to-workspace 4 --focus-follows-window'
 alt-shift-5 = 'move-node-to-workspace 5 --focus-follows-window'
 alt-shift-6 = 'move-node-to-workspace 6 --focus-follows-window'
-alt-shift-7 = 'move-node-to-workspace 7 --focus-follows-window'
-alt-shift-8 = 'move-node-to-workspace 8 --focus-follows-window'
-alt-shift-9 = 'move-node-to-workspace 9 --focus-follows-window'
-
 
 alt-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -a "Arc" || open -a "Safari"'
 alt-i = 'exec-and-forget [ -d "/Applications/Idea.app" ] && open -a "Idea" || open -a "VSCode"'
-alt-s = '''exec-and-forget osascript -e '
-tell application "Terminal"
-    do script "sw"
-    activate
-end tell'
-'''
-alt-t = 'exec-and-forget open -a /Applications/Trello.app'
+alt-t = 'exec-and-forget open -a /Applications/Ghostty.app'
 alt-n = 'exec-and-forget /Users/ankushchoubey/Documents/Github/dotfiles-1/scripts/handle_inbox.sh'
 # alt-n = 'exec-and-forget open -a /Applications/Heynote.app'
 
@@ -184,12 +171,9 @@ alt-n = 'exec-and-forget /Users/ankushchoubey/Documents/Github/dotfiles-1/script
 1 = 'main'
 2 = 'main'
 3 = 'main'
-4 = 'main'
-5 = 'main'
+4 = ['secondary', 'main']
+5 = ['secondary', 'main']
 6 = ['secondary', 'main']
-7 = ['secondary', 'main']
-8 = ['secondary', 'main']
-9 = ['secondary', 'main']
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'

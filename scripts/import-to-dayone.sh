@@ -18,8 +18,7 @@ set -e
 set -o pipefail
 
 # --- Validation ---
-if ! command -v dayone2 &>/dev/null;
-then
+if ! command -v dayone2 &>/dev/null; then
   echo "Error: dayone2 is not installed or not in your PATH."
   echo "Please install it from: https://dayoneapp.com/guides/tips-and-tutorials/command-line-interface-cli/"
   exit 1
@@ -53,7 +52,7 @@ CARD_URL=$(jq -r '.shortUrl' "$JSON_FILE")
 TITLE_HEADER="# 🎴 ${CARD_NAME}"
 
 # 2. Metadata section
-METADATA="${CARD_URL} : ${BOARD_NAME} → ${LIST_NAME}"
+METADATA="${CARD_URL} : \`${BOARD_NAME} → ${LIST_NAME}\`"
 
 # 3. Description
 DESC_SECTION=""
@@ -133,8 +132,7 @@ DAYONE_CMD+=("--tags" "$BOARD_NAME" "$LIST_NAME" "linkedToTrello")
 ATTACHMENT_DIR="${EXPORT_DIR}/attachments"
 ATTACHMENT_PATHS=()
 if [ -d "$ATTACHMENT_DIR" ] && [ "$(ls -A "$ATTACHMENT_DIR")" ]; then
-  for file in "$ATTACHMENT_DIR"/*;
-  do
+  for file in "$ATTACHMENT_DIR"/*; do
     ATTACHMENT_PATHS+=("$file") # Use absolute paths
   done
   # Add the --attachments flag followed by all the file paths
@@ -146,3 +144,4 @@ FULL_ENTRY_TEMP_FILE=$(mktemp)
 echo -e "$FULL_ENTRY" >"$FULL_ENTRY_TEMP_FILE"
 cat "$FULL_ENTRY_TEMP_FILE" | "${DAYONE_CMD[@]}"
 rm "$FULL_ENTRY_TEMP_FILE"
+
