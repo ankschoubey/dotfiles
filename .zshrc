@@ -54,7 +54,7 @@ export DOTFILES_ROOT="${${(%):-%x}:A:h}"
 alias ls='ls -lh --color=always'
 alias vi='nvim'
 alias vim='nvim'
-alias ge="gemini"
+alias ge="npm update -g @gemini-cli/cli && gemini"
 alias gey="gemini --yolo"
 alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
 alias todo='title "Inbox 📥"; vim TODO.md'

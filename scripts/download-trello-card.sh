@@ -37,7 +37,7 @@ BASE_URL="https://api.trello.com/1"
 AUTH_PARAMS="key=${TRELLO_API_KEY}&token=${TRELLO_API_TOKEN}"
 
 # --- Directory Setup ---
-EXPORT_DIR="tmp/trello-to-dayone/${CARD_ID}"
+EXPORT_DIR="${TMPDIR}trello-to-dayone/${CARD_ID}"
 ATTACHMENTS_DIR="${EXPORT_DIR}/attachments"
 mkdir -p "${ATTACHMENTS_DIR}"
 echo "Created local directory: ${EXPORT_DIR}"
@@ -49,12 +49,12 @@ echo "Fetching card data for ID: ${CARD_ID}..."
 card_json=$(curl --silent "${CARD_URL}")
 
 if echo "$card_json" | grep -q "card not found"; then
-    echo "Error: Card with ID '${CARD_ID}' not found."
-    rm -rf "trello_exports/${CARD_ID}"
-    exit 1
+  echo "Error: Card with ID '${CARD_ID}' not found."
+  rm -rf "trello_exports/${CARD_ID}"
+  exit 1
 fi
 
-echo "$card_json" > "${EXPORT_DIR}/card.json"
+echo "$card_json" >"${EXPORT_DIR}/card.json"
 echo "Successfully saved card data to ${EXPORT_DIR}/card.json"
 
 # --- Fetch and Download Attachments ---
@@ -72,7 +72,7 @@ else
   echo "$uploaded_attachments_json" | jq -c '.[]' | while read -r attachment; do
     url=$(echo "$attachment" | jq -r '.url')
     name=$(echo "$attachment" | jq -r '.name')
-    
+
     echo "  -> Downloading: ${name}"
     curl --silent --location "${url}" \
       --header "Authorization: OAuth oauth_consumer_key=\"${TRELLO_API_KEY}\", oauth_token=\"${TRELLO_API_TOKEN}\"" \
@@ -81,7 +81,6 @@ else
   echo "All attachments downloaded to ${ATTACHMENTS_DIR}"
 fi
 
-
-
 echo "---"
 echo "✅ Download complete for card ${CARD_ID}."
+

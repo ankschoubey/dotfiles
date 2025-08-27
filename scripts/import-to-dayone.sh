@@ -31,7 +31,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 CARD_ID="$1"
-EXPORT_DIR="trello_exports/${CARD_ID}"
+EXPORT_DIR="${TMPDIR}trello-to-dayone/${CARD_ID}"
 JSON_FILE="${EXPORT_DIR}/card.json"
 
 if [[ ! -f "$JSON_FILE" ]]; then
@@ -146,7 +146,7 @@ ATTACHMENT_PATHS=()
 if [ -d "$ATTACHMENT_DIR" ] && [ "$(ls -A "$ATTACHMENT_DIR")" ]; then
   echo "Found attachments to upload..."
   for file in "$ATTACHMENT_DIR"/*; do
-    ATTACHMENT_PATHS+=("$PWD/$file") # Use absolute paths
+    ATTACHMENT_PATHS+=("$file") # Use absolute paths
   done
   # Add the --attachments flag followed by all the file paths
   DAYONE_CMD+=("--attachments" "${ATTACHMENT_PATHS[@]}")
