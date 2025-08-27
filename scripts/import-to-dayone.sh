@@ -16,10 +16,10 @@
 
 set -e
 set -o pipefail
-set -x # Enable tracing
 
 # --- Validation ---
-if ! command -v dayone2 &>/dev/null; then
+if ! command -v dayone2 &>/dev/null;
+then
   echo "Error: dayone2 is not installed or not in your PATH."
   echo "Please install it from: https://dayoneapp.com/guides/tips-and-tutorials/command-line-interface-cli/"
   exit 1
@@ -41,8 +41,6 @@ if [[ ! -f "$JSON_FILE" ]]; then
 fi
 
 # --- Data Extraction ---
-echo "Reading data from ${JSON_FILE}..."
-
 CARD_NAME=$(jq -r '.name' "$JSON_FILE")
 CARD_DESC=$(jq -r '.desc' "$JSON_FILE")
 BOARD_NAME=$(jq -r '.board.name' "$JSON_FILE")
@@ -56,10 +54,6 @@ TITLE_HEADER="# ${CARD_NAME}"
 
 # 2. Metadata section
 METADATA="${CARD_URL} : ${BOARD_NAME} → ${LIST_NAME}"
-
-echo "--- METADATA DEBUG ---"
-echo "$METADATA" | od -c
-echo "--- END METADATA DEBUG ---"
 
 # 3. Description
 DESC_SECTION=""
@@ -126,11 +120,6 @@ if [[ -n "$COMMENTS_BODY" ]]; then
   FULL_ENTRY+="\n\n${COMMENTS_SECTION}"
 fi
 
-# --- Debug Output ---
-echo "--- BEGIN DEBUG OUTPUT ---"
-echo "$FULL_ENTRY"
-echo "--- END DEBUG OUTPUT ---"
-
 # Start building the command
 DAYONE_CMD=("dayone2" "new")
 
@@ -144,22 +133,16 @@ DAYONE_CMD+=("--tags" "$BOARD_NAME" "$LIST_NAME")
 ATTACHMENT_DIR="${EXPORT_DIR}/attachments"
 ATTACHMENT_PATHS=()
 if [ -d "$ATTACHMENT_DIR" ] && [ "$(ls -A "$ATTACHMENT_DIR")" ]; then
-  echo "Found attachments to upload..."
-  for file in "$ATTACHMENT_DIR"/*; do
+  for file in "$ATTACHMENT_DIR"/*;
+  do
     ATTACHMENT_PATHS+=("$file") # Use absolute paths
   done
   # Add the --attachments flag followed by all the file paths
   DAYONE_CMD+=("--attachments" "${ATTACHMENT_PATHS[@]}")
-else
-  echo "No local attachments to upload."
 fi
 
 # Execute the command
 FULL_ENTRY_TEMP_FILE=$(mktemp)
 echo -e "$FULL_ENTRY" >"$FULL_ENTRY_TEMP_FILE"
-echo "Executing Day One command: cat \"$FULL_ENTRY_TEMP_FILE\" | $DAYONE_CMD[@]"
 cat "$FULL_ENTRY_TEMP_FILE" | "${DAYONE_CMD[@]}"
 rm "$FULL_ENTRY_TEMP_FILE"
-
-echo "---"
-echo "✅ Successfully imported card '${CARD_NAME}' to Day One."
