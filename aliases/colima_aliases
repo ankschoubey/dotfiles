@@ -1,0 +1,2 @@
+alias cs='colima start';
+alias csp='colima stop';
