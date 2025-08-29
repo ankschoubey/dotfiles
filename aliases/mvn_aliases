@@ -4,4 +4,7 @@ export M_eTI='-DexcludedTests=\*Integration\*'
 
 alias m='mvn'
 alias msB_r='mvn spring-boot:run '
-alias mt
+alias mc='mvn clean'
+alias mcc='mvn clean compile'
+alias mctC='mvn clean test-compile'
+
