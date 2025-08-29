@@ -1,0 +1,7 @@
+
+export M_SPA_DL='-Dspring.profiles.active=dev,local -Dspring-boot.run.profiles=dev,local'
+export M_eTI='-DexcludedTests=\*Integration\*'
+
+alias m='mvn'
+alias msB_r='mvn spring-boot:run '
+alias mt
