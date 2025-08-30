@@ -1,0 +1,7 @@
+<!-- EXTRA_PLUGINS_START -->
+<plugin>
+    <groupId>org.pitest</groupId>
+    <artifactId>pitest-maven</artifactId>
+    <version>LATEST</version>
+</plugin>
+<!-- EXTRA_PLUGINS_END -->
