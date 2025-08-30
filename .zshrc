@@ -206,5 +206,10 @@ t2d() {
   t2f "$1" && \
   "$DOTFILES_ROOT/scripts/import-to-dayone.sh" "$1"
 }
+
+t2m() {
+  t2f "$1" && \
+  "$DOTFILES_ROOT/scripts/trello-to-markdown.sh" "$1"
+}
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"

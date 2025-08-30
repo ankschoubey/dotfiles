@@ -1,0 +1,19 @@
+# Prompt Template Based on RGCOA based on w/KMo's prompt: https://www.youtube.com/watch?v=4PKO3fcFCKc&t=173s
+role: shell-scripter 
+# Eg: senior-developer, principal-developer, writer, socratic-thinker
+task: Create an alias to download trello data into Markdown file
+# Eg: Generating Boiler-Plate for 
+context: 
+  - background: We have 2 files in scripts folder which manage downloading data from trello and putting into day one. both have alias in .zshrc t2f and t2d  
+  - requirement: 
+    - add a new alias t2m which runs trello to markdown
+    - it should run the same t2f command
+    - then run a new script called scripts/trello-to-markdown.sh which converts the data to the markdown. the markdown output should be in same format as what's in import-to-dayone.sh
+output: 
+  - new alias t2m which calls existing t2f alias
+  - new trello-to-markdown.sh script
+self-verification:
+  - alias should be similar to existing t2d alias i.e only call t2f and script folder.
+  - format should be same as import-to-dayone.sh
+  - run t2m tXZBThby
+ask-for-help: "Before you provide the response, please ask me any questions that you feel could help you craft a better response. If you feel you have enough information to craft this response, please just provide it."
