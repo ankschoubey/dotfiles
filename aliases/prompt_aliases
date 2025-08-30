@@ -1,16 +1,36 @@
 # Function to generate a new prompt file from a template
-# Usage: gen_prompt <version> <N|C> <type> <description>
-# Example: gen_prompt 1 N feat "A new feature prompt"
+# Usage: gen_prompt [version] <N|C> <type> <description>
+# If version is omitted, it will be auto-incremented.
 gen_prompt() {
-    if [ "$#" -ne 4 ]; then
-        echo "Usage: gen_prompt <version> <N|C> <type> <description>"
+    local version
+    local change_type
+    local prompt_type
+    local description
+
+    if [ "$#" -eq 3 ]; then
+        # Auto-versioning logic
+        local latest_version=0
+        if [ -d "./prompts" ]; then
+            latest_version=$(ls -1 ./prompts | sed -n -E 's/^P([0-9]+)_.*/\1/p' | sort -rn | head -n 1)
+            if [ -z "$latest_version" ]; then
+                latest_version=0
+            fi
+        fi
+        version=$((latest_version + 1))
+        change_type=$1
+        prompt_type=$2
+        description=$3
+        echo "Auto-incrementing version to: $version"
+    elif [ "$#" -eq 4 ]; then
+        # Manual versioning
+        version=$1
+        change_type=$2
+        prompt_type=$3
+        description=$4
+    else
+        echo "Usage: gen_prompt [version] <N|C> <type> <description>"
         return 1
     fi
-
-    local version=$1
-    local change_type=$2
-    local prompt_type=$3
-    local description=$4
 
     local date_suffix=$(date +%y%m%d)
     local desc_hyphenated=$(echo "$description" | tr ' ' '-')
