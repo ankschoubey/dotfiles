@@ -150,61 +150,42 @@ fi
 
 
 s() {
-    
-    
-    
-    
-
     local script_dirs=("./scripts" "$DOTFILES_ROOT/scripts")
-    
     local script_name="$1"
-    
     local script_path=""
 
     if [ $# -eq 0 ]; then
-        
         local selected_script
         selected_script=$(find "${script_dirs[@]}" -maxdepth 1 -type f -print | fzf)
         if [ -n "$selected_script" ]; then
-            
             bash "$selected_script"
         else
         fi
         return
     fi
-
-    
     for dir in "${script_dirs[@]}"; do
-        
         if [ -f "$dir/$script_name" ]; then
             script_path="$dir/$script_name"
-            
             break
         elif [ -f "$dir/$script_name.sh" ]; then
             script_path="$dir/$script_name.sh"
-            
             break
         else
-            
         fi
     done
 
     if [ -n "$script_path" ]; then
-        
         shift
         bash "$script_path" "$@"
     else
-        
         local selected_script
         selected_script=$(find "${script_dirs[@]}" -maxdepth 1 -type f -print | fzf --query="$1")
         if [ -n "$selected_script" ]; then
-            
             shift
             bash "$selected_script" "$@"
         else
         fi
     fi
-    
 }
 
 # [ -f "$DOTFILES_ROOT/.kubectl_aliases" ] && source "$DOTFILES_ROOT/.kubectl_aliases
@@ -217,8 +198,12 @@ done
 
 set -o vi # Set VIM Mode in Terminal
 
+t2f(){
+  "$DOTFILES_ROOT/scripts/download-trello-card.sh" "$1"
+}
+
 t2d() {
-  "$DOTFILES_ROOT/scripts/download-trello-card.sh" "$1" && \
+  t2f "$1" && \
   "$DOTFILES_ROOT/scripts/import-to-dayone.sh" "$1"
 }
 export PATH="$HOME/.jenv/bin:$PATH"
