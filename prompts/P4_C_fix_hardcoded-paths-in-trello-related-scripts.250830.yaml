@@ -1,0 +1,16 @@
+role: Shell Scripter
+task: Remove hard coded paths in scripts folder 
+context: 
+  - background: 
+    - We have scripts folder that contains some common scripts that are called via aliases.
+    - These fail when I run aliases from other folders.
+    - Eg when running t2m alias
+    - "jq: Could not open scripts/_internal/checklists.jq: No such file or directory"
+  - requirement: 
+    - use $DOTFILES_ROOT/scripts as path of scripts folder in sh files within scripts
+output:
+  - all scripts use $DOTFILES_ROOT/scripts location for scripts folder
+  - create a GEMINI.md file which contains this information that all scripts should use $DOTFILES_ROOT path instead of hardcoded paths.
+self-verification:
+  - change folder and run `t2m tXZBThby`. Note you will not be able to run it directly so run the scripts that the alias points.
+ask-for-help: "Before you provide the response, please ask me any questions that you feel could help you craft a better response. If you feel you have enough information to craft this response, please just provide it."

@@ -65,7 +65,7 @@ fi
 
 # 4. Checklists (with corrected grouping)
 CHECKLISTS_SECTION="## Checklists"
-CHECKLISTS_BODY=$(jq -r -f "scripts/_internal/checklists.jq" "$JSON_FILE")
+CHECKLISTS_BODY=$(jq -r -f "$DOTFILES_ROOT/scripts/_internal/checklists.jq" "$JSON_FILE")
 
 if [[ -n "$CHECKLISTS_BODY" ]]; then
   CHECKLISTS_SECTION+="\n${CHECKLISTS_BODY}"
@@ -84,7 +84,7 @@ fi
 
 # 6. Comments
 COMMENTS_SECTION="## Comments"
-COMMENTS_BODY=$(jq -r -f "scripts/_internal/comments.jq" "$JSON_FILE")
+COMMENTS_BODY=$(jq -r -f "$DOTFILES_ROOT/scripts/_internal/comments.jq" "$JSON_FILE")
 
 if [[ -n "$COMMENTS_BODY" ]]; then
   COMMENTS_SECTION+="\n${COMMENTS_BODY}"
