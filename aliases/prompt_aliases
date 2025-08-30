@@ -1,0 +1,42 @@
+# Function to generate a new prompt file from a template
+# Usage: gen_prompt <version> <N|C> <type> <description>
+# Example: gen_prompt 1 N feat "A new feature prompt"
+gen_prompt() {
+    if [ "$#" -ne 4 ]; then
+        echo "Usage: gen_prompt <version> <N|C> <type> <description>"
+        return 1
+    fi
+
+    local version=$1
+    local change_type=$2
+    local prompt_type=$3
+    local description=$4
+
+    local date_suffix=$(date +%y%m%d)
+    local desc_hyphenated=$(echo "$description" | tr ' ' '-')
+
+    local filename="P${version}_${change_type}_${prompt_type}_${desc_hyphenated}.${date_suffix}.yaml"
+
+    local target_dir="./prompts"
+
+    if [ ! -d "$target_dir" ]; then
+        mkdir -p "$target_dir"
+        echo "Created directory: $target_dir"
+    fi
+
+    local file_path="${target_dir}/${filename}"
+
+    local template_path="$DOTFILES_ROOT/ai/prompt-template.yaml"
+
+    if [ ! -f "$template_path" ]; then
+        echo "Error: Prompt template not found at $template_path"
+        return 1
+    fi
+
+    cp "$template_path" "$file_path"
+    echo "Created prompt file: $file_path"
+
+    vi "$file_path"
+}
+
+alias mp=gen_prompt

@@ -1,6 +1,6 @@
 
 export M_SPA_DL='-Dspring.profiles.active=dev,local -Dspring-boot.run.profiles=dev,local'
-export M_eTI='-DexcludedTests=\*Integration\*'
+export M_eTi='-DexcludedTests=\*Integration\*'
 
 alias m='mvn'
 alias msB_r='mvn spring-boot:run '
@@ -8,3 +8,15 @@ alias mc='mvn clean'
 alias mcc='mvn clean compile'
 alias mctC='mvn clean test-compile'
 
+
+jClass() {
+  for f in "$@"; do
+    pkg=$(grep -m1 '^package ' "$f" | sed 's/package \(.*\);/\1/')
+    cls=$(basename "$f" .java)
+    if [ -n "$pkg" ]; then
+      echo "$pkg.$cls"
+    else
+      echo "$cls"   # default package
+    fi
+  done
+}
