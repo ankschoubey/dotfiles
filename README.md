@@ -39,3 +39,18 @@ Using Finder:
 Menu -> Go -> Go to folder (or Shift + CMD + G)
 Input the path: /System/Library/CoreServices
 Find and tap on KeyboardSetupAssistant
+
+## Wallpaper
+
+https://www.freepik.com/free-photo/pathway-middle-buildings-dark-sky-japan_17230584.htm#fromView=search&page=2&position=4&uuid=6c4cfccc-aee4-453b-bdfd-9294712be8e3&query=+Wallpaper
+
+https://www.freepik.com/serie/133374393/2
+
+https://www.freepik.com/search?format=search&last_filter=query&last_value=universe&query=universe
+
+https://www.freepik.com/search?format=search&last_filter=query&last_value=universe&query=universe
+
+https://www.freepik.com/free-ai-image/planet-earth-background_49654953.htm#fromView=search&page=1&position=33&uuid=745660c6-0502-4ca7-b106-4acb444d4a6c&query=universe
+
+https://www.freepik.com/free-photo/pathway-middle-buildings-dark-sky-japan_17230584.htm#fromView=search&page=1&position=4&uuid=6a195f71-0dc3-4965-9f7f-bee54bb9a9b9&query=japan+wallpaper
+
