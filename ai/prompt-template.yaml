@@ -1,11 +1,11 @@
 # Prompt Template Based on RGCOA based on w/KMo's prompt: https://www.youtube.com/watch?v=4PKO3fcFCKc&t=173s
-role:
+role: 
 # Eg: senior-developer, principal-developer, writer, socratic-thinker
-task:
+task: 
 # Eg: Generating Boiler-Plate for 
-context:
-  - background:
-  - requirement:
+context: 
+  - background: 
+  - requirement: 
   # Add steps optionally
     # Provide mental models & design patterns: Like Socratic Reasoning, Builder Pattern, etc 
     # Can it perform tasks in patterns like TDD or ATDD
@@ -13,11 +13,11 @@ context:
     # References? Examples?
   # Nuance?
   # How can requirement be more deterministic
-  - use-tools:
+  - use-tools: 
   # List of MCP tools you would like Agent to consider
-output:
+output: 
   # Eg: Mermaid? Etc
-self-verification:
+self-verification: 
   # Linting etc
 ask-for-help: "Before you provide the response, please ask me any questions that you feel could help you craft a better response. If you feel you have enough information to craft this response, please just provide it."
 # Which of these can be added to AGENTS.md instead of this prompt?
