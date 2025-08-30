@@ -1,0 +1,94 @@
+{
+	"settings": {
+		"autoLaunch": true,
+		"breaksEnabled": true,
+		"notificationType": "POPUP",
+		"breakFrequencySeconds": 1680,
+		"breakLengthSeconds": 120,
+		"postponeLengthSeconds": 180,
+		"postponeLimit": 3,
+		"workingHoursEnabled": false,
+		"workingHoursMonday": {
+			"enabled": true,
+			"ranges": [
+				{
+					"fromMinutes": 540,
+					"toMinutes": 1080
+				}
+			]
+		},
+		"workingHoursTuesday": {
+			"enabled": true,
+			"ranges": [
+				{
+					"fromMinutes": 540,
+					"toMinutes": 1080
+				}
+			]
+		},
+		"workingHoursWednesday": {
+			"enabled": true,
+			"ranges": [
+				{
+					"fromMinutes": 540,
+					"toMinutes": 1080
+				}
+			]
+		},
+		"workingHoursThursday": {
+			"enabled": true,
+			"ranges": [
+				{
+					"fromMinutes": 540,
+					"toMinutes": 1080
+				}
+			]
+		},
+		"workingHoursFriday": {
+			"enabled": true,
+			"ranges": [
+				{
+					"fromMinutes": 540,
+					"toMinutes": 1080
+				}
+			]
+		},
+		"workingHoursSaturday": {
+			"enabled": false,
+			"ranges": [
+				{
+					"fromMinutes": 540,
+					"toMinutes": 1080
+				}
+			]
+		},
+		"workingHoursSunday": {
+			"enabled": false,
+			"ranges": [
+				{
+					"fromMinutes": 540,
+					"toMinutes": 1080
+				}
+			]
+		},
+		"idleResetEnabled": true,
+		"idleResetLengthSeconds": 300,
+		"idleResetNotification": true,
+		"soundType": "GONG",
+		"breakSoundVolume": 1,
+		"breakTitle": "Take a quick-break 🦆",
+		"breakMessage": "Evaluate feeling, focus & efficiency. Consider working out for longer break",
+		"backgroundColor": "#222437",
+		"textColor": "#b9e981",
+		"showBackdrop": true,
+		"backdropOpacity": 0.7,
+		"endBreakEnabled": true,
+		"skipBreakEnabled": false,
+		"postponeBreakEnabled": true,
+		"immediatelyStartBreaks": false,
+		"backdropColor": "#001914"
+	},
+	"appInitialized": true,
+	"settingsVersion": 2,
+	"disableEndTime": null
+}

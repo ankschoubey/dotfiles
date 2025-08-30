@@ -25,10 +25,5 @@ https://github.com/ahmetb/kubectl-aliases?tab=readme-ov-file
 Break Timer:
 ```
 
-
-Title: `Time for a QUAK-break 🦆`
-
-Subtitle: `How do you feel? Are you focusing on the right thing? How would you make this more efficient?`
-
 Primary Color: `70 92 139` or `34 36 55` (Tokyo Night)
 Text Color: Blue `119 179 255` or Green `185 233 129`

@@ -104,8 +104,8 @@ notify() {
 }
 
 idea() {
-  if [ -x "/Applications/IntelliJ IDEA Ultimate.app/Contents/MacOS/idea" ]; then
-    "/Applications/IntelliJ IDEA.app/Contents/MacOS/idea" "$@"
+  if [ -x "/Applications/IDEA.app/Contents/MacOS/idea" ]; then
+    "/Applications/IDEA.app/Contents/MacOS/idea" "$@"
   else
     "/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea" "$@"
   fi
@@ -209,7 +209,7 @@ t2d() {
 
 t2m() {
   t2f "$1" && \
-  "$DOTFILES_ROOT/scripts/trello-to-markdown.sh" "$1"
+    ("$DOTFILES_ROOT/scripts/trello-to-markdown.sh" "$1" | pbcopy)
 }
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
