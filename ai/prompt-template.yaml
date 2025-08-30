@@ -8,6 +8,7 @@ context:
   - requirement: 
   # Add steps optionally
     # Provide mental models & design patterns: Like Socratic Reasoning, Builder Pattern, etc 
+      # For Design Patterns refer Head First Design Pattern Cheatsheet
     # Can it perform tasks in patterns like TDD or ATDD
   # Limit Context
     # References? Examples?
