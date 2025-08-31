@@ -1,4 +1,5 @@
 
+alias t='tmux'
 alias tl='tmux ls'
 alias tnS-d-s='tmux new-session -d -s'
 alias tsK='tmux send-keys'
