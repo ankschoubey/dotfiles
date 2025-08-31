@@ -1,0 +1,18 @@
+role: shell-scripter
+task: fix tmux config 
+context: 
+  - background: 
+    - I have created some symlinks for tmux but I think they are wrong.
+    - when I run the following command I get error
+    - "tmux source ~/.tmux.conf" - "/Users/ankushchoubey/.tmux.conf: Too many levels of symbolic links"
+  - requirement:
+    - fix the symlinks error and ensure tmux is able to load up config.
+output:
+  - fixed config.  
+self-verification:
+  - running tmux source command should not error
+after-completion:
+  - Teach me how you fixed so that I can do it myself later if needed.
+before-starting:
+  - "Ask me any questions that you feel could help you craft a better response."
+  - "Summarize this prompt & action you will take. WAIT FOR ME to ask you to continue"
