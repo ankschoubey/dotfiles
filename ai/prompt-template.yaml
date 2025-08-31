@@ -1,4 +1,5 @@
 # Prompt Template Based on RGCOA based on w/KMo's prompt: https://www.youtube.com/watch?v=4PKO3fcFCKc&t=173s
+# & Antropic 
 role: 
 # Eg: senior-developer, principal-developer, writer, socratic-thinker
 task: 
@@ -15,11 +16,25 @@ context:
   # Nuance?
   # How can requirement be more deterministic
   - use-tools: 
-  # List of MCP tools you would like Agent to consider
+    # List of MCP tools you would like Agent to consider: context7, search
 output: 
-  # Eg: Mermaid? Etc
+  # Eg: Mermaid? Table? Bullet? EARS, BDD, Bold Changes Etc
+agency: # Not Tested Yet
+  # - automation you have enough info to complete the task
+  # - augmentation: collaborate with me to complete this task
+  # - agent - Complete the task yourself. Take decisions along the way.
 self-verification: 
   # Linting etc
-ask-for-help: "Before you provide the response, please ask me any questions that you feel could help you craft a better response. If you feel you have enough information to craft this response, please just provide it."
+  # - compile using `mvn clean compile test-compile`
+  # - execute the test
+  # - run X
+after-completion:
+  - Teach me how x works so that I can work more efficiently later
+  # How will you fully understand LLMs output?
+  # Learn how LLM executed the task so that you can do it more efficiently next time. 
+  # Eg: Teach me how git worktree command works so that I can do it myself efficiently later.
+before-starting:
+  - "Ask me any questions that you feel could help you craft a better response."
+  - "Summarize this prompt & action you will take. WAIT FOR ME to ask you to continue"
 # Which of these can be added to AGENTS.md instead of this prompt?
 # REMEMBER: As a Developer, own design and logic.
