@@ -25,6 +25,7 @@ ln -s "$SCRIPT_DIR/.ideavimrc" ~/.ideavimrc
 ln -s "$SCRIPT_DIR/.vimrc" ~/.vimrc
 ln -s "$SCRIPT_DIR/nvim" ~/.config/nvim
 ln -s "$SCRIPT_DIR/tmux" ~/.config/tmux
+ln -s "$SCRIPT_DIR/tmux/.tmux.conf" ~/.tmux.conf
 ln -s "$SCRIPT_DIR/.ideavimrc" ~/.config/ideavim/ideavimrc
 ln -s "$SCRIPT_DIR/ai/kent-beck-agent.md" ~/.claude/CLAUDE.md
 ln -s "$SCRIPT_DIR/ai/kent-beck-agent.md" ~/.gemini/GEMINI.md
