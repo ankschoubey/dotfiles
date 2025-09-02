@@ -1,10 +1,11 @@
 "" .ideavimrc - Matt Chapman
-
+" https://mituuz.com/content/intellij-ideavim.html
+" https://sethlopez.dev/ideavim/
 
 "" Base Settings
 "" ========================================================
 
-set scrolloff=10
+set scrolloff=20
 set relativenumber 
 set showmode
 set showcmd
@@ -20,6 +21,10 @@ set clipboard+=unnamed
 
 let mapleader = " "
 
+set ideajoin
+set ideaput
+set ideamarks
+set commentary
 
 "" Plugin Settings
 "" ========================================================
@@ -35,6 +40,7 @@ set notimeout
 
 " Which-key settings
 set which-key
+let g:WhichKey_DefaultDelay = 0
 let g:WhichKey_FontSize = 16
 let g:WhichKey_CommandColor = "#41ead4"
 let g:WhichKey_PrefixColor = "#f335b2"
@@ -121,6 +127,7 @@ nnoremap <A-l> <C-w>l
 nnoremap <A-k> <C-w>k
 nnoremap <A-j> <C-w>j
 
+nnoremap <C-w>m :action MaximizeEditorInSplit<CR>
 " Jump between methods
 nnoremap [[ <Action>(MethodUp)
 nnoremap ]] <Action>(MethodDown)
@@ -147,15 +154,15 @@ map <leader>c <action>(CommentByLineComment)
 map <leader>j <Plug>(easymotion-s)
 
 " Open NERDTree (use q to exit)
-map <leader>x :NERDTreeToggle<CR>
+map <leader>e :NERDTreeToggle<CR>
 
 " Folding
 map <leader>zc :action CollapseAllRegions<CR>
 map <leader>zo :action ExpandAllRegions<CR>
 
 " Window splits
-map <leader>wv <Action>(SplitVertically)
-map <leader>ws <Action>(SplitHorizontally)
+map <leader>w" <Action>(SplitVertically)
+map <leader>w% <Action>(SplitHorizontally)
 map <leader>wu <Action>(Unsplit)
 map <leader>wm <Action>(MoveEditorToOppositeTabGroup)
 
@@ -195,30 +202,54 @@ nmap <leader>gu <Action>(ShowUsages)
 nmap <leader>gt <Action>(GotoTest)
 nmap <leader>gf <Action>(Back)
 nmap <leader>gb <Action>(Forward)
+nnoremap <leader>gs  :action FileStructurePopup<CR>
 
 " Git windows
 map <leader>gc <Action>(CheckinProject)
-map <leader>gs <Action>(ActivateVersionControlToolWindow)
+"<D-s>map <leader>gs <Action>(ActivateVersionControlToolWindow)
 map <leader>gb <Action>(Git.Branches)
-
+" Reverts selected lines
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <Leader>grl <action>(Vcs.RollbackChangedLines)
 " Errors
 map <leader>en <Action>(ReSharperGotoNextErrorInSolution)
 map <leader>ep <Action>(ReSharperGotoPrevErrorInSolution)
 
 " Disable Mouse"
+nnoremap <Left>  :echo "Use h to move!"<CR>
+nnoremap <Down>  :echo "Use j to move!"<CR>
+nnoremap <Up>    :echo "Use k to move!"<CR>
+nnoremap <Right> :echo "Use l to move!"<CR>
 
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
+" Reload the IdeaVim configuration.
+nnoremap <leader>R   :action IdeaVim.ReloadVimRc.reload<CR>
 
-inoremap <Up> <Nop>
-inoremap <Down> <Nop>
-inoremap <Left> <Nop>
-inoremap <Right> <Nop>
+" Run actions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Run the current class or test under the cursor
+map <Leader>tr <action>(ContextRun)
+" Run all tests in a class or the current class
+map <Leader>trf gg<action>(RunClass)<C-O>
+" Rerun previous job
+map <Leader>trp <action>(Run)
 
-vnoremap <Up> <Nop>
-vnoremap <Down> <Nop>
-vnoremap <Left> <Nop>
-vnoremap <Right> <Nop>
-set mouse=
+" Debug
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Debug the current class or test under the cursor
+map <Leader>dr <action>(ContextDebug)
+" Debug previous job
+map <Leader>dre <action>(Debug)
+" Add or remove breakpoint
+map <Leader>da <action>(ToggleLineBreakpoint)
+" Clear every breakpoint in the project
+map <Leader>dsa <action>(Debugger.RemoveAllBreakpoints)
+" Continue running from a breakpoint
+map <Leader>i <action>(Resume)
+" Open breakpoint dialog (add conditionals etc.)
+map <Leader>de <action>(EditBreakpoint)
+" Enable or disable breakpoint without removing it
+map <Leader>dt <action>(ToggleBreakpointEnabled)
+" Open ee dialog to run code at a breakpoint
+map <Leader>ee <action>(EvaluateExpression)
+" Continue running until cursor
+map <Leader>rr <action>(RunToCursor)
