@@ -1,6 +1,7 @@
 "" .ideavimrc - Matt Chapman
 " https://mituuz.com/content/intellij-ideavim.html
 " https://sethlopez.dev/ideavim/
+" https://kietcthe.medium.com/unleash-the-power-of-ideavimrc-enhance-your-intellij-idea-experience-with-advanced-features-5531c3c0641e
 
 "" Base Settings
 "" ========================================================
@@ -45,6 +46,7 @@ let g:WhichKey_FontSize = 16
 let g:WhichKey_CommandColor = "#41ead4"
 let g:WhichKey_PrefixColor = "#f335b2"
 let g:WhichKey_SortOrder = "by_key_prefix_first"
+let g:WhichKey_ShowVimActions = "true"
 
 let g:WhichKeyDesc_leader = "<leader> Leader key"
 
@@ -60,16 +62,16 @@ let g:WhichKeyDesc_fold_all = "<leader>zc Fold all regions"
 let g:WhichKeyDesc_unfold_all = "<leader>zo Unfold all regions"
 
 let g:WhichKeyDesc_window = "<leader>w Window splits"
-let g:WhichKeyDesc_window_split_vertically = "<leader>wv Split vertically"
-let g:WhichKeyDesc_window_split_horizontally = "<leader>wh Split horizontally"
+let g:WhichKeyDesc_window_split_vertically = "<leader>w\" Split vertically"
+let g:WhichKeyDesc_window_split_horizontally = "<leader>w% Split horizontally"
 let g:WhichKeyDesc_window_split_unsplit = "<leader>wu Unsplit"
 let g:WhichKeyDesc_window_split_move_editor = "<leader>wm Move editor to opposite tab group"
 
 
-let g:WhichKeyDesc_display = "<leader>d Display options"
-let g:WhichKeyDesc_zen_mode = "<leader>dz Toggle Zen mode"
-let g:WhichKeyDesc_df_mode = "<leader>dd Toggle Distraction-Free mode"
-let g:WhichKeyDesc_fullscreen = "<leader>df Toggle full screen"
+let g:WhichKeyDesc_display = "<leader>o Display options"
+let g:WhichKeyDesc_zen_mode = "<leader>oz Toggle Zen mode"
+let g:WhichKeyDesc_df_mode = "<leader>od Toggle Distraction-Free mode"
+let g:WhichKeyDesc_fullscreen = "<leader>of Toggle full screen"
 
 let g:WhichKeyDesc_action= "<leader>a Actions"
 let g:WhichKeyDesc_action_context_menu = "<leader>am Open context menu"
@@ -82,6 +84,10 @@ let g:WhichKeyDesc_file_nav_goto_file = "<leader>ff Go to file"
 let g:WhichKeyDesc_file_nav_goto_content = "<leader>fc Search for file content"
 let g:WhichKeyDesc_file_nav_show_recent_files = "<leader>fr Show recent files"
 let g:WhichKeyDesc_file_nav_show_recent_locations = "<leader>fl Show recent locations"
+let g:WhichKeyDesc_file_nav_new_scratch_file = "<leader>fs New scratch file"
+
+let g:WhichKeyDesc_NERDTree = "<leader>e Open NERDTree"
+let g:WhichKeyDesc_collapse = "<leader>b Collapse all regions"
 
 let g:WhichKeyDesc_close_tab = "<leader>q Close active tab"
 
@@ -99,17 +105,36 @@ let g:WhichKeyDesc_goto_type_declaration = "<leader>gy Go to Type Definition"
 let g:WhichKeyDesc_goto_implementation = "<leader>gi Go to Implementation"
 let g:WhichKeyDesc_goto_usages = "<leader>gu Go to Usages"
 let g:WhichKeyDesc_goto_test = "<leader>gt Go to Test"
-let g:WhichKeyDesc_goto_back = "<leader>gb Go Back"
+
 let g:WhichKeyDesc_goto_forward = "<leader>gf Go Forward"
 
 let g:WhichKeyDesc_git = "<leader>g Git operations"
 let g:WhichKeyDesc_git_commit = "<leader>gc Open Git commit dialog"
-let g:WhichKeyDesc_git_status = "<leader>gs Open Git status dialog"
+let g:WhichKeyDesc_git_status = "<leader>gs Open file structure popup"
 let g:WhichKeyDesc_git_branches = "<leader>gb Open Git branches list"
+let g:WhichKeyDesc_git_rollback = "<leader>grl Rollback changed lines"
 
 let g:WhichKeyDesc_errors = "<leader>e Error navigation"
 let g:WhichKeyDesc_errors_next = "<leader>en Go to next error in solution"
 let g:WhichKeyDesc_errors_prev = "<leader>ep Go to previous error in solution"
+
+let g:WhichKeyDesc_reload = "<leader>R Reload Vim RC"
+
+let g:WhichKeyDesc_test = "<leader>t Test"
+let g:WhichKeyDesc_test_run = "<leader>tr Run test under cursor"
+let g:WhichKeyDesc_test_run_file = "<leader>trf Run all tests in file"
+let g:WhichKeyDesc_test_rerun = "<leader>trp Rerun previous test"
+
+let g:WhichKeyDesc_debug = "<leader>d Debug"
+let g:WhichKeyDesc_debug_run = "<leader>dr Debug test under cursor"
+let g:WhichKeyDesc_debug_rerun = "<leader>dre Rerun previous debug"
+let g:WhichKeyDesc_debug_add_breakpoint = "<leader>da Add breakpoint"
+let g:WhichKeyDesc_debug_clear_breakpoints = "<leader>dsa Clear all breakpoints"
+let g:WhichKeyDesc_debug_resume = "<leader>i Resume"
+let g:WhichKeyDesc_debug_edit_breakpoint = "<leader>de Edit breakpoint"
+let g:WhichKeyDesc_debug_toggle_breakpoint = "<leader>dt Toggle breakpoint"
+let g:WhichKeyDesc_debug_evaluate = "<leader>ee Evaluate expression"
+let g:WhichKeyDesc_debug_run_to_cursor = "<leader>rr Run to cursor"
 
 
 "" Key mappings
@@ -120,6 +145,8 @@ inoremap jk <Esc>
 " Tab navigation
 nnoremap <A-n> :tabnext<CR>
 nnoremap <A-p> :tabprev<CR>
+nmap <Tab>          <action>(NextTab)
+nmap <S-Tab>        <action>(PreviousTab)
 
 " Pane navigation
 nnoremap <A-h> <C-w>h
@@ -153,6 +180,17 @@ map <leader>c <action>(CommentByLineComment)
 " Jump around with easymotion
 map <leader>j <Plug>(easymotion-s)
 
+" Bookmark
+map <leader>b <action>(ToggleBookmark)
+map <leader>B <action>(ShowBookmarks)
+
+" Jump
+nmap ]b <Action>(GotoNextBookmark)
+nmap [b <Action>(GotoPreviousBookmark)
+nmap ]c <Action>(VcsShowNextChangeMarker)
+nmap [c <Action>(VcsShowPrevChangeMarker)
+
+"map <leader>b :action CollapseAllRegions<CR>
 " Open NERDTree (use q to exit)
 map <leader>e :NERDTreeToggle<CR>
 
@@ -167,9 +205,9 @@ map <leader>wu <Action>(Unsplit)
 map <leader>wm <Action>(MoveEditorToOppositeTabGroup)
 
 " Display options
-map <leader>dd <action>(ToggleDistractionFreeMode)
-map <leader>dz <action>(ToggleZenMode)
-map <leader>df <action>(ToggleFullScreen)
+map <leader>od <action>(ToggleDistractionFreeMode)
+map <leader>oz <action>(ToggleZenMode)
+map <leader>of <action>(ToggleFullScreen)
 
 " Actions
 map <leader>am <action>(ShowIntentionActions)
@@ -200,8 +238,8 @@ nmap <leader>gy <Action>(GotoTypeDeclaration)
 nmap <leader>gi <Action>(GotoImplementation)
 nmap <leader>gu <Action>(ShowUsages)
 nmap <leader>gt <Action>(GotoTest)
-nmap <leader>gf <Action>(Back)
-nmap <leader>gb <Action>(Forward)
+nmap <leader>gf <Action>(Forward)
+
 nnoremap <leader>gs  :action FileStructurePopup<CR>
 
 " Git windows
@@ -209,7 +247,7 @@ map <leader>gc <Action>(CheckinProject)
 "<D-s>map <leader>gs <Action>(ActivateVersionControlToolWindow)
 map <leader>gb <Action>(Git.Branches)
 " Reverts selected lines
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 map <Leader>grl <action>(Vcs.RollbackChangedLines)
 " Errors
 map <leader>en <Action>(ReSharperGotoNextErrorInSolution)
@@ -225,7 +263,7 @@ nnoremap <Right> :echo "Use l to move!"<CR>
 nnoremap <leader>R   :action IdeaVim.ReloadVimRc.reload<CR>
 
 " Run actions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 " Run the current class or test under the cursor
 map <Leader>tr <action>(ContextRun)
 " Run all tests in a class or the current class
@@ -234,22 +272,22 @@ map <Leader>trf gg<action>(RunClass)<C-O>
 map <Leader>trp <action>(Run)
 
 " Debug
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 " Debug the current class or test under the cursor
-map <Leader>dr <action>(ContextDebug)
+map <leader>dr <action>(ContextDebug)
 " Debug previous job
-map <Leader>dre <action>(Debug)
+map <leader>dre <action>(Debug)
 " Add or remove breakpoint
-map <Leader>da <action>(ToggleLineBreakpoint)
+map <leader>da <action>(ToggleLineBreakpoint)
 " Clear every breakpoint in the project
-map <Leader>dsa <action>(Debugger.RemoveAllBreakpoints)
+map <leader>dsa <action>(Debugger.RemoveAllBreakpoints)
 " Continue running from a breakpoint
-map <Leader>i <action>(Resume)
+map <leader>i <action>(Resume)
 " Open breakpoint dialog (add conditionals etc.)
-map <Leader>de <action>(EditBreakpoint)
+map <leader>de <action>(EditBreakpoint)
 " Enable or disable breakpoint without removing it
-map <Leader>dt <action>(ToggleBreakpointEnabled)
+map <leader>dt <action>(ToggleBreakpointEnabled)
 " Open ee dialog to run code at a breakpoint
-map <Leader>ee <action>(EvaluateExpression)
+map <leader>ee <action>(EvaluateExpression)
 " Continue running until cursor
-map <Leader>rr <action>(RunToCursor)
+map <leader>rr <action>(RunToCursor)
