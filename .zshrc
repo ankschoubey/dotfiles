@@ -32,6 +32,7 @@ autoload -U compinit && compinit
 starship preset tokyo-night -o ~/.config/starship.toml
 
 # Aliases
+alias ai='$DOTFILES_ROOT/scripts/ai'
 
 # function y() {
 # 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -197,6 +198,11 @@ do
 done
 
 set -o vi # Set VIM Mode in Terminal
+# edit any command in vim https://www.reddit.com/r/vim/comments/9atgsj/edit_any_command_line_in_vim/
+autoload -U edit-command-line
+zle -N edit-command-line 
+bindkey -M vicmd v edit-command-line
+bindkey '^X' edit-command-line
 
 t2f(){
   "$DOTFILES_ROOT/scripts/download-trello-card.sh" "$1"
