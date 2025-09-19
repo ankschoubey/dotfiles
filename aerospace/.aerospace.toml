@@ -73,18 +73,19 @@ preset = 'qwerty'
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-inner.horizontal = [{ monitor.main = 12 }, { monitor.secondary = 10 }, 5]
-inner.vertical = [{ monitor.main = 5 }, { monitor.secondary = 10 }, 5]
-outer.left = [{ monitor.main = 10 }, { monitor.secondary = 10 }, 5]
-outer.bottom = [{ monitor.main = 10 }, { monitor.secondary = 10 }, 5]
-outer.top = [{ monitor.main = 15 }, { monitor.secondary = 40 }, 7]
-outer.right = [{ monitor.main = 10 }, { monitor.secondary = 10 }, 5]
+inner.horizontal = [{ monitor."LG Smart WQHD" = 10 }, { monitor.main = 12 }, 5]
+inner.vertical = [{ monitor."LG Smart WQHD" = 10 }, { monitor.main = 5 }, 5]
+outer.left = [ { monitor."LG Smart WQHD" = 10 },{ monitor.main = 10 }, 5]
+outer.bottom = [ { monitor."LG Smart WQHD" = 20 },{ monitor.main = 10 }, 5]
+outer.top = [ { monitor."LG Smart WQHD" = 50 },{ monitor.main = 15 }, 7]
+outer.right = [ { monitor."LG Smart WQHD" = 10 },{ monitor.main = 10 }, 5]
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
 # Fallback value (if you omit the key): mode.main.binding = {}
 [mode.main.binding]
+ctrl-backtick = 'exec-and-forget $DOTFILES_ROOT/scripts/start-ghostty.sh'
 
 # All possible keys:
 # - Letters.        a, b, c, ..., z
@@ -162,7 +163,7 @@ alt-shift-6 = 'move-node-to-workspace 6 --focus-follows-window'
 alt-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -a "Arc" || open -a "Safari"'
 alt-i = 'exec-and-forget [ -d "/Applications/Idea.app" ] && open -a "Idea" || open -a "VSCode"'
 alt-t = 'exec-and-forget open -a /Applications/Ghostty.app'
-alt-n = 'exec-and-forget if ! pgrep -x "Heynote" > /dev/null; then open -a /Applications/Heynote.app; fi'
+alt-n = 'exec-and-forget $DOTFILES_ROOT/scripts/handle_heynote.sh'
 
 
 [workspace-to-monitor-force-assignment]
@@ -194,12 +195,15 @@ alt-shift-s= 'mode service'
 
 ## Remove if ot working
  # [[on-window-detected]]
-# if.app-id = 'com.heynote.app'
+
 # run = 'exec-and-forget $DOTFILES_ROOT/scripts/handle_heynote.sh'
 
 # Later added this as well:
 # [[on-window-detected]]
 # if.window-title-regex-substring = 'Raycast'
-# run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.heynote.app'
+run = 'layout floating'
+
 
 ## Apps
