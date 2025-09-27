@@ -30,8 +30,8 @@
         "monitoring_type": 0,
         "private_settings": {}
     },
-    "current_scene": "Only Me (Mac Cam)",
-    "current_program_scene": "Only Me (Mac Cam)",
+    "current_scene": "Only Screen",
+    "current_program_scene": "Only Screen",
     "scene_order": [
         {
             "name": "Only Me"
@@ -108,8 +108,8 @@
         }
     },
     "resolution": {
-        "x": 3024,
-        "y": 1964
+        "x": 1920,
+        "y": 1080
     },
     "version": 2,
     "sources": [
@@ -151,8 +151,10 @@
             "id": "macos-avcapture",
             "versioned_id": "macos-avcapture",
             "settings": {
+                "device_name": "iPhone Camera",
+                "buffering": false,
                 "device": "73E79E31-BD6E-4B59-A5AA-2CEB00000001",
-                "device_name": "iPhone Camera"
+                "preset": "AVCaptureSessionPresetHigh"
             },
             "mixers": 255,
             "sync": 0,
@@ -183,8 +185,8 @@
             "id": "macos-avcapture",
             "versioned_id": "macos-avcapture",
             "settings": {
-                "device": "6C707041-05AC-0010-0001-000000000001",
-                "device_name": "MacBook Pro Camera"
+                "device_name": "MacBook Pro Camera",
+                "device": "6C707041-05AC-0010-0001-000000000001"
             },
             "mixers": 255,
             "sync": 0,
@@ -239,13 +241,12 @@
         },
         {
             "prev_ver": 520093697,
-            "name": "macOS Screen Capture LG",
-            "uuid": "9141a87d-1d91-4f55-85fd-64ea211b29cb",
+            "name": "macOS Screen Capture LG 1080",
+            "uuid": "d41ad106-999e-4124-ad2d-3b7bcd6e3726",
             "id": "screen_capture",
             "versioned_id": "screen_capture",
             "settings": {
-                "display_uuid": "CDEA184A-EB60-4C2A-8071-792A6B8B897B",
-                "hide_obs": true
+                "display_uuid": "CDEA184A-EB60-4C2A-8071-792A6B8B897B"
             },
             "mixers": 255,
             "sync": 0,
@@ -276,7 +277,7 @@
             "id": "scene",
             "versioned_id": "scene",
             "settings": {
-                "id_counter": 4,
+                "id_counter": 5,
                 "custom_size": false,
                 "items": [
                     {
@@ -390,8 +391,8 @@
                         "private_settings": {}
                     },
                     {
-                        "name": "macOS Screen Capture LG",
-                        "source_uuid": "9141a87d-1d91-4f55-85fd-64ea211b29cb",
+                        "name": "macOS Screen Capture LG 1080",
+                        "source_uuid": "d41ad106-999e-4124-ad2d-3b7bcd6e3726",
                         "visible": true,
                         "locked": false,
                         "rot": 0.0,
@@ -400,38 +401,38 @@
                             "y": 1080.0
                         },
                         "align": 5,
-                        "bounds_type": 0,
+                        "bounds_type": 2,
                         "bounds_align": 0,
                         "bounds_crop": false,
                         "crop_left": 0,
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 3,
+                        "id": 5,
                         "group_item_backup": false,
                         "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
                             "x": 1.0,
                             "y": 1.0
                         },
-                        "pos_rel": {
-                            "x": -1.775925874710083,
-                            "y": -0.99814814329147339
-                        },
-                        "scale": {
-                            "x": 0.75,
-                            "y": 0.75
-                        },
                         "scale_rel": {
-                            "x": 0.75,
-                            "y": 0.75
+                            "x": 1.0,
+                            "y": 1.0
                         },
                         "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
+                            "x": 1920.0,
+                            "y": 1080.0
                         },
                         "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
+                            "x": 3.5555555820465088,
+                            "y": 2.0
                         },
                         "scale_filter": "disable",
                         "blend_method": "default",
@@ -449,7 +450,7 @@
                         "source_uuid": "be5c5ddd-1616-497f-8d00-f06ca4748524",
                         "visible": true,
                         "locked": false,
-                        "rot": 180.0,
+                        "rot": 0.0,
                         "scale_ref": {
                             "x": 1920.0,
                             "y": 1080.0
@@ -465,12 +466,12 @@
                         "id": 4,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 343.0,
-                            "y": 1049.0
+                            "x": 30.5,
+                            "y": 772.0
                         },
                         "pos_rel": {
-                            "x": -1.1425925493240356,
-                            "y": 0.94259262084960938
+                            "x": -1.7215278148651123,
+                            "y": 0.42962968349456787
                         },
                         "scale": {
                             "x": 0.25624999403953552,
@@ -522,10 +523,10 @@
                 "libobs.hide_scene_item.1": [],
                 "libobs.show_scene_item.2": [],
                 "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": [],
                 "libobs.show_scene_item.4": [],
-                "libobs.hide_scene_item.4": []
+                "libobs.hide_scene_item.4": [],
+                "libobs.show_scene_item.5": [],
+                "libobs.hide_scene_item.5": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -539,7 +540,7 @@
             "id": "scene",
             "versioned_id": "scene",
             "settings": {
-                "id_counter": 4,
+                "id_counter": 5,
                 "custom_size": false,
                 "items": [
                     {
@@ -653,8 +654,8 @@
                         "private_settings": {}
                     },
                     {
-                        "name": "macOS Screen Capture LG",
-                        "source_uuid": "9141a87d-1d91-4f55-85fd-64ea211b29cb",
+                        "name": "macOS Screen Capture LG 1080",
+                        "source_uuid": "d41ad106-999e-4124-ad2d-3b7bcd6e3726",
                         "visible": true,
                         "locked": false,
                         "rot": 0.0,
@@ -663,38 +664,38 @@
                             "y": 1080.0
                         },
                         "align": 5,
-                        "bounds_type": 0,
+                        "bounds_type": 2,
                         "bounds_align": 0,
                         "bounds_crop": false,
                         "crop_left": 0,
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 3,
+                        "id": 5,
                         "group_item_backup": false,
                         "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
                             "x": 1.0,
                             "y": 1.0
                         },
-                        "pos_rel": {
-                            "x": -1.775925874710083,
-                            "y": -0.99814814329147339
-                        },
-                        "scale": {
-                            "x": 0.75,
-                            "y": 0.75
-                        },
                         "scale_rel": {
-                            "x": 0.75,
-                            "y": 0.75
+                            "x": 1.0,
+                            "y": 1.0
                         },
                         "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
+                            "x": 1920.0,
+                            "y": 1080.0
                         },
                         "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
+                            "x": 3.5555555820465088,
+                            "y": 2.0
                         },
                         "scale_filter": "disable",
                         "blend_method": "default",
@@ -712,7 +713,7 @@
                         "source_uuid": "be5c5ddd-1616-497f-8d00-f06ca4748524",
                         "visible": true,
                         "locked": false,
-                        "rot": 180.0,
+                        "rot": 0.0,
                         "scale_ref": {
                             "x": 1920.0,
                             "y": 1080.0
@@ -728,12 +729,12 @@
                         "id": 4,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 1890.0,
-                            "y": 1050.0
+                            "x": 1577.5,
+                            "y": 773.0
                         },
                         "pos_rel": {
-                            "x": 1.7222222089767456,
-                            "y": 0.94444441795349121
+                            "x": 1.1432870626449585,
+                            "y": 0.43148148059844971
                         },
                         "scale": {
                             "x": 0.25624999403953552,
@@ -785,10 +786,10 @@
                 "libobs.hide_scene_item.1": [],
                 "libobs.show_scene_item.2": [],
                 "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": [],
                 "libobs.show_scene_item.4": [],
-                "libobs.hide_scene_item.4": []
+                "libobs.hide_scene_item.4": [],
+                "libobs.show_scene_item.5": [],
+                "libobs.hide_scene_item.5": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -865,7 +866,7 @@
                         "source_uuid": "be5c5ddd-1616-497f-8d00-f06ca4748524",
                         "visible": true,
                         "locked": false,
-                        "rot": 180.0,
+                        "rot": 0.0,
                         "scale_ref": {
                             "x": 1920.0,
                             "y": 1080.0
@@ -881,12 +882,12 @@
                         "id": 9,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 1920.0,
-                            "y": 1080.0
+                            "x": 0.0,
+                            "y": 0.0
                         },
                         "pos_rel": {
-                            "x": 1.7777775526046753,
-                            "y": 1.0000002384185791
+                            "x": -1.7777777910232544,
+                            "y": -1.0000002384185791
                         },
                         "scale": {
                             "x": 1.0,
@@ -1010,7 +1011,7 @@
                         "source_uuid": "2cefae33-ae5c-49f2-beff-8de3de4a6f1b",
                         "visible": true,
                         "locked": false,
-                        "rot": 180.0,
+                        "rot": 0.0,
                         "scale_ref": {
                             "x": 1920.0,
                             "y": 1080.0
@@ -1026,12 +1027,12 @@
                         "id": 2,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 1920.0,
-                            "y": 1080.0
+                            "x": 0.0,
+                            "y": 0.0
                         },
                         "pos_rel": {
-                            "x": 1.7777777910232544,
-                            "y": 1.0000002384185791
+                            "x": -1.7777777910232544,
+                            "y": -1.0000002384185791
                         },
                         "scale": {
                             "x": 1.0,
@@ -1092,7 +1093,7 @@
             "id": "scene",
             "versioned_id": "scene",
             "settings": {
-                "id_counter": 5,
+                "id_counter": 7,
                 "custom_size": false,
                 "items": [
                     {
@@ -1206,48 +1207,48 @@
                         "private_settings": {}
                     },
                     {
-                        "name": "macOS Screen Capture LG",
-                        "source_uuid": "9141a87d-1d91-4f55-85fd-64ea211b29cb",
+                        "name": "macOS Screen Capture LG 1080",
+                        "source_uuid": "d41ad106-999e-4124-ad2d-3b7bcd6e3726",
                         "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
+                            "x": 3440.0,
+                            "y": 1440.0
                         },
                         "align": 5,
-                        "bounds_type": 0,
+                        "bounds_type": 2,
                         "bounds_align": 0,
                         "bounds_crop": false,
                         "crop_left": 0,
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 5,
+                        "id": 7,
                         "group_item_backup": false,
                         "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
                             "x": 1.0,
                             "y": 1.0
                         },
-                        "pos_rel": {
-                            "x": -1.775925874710083,
-                            "y": -0.99814814329147339
-                        },
-                        "scale": {
-                            "x": 0.75,
-                            "y": 0.75
-                        },
                         "scale_rel": {
-                            "x": 0.75,
-                            "y": 0.75
+                            "x": 1.3333333730697632,
+                            "y": 1.3333333730697632
                         },
                         "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
+                            "x": 1920.0,
+                            "y": 1080.0
                         },
                         "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
+                            "x": 3.5555555820465088,
+                            "y": 2.0
                         },
                         "scale_filter": "disable",
                         "blend_method": "default",
@@ -1279,8 +1280,8 @@
                 "libobs.hide_scene_item.2": [],
                 "libobs.show_scene_item.3": [],
                 "libobs.hide_scene_item.3": [],
-                "libobs.show_scene_item.5": [],
-                "libobs.hide_scene_item.5": []
+                "libobs.show_scene_item.7": [],
+                "libobs.hide_scene_item.7": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
