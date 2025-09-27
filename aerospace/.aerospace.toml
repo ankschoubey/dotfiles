@@ -85,7 +85,9 @@ outer.right = [ { monitor."LG Smart WQHD" = 10 },{ monitor.main = 10 }, 5]
 # 'main' binding mode must be always presented
 # Fallback value (if you omit the key): mode.main.binding = {}
 [mode.main.binding]
-ctrl-backtick = 'exec-and-forget $DOTFILES_ROOT/scripts/start-ghostty.sh'
+# backtick currently overrides backtick of ghossty. 
+# also causes other modifiers to not work like ctrl+n
+#ctrl-backtick = 'exec-and-forget $DOTFILES_ROOT/scripts/start-ghostty.sh'
 
 # All possible keys:
 # - Letters.        a, b, c, ..., z
