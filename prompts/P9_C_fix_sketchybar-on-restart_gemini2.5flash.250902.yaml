@@ -1,0 +1,19 @@
+role: shell-scripter 
+task: fix sketchybar and aerospace connection on load 
+context: 
+  - background: 
+    - restartAerospace function restart aerospace and sketchybar
+    - when this happens, sketchybar is often unaware of open aerospace tabs.
+    - eg - currently I have 2 apps open on workspace 4 which is on my wide screen monitor. sketchybar does not reflect the open apps on workspace 4 after restart.
+  - requirement:
+    - fix communication between sketchybar and aerospace so that even after restart sketchybar has all the things filled
+    - nuance - on startup of aerospace you may need to pass info to sketchybar or maybe sketchybar has to pass info to aerospace. however it is please fix.
+output: 
+  - fixed aerospace, sketchybar configuration
+self-verification: 
+  - idk how to suggest you to self verify. suggest me what good self verification can be here.
+after-completion:
+  - Teach me how you fixed it and give some insights about aerospace & sketchybar on the script level.
+before-starting:
+  - "Ask me any questions that you feel could help you craft a better response."
+  - "Summarize this prompt & action you will take. WAIT FOR ME to ask you to continue"
