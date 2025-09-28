@@ -8,7 +8,7 @@
 # Required parameters:
 # @raycast.schemaVersion 1
 # @raycast.title Quit All Apps and Shutdown
-# @raycast.mode fullOutput
+# @raycast.mode inline
 #
 # Optional parameters:
 # @raycast.icon 🔌

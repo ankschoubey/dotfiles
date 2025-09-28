@@ -7,7 +7,7 @@
 # Required parameters:
 # @raycast.schemaVersion 1
 # @raycast.title Restart Aerospace
-# @raycast.mode fullOutput
+# @raycast.mode inline
 #
 # Optional parameters:
 # @raycast.icon 🛰️

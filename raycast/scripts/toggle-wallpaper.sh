@@ -7,7 +7,7 @@
 # Required parameters:
 # @raycast.schemaVersion 1
 # @raycast.title Toggle Wallpaper
-# @raycast.mode fullOutput
+# @raycast.mode inline 
 #
 # Optional parameters:
 # @raycast.icon 🏞️
