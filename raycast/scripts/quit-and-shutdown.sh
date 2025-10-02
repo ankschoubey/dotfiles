@@ -15,4 +15,5 @@
 # @raycast.packageName Raycast Scripts
 
 open raycast://extensions/raycast/system/quit-all-apps
+sleep 2
 open raycast://extensions/raycast/system/shut-down
