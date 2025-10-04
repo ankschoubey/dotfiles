@@ -3,7 +3,7 @@
 
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
-# Available commands: https://nikitabobko.github.io/AeroSpace/commands
+# Available commands: 
 
 # You can use it to add commands that run after AeroSpace startup.
 # 'after-startup-command' is run after 'after-login-command'
@@ -15,7 +15,7 @@ after-startup-command = [
 ]
 
 # Start AeroSpace at login
-start-at-login = true
+start-at-login = false
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -166,6 +166,7 @@ alt-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -a "Arc" || open
 alt-i = 'exec-and-forget [ -d "/Applications/Idea.app" ] && open -a "Idea" || open -a "VSCode"'
 alt-t = 'exec-and-forget open -a /Applications/Ghostty.app'
 alt-n = 'exec-and-forget $DOTFILES_ROOT/scripts/handle_heynote.sh'
+ctrl-space = 'exec-and-forget $DOTFILES_ROOT/scripts/open-chatgpt-if-not-opened.sh'
 
 
 [workspace-to-monitor-force-assignment]
@@ -178,9 +179,9 @@ alt-n = 'exec-and-forget $DOTFILES_ROOT/scripts/handle_heynote.sh'
 6 = ['secondary', 'main']
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
-alt-tab = 'workspace-back-and-forth'
+alt-shift-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+#alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-s= 'mode service'
