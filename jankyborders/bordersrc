@@ -5,10 +5,10 @@ magenta="0xffbb9af7"
 grey="0xff444b6a"
 red="0xfff7768e"
 blue="0xff7aa2f7"
-
+black="0x0000000f"
 options=(
-  active_color="$red"
-  inactive_color="$blue"
+  active_color="$magenta"
+  inactive_color="$black"
   hidpi=on
   style=round
   width=6.0
