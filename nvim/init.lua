@@ -556,3 +556,15 @@ local function setup_dynamic_statusline()
 end
 
 setup_dynamic_statusline()
+
+-- 2025 Oct 11: Remapping jk to ESC
+
+local opts = { noremap = true, silent = true }
+
+vim.keymap.set('n', 'jk', '<Esc>', opts)
+vim.keymap.set('v', 'jk', '<Esc>', opts)
+vim.keymap.set('i', 'jk', '<Esc>', opts)
+vim.keymap.set('c', 'jk', '<C-c>', opts)
+vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
+
+vim.opt.timeoutlen = 300
