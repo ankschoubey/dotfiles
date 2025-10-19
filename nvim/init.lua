@@ -568,3 +568,6 @@ vim.keymap.set('c', 'jk', '<C-c>', opts)
 vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
 
 vim.opt.timeoutlen = 300
+
+require("config.lazy")
+
