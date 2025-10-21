@@ -291,3 +291,21 @@ map <leader>dt <action>(ToggleBreakpointEnabled)
 map <leader>ee <action>(EvaluateExpression)
 " Continue running until cursor
 map <leader>rr <action>(RunToCursor)
+
+" Plugins from https://github.com/JetBrains/ideavim/wiki/IdeaVim-Plugins 
+" 21 Oct 2025
+" Requires https://plugins.jetbrains.com/plugin/28333-vim-anyobject
+set anyobject
+" Requires https://plugins.jetbrains.com/plugin/28237-vim-dial
+set dial
+nnoremap <C-a> :DialIncrement<cr>
+nnoremap <C-x> :DialDecrement<cr>
+let g:dial_include = "basic,numbers,dates"
+let g:dial_include = "basic,numbers,dates,java,python:async,markdown:task_item"
+" Also install https://plugins.jetbrains.com/plugin/28732-vim-cmdfloat
+Plug 'tpope/vim-surround'
+set surround
+Plug 'unblevable/quick-scope'
+" Quick scope is not working right now
+" nmap <leader>q <plug>(QuickScopeToggle)
+" xmap <leader>q <plug>(QuickScopeToggle)
