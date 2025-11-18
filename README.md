@@ -59,3 +59,10 @@ https://www.freepik.com/free-photo/pathway-middle-buildings-dark-sky-japan_17230
  〉System Settings 〉Desktop & Dock 〉Displays have separate Spaces
 
 via https://www.reddit.com/r/mac/comments/1ecp1lq/mac_menu_bar_and_dock_on_every_display_who_knew/
+
+## More mac default tips and configs
+
+Change macOS Prefs from command line: https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/
+
+- https://github.com/mathiasbynens/dotfiles/blob/master/.macos
+- https://github.com/pawelgrzybek/dotfiles/blob/master/setup-macos.sh
