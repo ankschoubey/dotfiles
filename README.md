@@ -54,3 +54,8 @@ https://www.freepik.com/free-ai-image/planet-earth-background_49654953.htm#fromV
 
 https://www.freepik.com/free-photo/pathway-middle-buildings-dark-sky-japan_17230584.htm#fromView=search&page=1&position=4&uuid=6a195f71-0dc3-4965-9f7f-bee54bb9a9b9&query=japan+wallpaper
 
+## Menu bar and Doc have separate displays
+
+ 〉System Settings 〉Desktop & Dock 〉Displays have separate Spaces
+
+via https://www.reddit.com/r/mac/comments/1ecp1lq/mac_menu_bar_and_dock_on_every_display_who_knew/
