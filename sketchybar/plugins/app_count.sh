@@ -11,8 +11,8 @@ elif [ "$open_apps" -gt 3 ]; then
 elif [ "$open_apps" -gt 1 ]; then
   color="0xFF0000FF" # Blue
 else
-  color="0x00000000" # Transparent
+  color="0xFF6C7086" # Gray for low count
 fi
 
 # Update the SketchyBar item
-sketchybar --set app_count icon="●" icon.color="$color"
+sketchybar --set app_count icon="●" icon.color="$color" label="$open_apps"
