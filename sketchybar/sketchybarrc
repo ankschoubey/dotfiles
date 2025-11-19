@@ -10,28 +10,43 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 # If you are looking for other colors, see the color picker:
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
-# Color Palette
-BLACK=0xff1a1b26
-WHITE=0xffa9b1d6
-MAGENTA=0xffbb9af7
-BLUE=0xff7aa2f7
-CYAN=0xff7dcfff
-GREEN=0xff9ece6a
-YELLOW=0xffe0af68
-ORANGE=0xffff9e64
-RED=0xfff7768e
-GREY=0xff444b6a
+# Color Palette (Catppuccin Mocha)
+BASE=0xff1e1e2e
+MANTLE=0xff181825
+CRUST=0xff11111b
+TEXT=0xffcdd6f4
+SUBTEXT0=0xffa6adc8
+SUBTEXT1=0xffbac2de
+SURFACE0=0xff313244
+SURFACE1=0xff45475a
+SURFACE2=0xff585b70
+OVERLAY0=0xff6c7086
+OVERLAY1=0xff7f849c
+OVERLAY2=0xff9399b2
+BLUE=0xff89b4fa
+LAVENDER=0xffb4befe
+SAPPHIRE=0xff74c7ec
+SKY=0xff89dceb
+TEAL=0xff94e2d5
+GREEN=0xffa6e3a1
+YELLOW=0xfff9e2af
+PEACH=0xfffab387
+MAROON=0xffeba0ac
+RED=0xfff38ba8
+MAUVE=0xffcba6f7
+PINK=0xfff5c2e7
+FLAMINGO=0xfff2cdcd
+ROSEWATER=0xfff5e0dc
 TRANSPARENT=0x00000000
 
 # Bar and item styling
 sketchybar --bar position=top \
-               height=35 \
-               color=0x801a1b26 \
-               blur_radius=00 \
-               shadow=on \
-               corner_radius=13 \
-               border_width=1 \
-               border_color=0x1A7aa2f7 \
+                height=32 \
+                color=0x00000000 \
+                blur_radius=00 \
+                shadow=on \
+                corner_radius=13 \
+                border_width=0 \
                margin=8 \
                y_offset=5 \
 
@@ -48,8 +63,8 @@ default=(
   padding_right=5
   icon.font="Hack Nerd Font:Bold:17.0"
   label.font="SF Pro:Semibold:17.0"
-  icon.color=$WHITE
-  label.color=$WHITE
+  icon.color=$TEXT
+  label.color=$TEXT
   icon.padding_left=4
   icon.padding_right=4
   label.padding_left=4
@@ -70,22 +85,22 @@ for sid in $(aerospace list-workspaces --all); do
     --subscribe space.$sid aerospace_workspace_change \
     --set space.$sid \
     drawing=off \
-    background.color=$TRANSPARENT \
-    background.corner_radius=10 \
+    background.color=$SURFACE1 \
+    background.corner_radius=0 \
     background.drawing=on \
-    background.border_color=$BLUE \
+    background.border_color=$PEACH \
     background.border_width=0 \
-    background.height=25 \
+    background.height=32 \
     icon="$sid" \
     icon.padding_left=10 \
     icon.shadow.distance=4 \
-    icon.shadow.color=$GREY \
+    icon.shadow.color=$OVERLAY0 \
     label.font="sketchybar-app-font:Regular:16.0" \
     label.padding_right=20 \
     label.padding_left=0 \
     label.y_offset=-1 \
     label.shadow.drawing=off \
-    label.shadow.color=$GREY \
+    label.shadow.color=$OVERLAY0 \
     label.shadow.distance=4 \
     click_script="aerospace workspace $sid" \
     script="$CONFIG_DIR/plugins/aerospace.sh $sid"
@@ -112,7 +127,7 @@ done
 sketchybar --add item space_separator left \
   --set space_separator icon="→" \
   icon.padding_left=4 \
-  icon.color=$BLUE \
+  icon.color=$GREEN \
   label.drawing=off \
   background.drawing=off \
   script="$PLUGIN_DIR/space_windows.sh" \
@@ -121,52 +136,62 @@ sketchybar --add item space_separator left \
 # Front app!!
 sketchybar --add item front_app left \
   --set front_app icon.drawing=on \
+  background.color=$GREEN \
+  background.drawing=on \
+  background.height=32 \
+  background.corner_radius=0 \
+  icon.color=$CRUST \
+  label.color=$CRUST \
   icon.font="sketchybar-app-font:Regular:16.0" \
   script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched
 
 sketchybar --add item front_app_context_separator left \
   --set front_app_context_separator icon="|" \
-  icon.color=$GREY \
+  icon.color=$OVERLAY0 \
   label.drawing=off \
   background.drawing=off
 
 sketchybar --add item context_main right \
-           --set context_main script="$DOTFILES_ROOT/sketchybar/plugins/context.sh" \
-                         icon.drawing=off \
-                         label.drawing=on \
-                         background.drawing=on \
-                         background.color=$GREY \
-                         background.corner_radius=10 \
-                         background.height=25 \
-                         icon.color=$WHITE \
-                         icon.padding_left=10 \
-                         label.color=$WHITE \
-                         label.padding_right=10 \
-                         icon.font="Hack Nerd Font:Regular:16.0" \
-                         label.y_offset=-1 \
-                         drawing=off \
-           --subscribe context_main aerospace_workspace_change
+            --set context_main script="$DOTFILES_ROOT/sketchybar/plugins/context.sh" \
+                          icon.drawing=off \
+                          label.drawing=on \
+                          background.drawing=on \
+                          background.color=$SURFACE1 \
+                          background.corner_radius=0 \
+                          background.height=32 \
+                          icon.color=$TEXT \
+                          icon.padding_left=10 \
+                          label.color=$TEXT \
+                          label.padding_right=10 \
+                          icon.font="Hack Nerd Font:Regular:16.0" \
+                          label.y_offset=-1 \
+                          drawing=off \
+            --subscribe context_main aerospace_workspace_change
 
 sketchybar --add item context_secondary center \
-           --set context_secondary script="$DOTFILES_ROOT/sketchybar/plugins/context.sh" \
-                         icon.drawing=off \
-                         label.drawing=on \
-                         background.drawing=on \
-                         background.color=$GREY \
-                         background.corner_radius=10 \
-                         background.height=25 \
-                         icon.color=$WHITE \
-                         icon.padding_left=10 \
-                         label.color=$WHITE \
-                         label.padding_right=10 \
-                         icon.font="Hack Nerd Font:Regular:16.0" \
-                         label.y_offset=-1 \
-                         drawing=off \
-           --subscribe context_secondary aerospace_workspace_change
+            --set context_secondary script="$DOTFILES_ROOT/sketchybar/plugins/context.sh" \
+                          icon.drawing=off \
+                          label.drawing=on \
+                          background.drawing=on \
+                          background.color=$SURFACE1 \
+                          background.corner_radius=0 \
+                          background.height=32 \
+                          icon.color=$TEXT \
+                          icon.padding_left=10 \
+                          label.color=$TEXT \
+                          label.padding_right=10 \
+                          icon.font="Hack Nerd Font:Regular:16.0" \
+                          label.y_offset=-1 \
+                          drawing=off \
+            --subscribe context_secondary aerospace_workspace_change
 
 sketchybar --add item app_count right \
   --set app_count update_freq=2 script="$PLUGIN_DIR/app_count.sh" \
+  background.color=$SURFACE1 \
+  background.drawing=on \
+  background.height=32 \
+  background.corner_radius=0 \
   icon.color=$BLUE \
 
 
@@ -182,12 +207,16 @@ sketchybar --add item app_count right \
 # https://felixkratz.github.io/SketchyBar/config/events
 
 
-sketchybar --add item tmux_sessions left --set tmux_sessions update_freq=10 script="$PLUGIN_DIR/tmux.sh" icon.font="Hack Nerd Font:Bold:17.0" icon="❯" icon.color=$BLUE label.color=$BLUE background.color=$TRANSPARENT background.border_color=$BLUE background.border_width=2 background.corner_radius=10 background.height=25 background.padding_left=5 background.padding_right=5 background.drawing=on width=50 align=center
+sketchybar --add item tmux_sessions left --set tmux_sessions update_freq=10 script="$PLUGIN_DIR/tmux.sh" icon.font="Hack Nerd Font:Bold:17.0" icon="❯" icon.color=$PEACH label.color=$TEXT background.color=$SURFACE1 background.border_color=$PEACH background.border_width=2 background.corner_radius=0 background.height=32 background.padding_left=5 background.padding_right=5 background.drawing=on width=50 align=center
 
 sketchybar --add item clock right \
   --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
-  icon.color=$BLUE \
-  label.color=$BLUE \
+  background.color=$MAROON \
+  background.drawing=on \
+  background.height=32 \
+  background.corner_radius=0 \
+  icon.color=$CRUST \
+  label.color=$CRUST \
 
 
  
@@ -202,8 +231,8 @@ sketchybar --add item clock right \
   --set swap update_freq=20 script="$PLUGIN_DIR/memswap.sh" \
   icon="" \
   label.font="Hack Nerd Font:Italic:13.0" \
-  icon.color=0x44FFFFFF \
-  label.color=0x44FFFFFF
+   icon.color=0x44cdd6f4 \
+   label.color=0x44cdd6f4
 
 
 ##### Force all scripts to run the first time (never do this in a script) #####
