@@ -11,4 +11,4 @@ else
     clr="$DEFCOLOR"
 fi
 
-sketchybar --set "$NAME" label="$TOTALSWAP" icon.color="$clr" label.color="$clr"
+sketchybar --set "$NAME" icon.drawing=off label="RAM: $TOTALSWAP"

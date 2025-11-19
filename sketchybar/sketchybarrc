@@ -47,8 +47,8 @@ sketchybar --bar position=top \
                 shadow=on \
                 corner_radius=13 \
                 border_width=0 \
-               margin=8 \
-               y_offset=5 \
+                margin=0 \
+                y_offset=0 \
 
 
 
@@ -61,14 +61,14 @@ sketchybar --bar position=top \
 default=(
   padding_left=5
   padding_right=5
-  icon.font="Hack Nerd Font:Bold:17.0"
+  icon.font="JetBrains Mono Nerd Font:Bold:17.0"
   label.font="SF Pro:Semibold:17.0"
   icon.color=$TEXT
   label.color=$TEXT
   icon.padding_left=4
   icon.padding_right=4
   label.padding_left=4
-  label.padding_right=4
+  label.padding_right=5
   updates=on
 )
 sketchybar --default "${default[@]}"
@@ -164,7 +164,7 @@ sketchybar --add item context_main right \
                           icon.padding_left=10 \
                           label.color=$TEXT \
                           label.padding_right=10 \
-                          icon.font="Hack Nerd Font:Regular:16.0" \
+                          icon.font="JetBrains Mono Nerd Font:Regular:16.0" \
                           label.y_offset=-1 \
                           drawing=off \
             --subscribe context_main aerospace_workspace_change
@@ -181,7 +181,7 @@ sketchybar --add item context_secondary center \
                           icon.padding_left=10 \
                           label.color=$TEXT \
                           label.padding_right=10 \
-                          icon.font="Hack Nerd Font:Regular:16.0" \
+                          icon.font="JetBrains Mono Nerd Font:Regular:16.0" \
                           label.y_offset=-1 \
                           drawing=off \
             --subscribe context_secondary aerospace_workspace_change
@@ -207,7 +207,7 @@ sketchybar --add item app_count right \
 # https://felixkratz.github.io/SketchyBar/config/events
 
 
-sketchybar --add item tmux_sessions left --set tmux_sessions update_freq=10 script="$PLUGIN_DIR/tmux.sh" icon.font="Hack Nerd Font:Bold:17.0" icon="❯" icon.color=$PEACH label.color=$TEXT background.color=$SURFACE1 background.border_color=$PEACH background.border_width=2 background.corner_radius=0 background.height=32 background.padding_left=5 background.padding_right=5 background.drawing=on width=50 align=center
+sketchybar --add item tmux_sessions left --set tmux_sessions update_freq=10 script="$PLUGIN_DIR/tmux.sh" icon.font="JetBrains Mono Nerd Font:Bold:17.0" icon="❯" icon.color=$PEACH label.color=$TEXT background.color=$SURFACE1 background.border_color=$PEACH background.border_width=2 background.corner_radius=0 background.height=32 background.padding_left=5 background.padding_right=5 background.drawing=on width=50 align=center
 
 sketchybar --add item clock right \
   --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
@@ -224,15 +224,31 @@ sketchybar --add item clock right \
   # --add item volume right \
   # --set volume script="$PLUGIN_DIR/volume.sh" \
   # --subscribe volume volume_change \
-  --add item battery right \
-  --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
-  --subscribe battery system_woke power_source_change \
-  --add item swap e \
-  --set swap update_freq=20 script="$PLUGIN_DIR/memswap.sh" \
-  icon="" \
-  label.font="Hack Nerd Font:Italic:13.0" \
-   icon.color=0x44cdd6f4 \
-   label.color=0x44cdd6f4
+sketchybar --add item battery right
+sketchybar --set battery \
+   update_freq=120 \
+   script="$PLUGIN_DIR/battery.sh" \
+   background.color=$SURFACE1 \
+   background.drawing=on \
+   background.height=32 \
+   background.corner_radius=0 \
+   icon.color=$TEXT \
+   label.color=$TEXT \
+   width=80 \
+   align=center
+sketchybar --subscribe battery system_woke power_source_change
+sketchybar --add item swap right
+sketchybar --set swap \
+   update_freq=20 \
+   script="$PLUGIN_DIR/memswap.sh" \
+   background.color=$SURFACE1 \
+   background.drawing=on \
+   background.height=32 \
+   background.corner_radius=0 \
+   icon.color=$TEXT \
+   label.color=$TEXT \
+   width=80 \
+   align=center
 
 
 ##### Force all scripts to run the first time (never do this in a script) #####
