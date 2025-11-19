@@ -570,4 +570,3 @@ vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
 vim.opt.timeoutlen = 300
 
 require("config.lazy")
-
