@@ -1,7 +1,7 @@
 alias g='git'
 alias gs='g status'
 alias gd='g diff'
-alias ga='g add'
+alias ga='g add -p'
 alias gc='g commit'
 alias gpp='g pull; g push'
 alias gpl='g pull'

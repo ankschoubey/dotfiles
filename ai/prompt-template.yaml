@@ -30,6 +30,7 @@ self-verification:
   # - run X
 after-completion:
   - Teach me how x works so that I can work more efficiently later
+  # - Describe all the tools you used and give me equivalent of those so that I can run them myself
   # How will you fully understand LLMs output?
   # Learn how LLM executed the task so that you can do it more efficiently next time. 
   # Eg: Teach me how git worktree command works so that I can do it myself efficiently later.
