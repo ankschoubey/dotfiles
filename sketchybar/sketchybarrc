@@ -48,8 +48,8 @@ sketchybar --bar position=top \
                 corner_radius=13 \
                 border_width=0 \
                                  margin=0 \
-                 padding_left=8 \
-                 padding_right=8 \
+                 padding_left=9 \
+                 padding_right=9 \
                 y_offset=0 \
 
 
@@ -61,8 +61,8 @@ sketchybar --bar position=top \
 # https://felixkratz.github.io/SketchyBar/config/items
 
 default=(
-  padding_left=2
-  padding_right=2
+  padding_left=5
+  padding_right=5
   icon.font="FiraCode Nerd Font:Bold:17.0"
   label.font="FiraCode Nerd Font:Semibold:17.0"
   icon.color=$TEXT
@@ -189,9 +189,8 @@ sketchybar --add item context_secondary center \
             --subscribe context_secondary aerospace_workspace_change
 
 sketchybar --add item app_count right \
-  --set app_count update_freq=2 script="$PLUGIN_DIR/app_count.sh" \
+  --set app_count update_freq=1 script="$PLUGIN_DIR/app_count.sh" \
   background.drawing=off \
-  icon.color=$BLUE \
 
 
 ##### Adding Right Items #####
@@ -270,6 +269,7 @@ sketchybar --add item weather right \
   icon.font="FiraCode Nerd Font:Bold:17.0" \
   icon.color=$TEXT \
   label.color=$TEXT \
+  display=2 \
   align=center
 
 sketchybar --add item weather.moon right \
@@ -282,7 +282,8 @@ sketchybar --add item weather.moon right \
   background.padding_right=5 \
   icon.font="FiraCode Nerd Font:Bold:17.0" \
   icon.color=$TEXT \
-  label.drawing=off
+  label.drawing=off \
+  display=2
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
