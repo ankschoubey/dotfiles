@@ -3,7 +3,7 @@ export M_SPA_DL='-Dspring.profiles.active=dev,local -Dspring-boot.run.profiles=d
 export M_eTi='-DexcludedTests=\*Integration\*'
 
 alias m='mvn'
-alias msB_r='mvn spring-boot:run '
+alias msB_r='mvn spring-boot:run -Dspring.profiles.active=dev,local -Dspring-boot.run.profiles=dev,local'
 alias mc='mvn clean'
 alias mcc='mvn clean compile'
 alias mctC='mvn clean test-compile'
