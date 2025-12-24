@@ -1,0 +1,1 @@
+alias resetGhostty='tccutil reset All com.mitchellh.ghostty'

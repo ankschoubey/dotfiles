@@ -1,0 +1,27 @@
+# Kafka Aliases
+
+# Zookeeper server start
+alias kzs='zookeeper-server-start $(brew --prefix)/etc/zookeeper/zookeeper.properties'
+# Kafka server start
+alias kss='kafka-server-start $(brew --prefix)/etc/kafka/server.properties'
+
+# Kafka Topics
+# Usage: kt <broker> --list
+# Usage: kt <broker> --describe --topic <topic-name>
+# Usage: kt <broker> --create --topic <topic-name> --partitions <num> --replication-factor <num>
+# Usage: kt <broker> --delete --topic <topic-name>
+kt() {
+  kafka-topics --bootstrap-server "$1" "${@:2}"
+}
+
+# Kafka Console Consumer
+# Usage: kcc <broker> <topic>
+kcc() {
+  kafka-console-consumer --bootstrap-server "$1" --topic "$2" --from-beginning
+}
+
+# Kafka Console Producer
+# Usage: kcp <broker> <topic>
+kcp() {
+  kafka-console-producer --bootstrap-server "$1" --topic "$2"
+}

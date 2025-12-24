@@ -1,13 +1,14 @@
 # Function to generate a new prompt file from a template
-# Usage: gen_prompt [version] <N|C> <type> <description>
+# Usage: make_prompt [version] <N|C> <type> <description>
 # If version is omitted, it will be auto-incremented.
-gen_prompt() {
+make_prompt() {
     local version
     local change_type
     local prompt_type
     local description
+    local model
 
-    if [ "$#" -eq 3 ]; then
+    if [ "$#" -eq 4 ]; then
         # Auto-versioning logic
         local latest_version=0
         if [ -d "./prompts" ]; then
@@ -20,22 +21,23 @@ gen_prompt() {
         change_type=$1
         prompt_type=$2
         description=$3
+        model=$4
         echo "Auto-incrementing version to: $version"
-    elif [ "$#" -eq 4 ]; then
+    elif [ "$#" -eq 5 ]; then
         # Manual versioning
         version=$1
         change_type=$2
         prompt_type=$3
         description=$4
+        model=$5
     else
-        echo "Usage: gen_prompt [version] <N|C> <type> <description>"
+        echo "Usage: make_prompt [version(optional)] <N|C> <type> <description> <model>"
         return 1
     fi
 
     local date_suffix=$(date +%y%m%d)
     local desc_hyphenated=$(echo "$description" | tr ' ' '-')
-
-    local filename="P${version}_${change_type}_${prompt_type}_${desc_hyphenated}.${date_suffix}.yaml"
+    local filename="P${version}_${change_type}_${prompt_type}_${desc_hyphenated}_${model}.${date_suffix}.yaml"
 
     local target_dir="./prompts"
 
@@ -59,4 +61,56 @@ gen_prompt() {
     vi "$file_path"
 }
 
-alias mp=gen_prompt
+# Function to generate a new follow-up prompt file from a template
+# Usage: make_follow_up_prompt <prompt_id> <description> <model>
+make_follow_up_prompt() {
+    if [ "$#" -ne 3 ]; then
+        echo "Usage: make_follow_up_prompt <prompt_id> <description> <model>"
+        return 1
+    fi
+
+    local original_prompt_id=$1
+    local description=$2
+    local model=$3
+
+    local original_prompt_file=$(ls -1 ./prompts | grep "^${original_prompt_id}_")
+
+    if [ -z "$original_prompt_file" ]; then
+        echo "Error: Prompt with ID $original_prompt_id not found."
+        return 1
+    fi
+
+    # Auto-increment version for the new follow-up prompt
+    local latest_version=0
+    if [ -d "./prompts" ]; then
+        latest_version=$(ls -1 ./prompts | sed -n -E 's/^P([0-9]+)_.*/\1/p' | sort -rn | head -n 1)
+        if [ -z "$latest_version" ]; then
+            latest_version=0
+        fi
+    fi
+    local new_version=$((latest_version + 1))
+
+    local date_suffix=$(date +%y%m%d)
+    local desc_hyphenated=$(echo "$description" | tr ' ' '-')
+    
+    # New filename format: P<new_version>_follow-up-<original_prompt_id>_<description>_<model>.<date>.yaml
+    local filename="P${new_version}_follow-up-${original_prompt_id}_${desc_hyphenated}_${model}.${date_suffix}.yaml"
+
+    local target_dir="./prompts"
+    local file_path="${target_dir}/${filename}"
+
+    local template_path="$DOTFILES_ROOT/ai/follow-up-prompt-template.yaml"
+
+    if [ ! -f "$template_path" ]; then
+        echo "Error: Follow-up prompt template not found at $template_path"
+        return 1
+    fi
+
+    cp "$template_path" "$file_path"
+    echo "Created follow-up prompt file: $file_path"
+
+    vi "$file_path"
+}
+
+alias pm=make_prompt
+alias pf=make_follow_up_prompt

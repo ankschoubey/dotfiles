@@ -1,0 +1,14 @@
+role: shell-scripter
+task: Add a followup prompt
+context: 
+  - background: 
+    we have a mp = make prompts alias that allows me to quickly make a good prompt. 
+  - requirement: 
+    - I want to add a similar follow up prompt template. 
+    - The follow up prompt can be found in the ai folder as follow-up-prompt.yaml
+    - suggest me an alias that can unify make prompt and follow up prompt maybe pm and pf for prompt make and prompt follow up
+after-completion:
+  - Teach me how it works so that I can work more efficiently later
+before-starting:
+  - "Ask me any questions that you feel could help you craft a better response."
+  - "Summarize this prompt & action you will take. WAIT FOR ME to ask you to continue"
