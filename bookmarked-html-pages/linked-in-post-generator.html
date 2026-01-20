@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LinkedIn Post Generator</title>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont;
+        background: #f7f7f7;
+        padding: 24px;
+        max-width: 800px;
+        margin: auto;
+      }
+
+      h1 {
+        margin-bottom: 8px;
+      }
+
+      label {
+        font-weight: 600;
+        display: block;
+        margin-top: 16px;
+        margin-bottom: 4px;
+      }
+
+      select,
+      textarea,
+      button {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+
+      textarea {
+        min-height: 120px;
+      }
+
+      button {
+        margin-top: 16px;
+        cursor: pointer;
+      }
+
+      .hint {
+        font-size: 12px;
+        color: #555;
+        margin-bottom: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LinkedIn Post Builder</h1>
+    <p class="hint">Think clearly. Write honestly. Ship fast.</p>
+
+    <label>Mental Model Question</label>
+    <select id="question">
+      <option>💡 What did I just learn the hard way?</option>
+      <option>🛠️ What system/process actually worked for me?</option>
+      <option>⚠️ What mistake should others avoid?</option>
+      <option>🔍 What do I now see clearly that I didn’t before?</option>
+    </select>
+
+    <label>Who Resonates</label>
+    <select id="resonates">
+      <option>Founders</option>
+      <option>Freelancers</option>
+      <option>Developers</option>
+      <option>Product Managers</option>
+      <option>Burnt-out builders</option>
+    </select>
+
+    <label>Their Silent Thought</label>
+    <select id="silentThought">
+      <option>"This feels familiar"</option>
+      <option>"I’ve struggled with this too"</option>
+      <option>"I don’t want this mistake"</option>
+      <option>"This person thinks clearly"</option>
+    </select>
+
+    <label>Main Post Content</label>
+    <textarea
+      id="post"
+      placeholder="Write the core of your post here..."
+    ></textarea>
+
+    <label>CTA Option</label>
+    <select id="ctaOption">
+      <option>Comment → DM: If this sounds familiar, comment “clarity” and I’ll DM you what I changed.</option>
+      <option>
+        Profile as landing page: I’m documenting what I’m learning about
+        building calmer, clearer software projects. More in my profile.
+      </option>
+      <option>
+        Light DM invitation: If you’re dealing with something similar and want a
+        second brain, happy to chat.
+      </option>
+    </select>
+
+    <label>CTA Text</label>
+    <textarea
+      id="ctaText"
+      placeholder="e.g. Comment 'scope' and I’ll DM you."
+    ></textarea>
+
+    <button onclick="copyPost()">Copy LinkedIn Post</button>
+
+    <script>
+      function copyPost() {
+        const post = document.getElementById("post").value.trim();
+        const cta = document.getElementById("ctaText").value.trim();
+
+        const finalText = post + "\n\n" + cta;
+
+        navigator.clipboard.writeText(finalText).then(() => {
+          alert("Post copied to clipboard 🚀");
+        });
+      }
+    </script>
+  </body>
+</html>
