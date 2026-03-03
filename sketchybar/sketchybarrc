@@ -79,12 +79,20 @@ sketchybar --default "${default[@]}"
 
 # Add the aerospace_workspace_change event we specified in aerospace.toml
 sketchybar --add event aerospace_workspace_change
+sketchybar --add event timer_update
+
+# Timer ticker - triggers timer updates every second
+sketchybar --add item timer_ticker right \
+  --set timer_ticker \
+    drawing=off \
+    update_freq=1 \
+    script="$CONFIG_DIR/plugins/timer_ticker.sh"
 
 # This only works for single monitor configs!
 for sid in $(aerospace list-workspaces --all); do
   #for sid in "${SPACE_IDS[@]}"; do
   sketchybar --add item space.$sid left \
-    --subscribe space.$sid aerospace_workspace_change \
+    --subscribe space.$sid aerospace_workspace_change timer_update \
     --set space.$sid \
     drawing=off \
     background.color=$SURFACE1 \
@@ -104,8 +112,80 @@ for sid in $(aerospace list-workspaces --all); do
     label.shadow.drawing=off \
     label.shadow.color=$OVERLAY0 \
     label.shadow.distance=4 \
-    click_script="aerospace workspace $sid" \
-    script="$CONFIG_DIR/plugins/aerospace.sh $sid"
+    click_script="sketchybar --set space.$sid popup.drawing=toggle" \
+    script="$CONFIG_DIR/plugins/aerospace.sh $sid" \
+    script_run_on_battery=true \
+    popup.drawing=off
+
+  # Add timer popup items for this space
+  sketchybar --add item timer_${sid}.title popup.space.$sid \
+    --set timer_${sid}.title \
+      icon="⏱" \
+      icon.color=$TEXT \
+      label="Timer" \
+      label.color=$TEXT \
+      background.drawing=off
+
+  sketchybar --add item timer_${sid}.5m popup.space.$sid \
+    --set timer_${sid}.5m \
+      icon="5m" \
+      icon.color=$TEXT \
+      label.drawing=off \
+      background.color=$SURFACE2 \
+      background.corner_radius=4 \
+      background.drawing=on \
+      click_script="$CONFIG_DIR/plugins/timer.sh set $sid 300 alert && sketchybar --trigger timer_update && sketchybar --set space.$sid popup.drawing=off"
+
+  sketchybar --add item timer_${sid}.10m popup.space.$sid \
+    --set timer_${sid}.10m \
+      icon="10m" \
+      icon.color=$TEXT \
+      label.drawing=off \
+      background.color=$SURFACE2 \
+      background.corner_radius=4 \
+      background.drawing=on \
+      click_script="$CONFIG_DIR/plugins/timer.sh set $sid 600 alert && sketchybar --trigger timer_update && sketchybar --set space.$sid popup.drawing=off"
+
+  sketchybar --add item timer_${sid}.15m popup.space.$sid \
+    --set timer_${sid}.15m \
+      icon="15m" \
+      icon.color=$TEXT \
+      label.drawing=off \
+      background.color=$SURFACE2 \
+      background.corner_radius=4 \
+      background.drawing=on \
+      click_script="$CONFIG_DIR/plugins/timer.sh set $sid 900 alert && sketchybar --trigger timer_update && sketchybar --set space.$sid popup.drawing=off"
+
+  sketchybar --add item timer_${sid}.25m popup.space.$sid \
+    --set timer_${sid}.25m \
+      icon="25m" \
+      icon.color=$TEXT \
+      label.drawing=off \
+      background.color=$SURFACE2 \
+      background.corner_radius=4 \
+      background.drawing=on \
+      click_script="$CONFIG_DIR/plugins/timer.sh set $sid 1500 alert && sketchybar --trigger timer_update && sketchybar --set space.$sid popup.drawing=off"
+
+  sketchybar --add item timer_${sid}.1hr popup.space.$sid \
+    --set timer_${sid}.1hr \
+      icon="1hr" \
+      icon.color=$TEXT \
+      label.drawing=off \
+      background.color=$SURFACE2 \
+      background.corner_radius=4 \
+      background.drawing=on \
+      click_script="$CONFIG_DIR/plugins/timer.sh set $sid 3600 alert && sketchybar --trigger timer_update && sketchybar --set space.$sid popup.drawing=off"
+
+  sketchybar --add item timer_${sid}.clear popup.space.$sid \
+    --set timer_${sid}.clear \
+      icon="✕" \
+      icon.color=$RED \
+      label="Clear" \
+      label.color=$RED \
+      background.color=$SURFACE2 \
+      background.corner_radius=4 \
+      background.drawing=on \
+      click_script="$CONFIG_DIR/plugins/timer.sh clear $sid && sketchybar --trigger timer_update && sketchybar --set space.$sid popup.drawing=off"
 done
 
 # Load Icons on startup
@@ -133,7 +213,7 @@ sketchybar --add item space_separator left \
   label.drawing=off \
   background.drawing=off \
   script="$PLUGIN_DIR/space_windows.sh" \
-  --subscribe space_separator aerospace_workspace_change front_app_switched space_windows_change
+  --subscribe space_separator aerospace_workspace_change front_app_switched space_windows_change timer_update
 
 # Front app!!
 sketchybar --add item front_app left \
