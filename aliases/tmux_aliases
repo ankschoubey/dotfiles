@@ -1,4 +1,4 @@
-
+alias ts='tmuxinator start'
 alias t='tmux'
 alias tl='tmux ls'
 alias tnS-d-s='tmux new-session -d -s'

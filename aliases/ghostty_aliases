@@ -1,1 +1,2 @@
 alias resetGhostty='tccutil reset All com.mitchellh.ghostty'
+alias analytics='/Users/ankushchoubey/Documents/Github/dotfiles-1/scripts/trello-analytics.sh'
