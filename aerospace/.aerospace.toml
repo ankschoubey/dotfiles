@@ -11,6 +11,7 @@
 after-startup-command = [
     'exec-and-forget brew services start sketchybar',
     'exec-and-forget brew services start borders',
+    'exec-and-forget $DOTFILES_ROOT/scripts/shottr-nopopup.sh',
   #'exec-and-forget open -a Breaktimer',
 ]
 
@@ -76,8 +77,8 @@ preset = 'qwerty'
 inner.horizontal = [{ monitor."LG Smart WQHD" = 10 }, { monitor.main = 12 }, 5]
 inner.vertical = [{ monitor."LG Smart WQHD" = 10 }, { monitor.main = 5 }, 5]
 outer.left = [ { monitor."LG Smart WQHD" = 10 },{ monitor.main = 10 }, 5]
-outer.bottom = [ { monitor."LG Smart WQHD" = 20 },{ monitor.main = 10 }, 5]
-outer.top = [ { monitor."LG Smart WQHD" = 50 },{ monitor.main = 15 }, 7]
+outer.bottom = [ { monitor."LG Smart WQHD" = 15 },{ monitor.main = 10 }, 5]
+outer.top = [ { monitor."LG Smart WQHD" = 40 },{ monitor.main = 10 }, 5]
 outer.right = [ { monitor."LG Smart WQHD" = 10 },{ monitor.main = 10 }, 5]
 
 # 'main' binding mode declaration
@@ -171,7 +172,9 @@ alt-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -a "Arc" || open
 alt-i = 'exec-and-forget [ -d "/Applications/Idea.app" ] && open -a "Idea" || open -a "VSCode"'
 alt-t = 'exec-and-forget open -a /Applications/Ghostty.app'
 alt-n = 'exec-and-forget $DOTFILES_ROOT/scripts/handle_heynote.sh'
+alt-s = 'exec-and-forget $DOTFILES_ROOT/scripts/open-whisperflow-if-not-opened.sh'
 ctrl-space = 'exec-and-forget $DOTFILES_ROOT/scripts/open-chatgpt-if-not-opened.sh'
+alt-backspace = 'exec-and-forget open -a "Activity Monitor"'
 
 
 [workspace-to-monitor-force-assignment]
