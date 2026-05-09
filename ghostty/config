@@ -44,7 +44,6 @@
 # resize-overlay-duration = 4s 200ms
 
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
-keybind = global:ctrl+§=toggle_quick_terminal
 
 # Merges titlebar with contents
 # macos-titlebar-style = native
@@ -96,7 +95,7 @@ keybind = cmd+s>shift+h=previous_tab
 keybind = cmd+s>comma=move_tab:-1
 keybind = cmd+s>period=move_tab:1
 
-# quick tab switch
+# quick tab switchwww
 keybind = cmd+s>1=goto_tab:1
 keybind = cmd+s>2=goto_tab:2
 keybind = cmd+s>3=goto_tab:3

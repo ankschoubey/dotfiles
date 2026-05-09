@@ -1,7 +1,7 @@
 {
 	"settings": {
 		"autoLaunch": true,
-		"breaksEnabled": true,
+		"breaksEnabled": false,
 		"notificationType": "POPUP",
 		"breakFrequencySeconds": 1680,
 		"breakLengthSeconds": 120,

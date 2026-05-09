@@ -1,6 +1,5 @@
-#!/bin/bash
 # Usage: claude_color_hook.sh <state>
-set_bg() { echo -ne "\e]11;${1}\e\\"; }
+set_bg() { echo -ne '\e]11;'${1}'\e\\'; }
 
 case "$1" in
   thinking) set_bg "#cceeff" ;;   # light blue

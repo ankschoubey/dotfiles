@@ -1,0 +1,13 @@
+role: Shell Scripter
+task: Generate Aliases / Functions to be able to create and use Prompt Tempalte Better.
+context:
+  - background: I have a prompts template in ai folder
+  - requirement:
+    - To create an alias or function that creates prompt file in following format. 
+      `P_YYYYMMDD_V{no}_{N/C}_{type}_{description separated-by-hyphen}.yaml`
+    - once the name is gathered, you need to copy prompt template and put it in the current working directory.
+output:
+  - function or alias which ever works
+self-verification:
+  - Ensure you do not hardcode path for prompt template location. use $DOTFILES which are in zshrc
+ask-for-help: "Before you provide the response, please ask me  questions that you feel could help you craft a better response. If you feel you have enough information to craft this response, please just provide it."

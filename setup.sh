@@ -30,6 +30,7 @@ ln -s "$SCRIPT_DIR/.ideavimrc" ~/.config/ideavim/ideavimrc
 ln -s "$SCRIPT_DIR/ai/kent-beck-agent.md" ~/.claude/CLAUDE.md
 ln -s "$SCRIPT_DIR/ai/kent-beck-agent.md" ~/.gemini/GEMINI.md
 
+ln -s "$SCRIPT_DIR/opencode" ~/.config/opencode
 BREAKTIMER_CONFIG_PATH="~/Library/Application Support/BreakTimer/config.json'
 rm $BREAKTIMER_CONFIG_PATH
 ln -s "$SCRIPT_DIR/breaktimer/config.json" $BREAKTIMER_CONFIG_PATH

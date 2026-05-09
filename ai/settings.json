@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/claude_color_hook.sh thinking"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/claude_color_hook.sh done"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ \"$CLAUDE_EVENT_TYPE\" = \"Stop\" ] && [ $? -ne 0 ]; then ~/.claude/claude_color_hook.sh error; else ~/.claude/claude_color_hook.sh default; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -9,6 +9,8 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+export LEFT_SYMBOL="$TERM_PROGRAM"
+
 zinit ice as"command" from"gh-r" \
           atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
           atpull"%atclone" src"init.zsh"
@@ -29,7 +31,7 @@ zinit snippet OMZP::sudo
 
 autoload -U compinit && compinit
 
-starship preset tokyo-night -o ~/.config/starship.toml
+# starship preset tokyo-night -o ~/.config/starship.toml
 
 # Aliases
 alias ai='$DOTFILES_ROOT/scripts/ai'
@@ -44,7 +46,7 @@ alias ai='$DOTFILES_ROOT/scripts/ai'
 
 function sw() {
   aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
-  osascript -e 'quit app "Terminal"'  
+  osascript -e 'quit app "Terminal"'
 }
 function title {
   printf "\033]0;%s\007" "$1"
@@ -200,7 +202,7 @@ done
 set -o vi # Set VIM Mode in Terminal
 # edit any command in vim https://www.reddit.com/r/vim/comments/9atgsj/edit_any_command_line_in_vim/
 autoload -U edit-command-line
-zle -N edit-command-line 
+zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 bindkey '^X' edit-command-line
 
@@ -227,6 +229,10 @@ source <(carapace _carapace)
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 
-if [[ "$TERM_PROGRAM" != "tmux" ]]; then
-  echo "Terminal not within Tmux"
-fi
+# Added by Antigravity
+export PATH="/Users/ankushchoubey/.antigravity/antigravity/bin:$PATH"
+
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+export PATH="/Users/ankushchoubey/.bun/bin:$PATH"

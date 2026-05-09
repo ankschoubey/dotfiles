@@ -141,6 +141,7 @@ let g:WhichKeyDesc_debug_run_to_cursor = "<leader>rr Run to cursor"
 "" ========================================================
 
 inoremap jk <Esc>
+inoremap jj <Esc>
 
 " Tab navigation
 nnoremap <A-n> :tabnext<CR>
@@ -254,6 +255,7 @@ map <leader>en <Action>(ReSharperGotoNextErrorInSolution)
 map <leader>ep <Action>(ReSharperGotoPrevErrorInSolution)
 
 " Disable Mouse"
+set mouse=
 nnoremap <Left>  :echo "Use h to move!"<CR>
 nnoremap <Down>  :echo "Use j to move!"<CR>
 nnoremap <Up>    :echo "Use k to move!"<CR>

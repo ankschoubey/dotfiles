@@ -10,9 +10,9 @@ options=(
   active_color="$magenta"
   inactive_color="$black"
   hidpi=on
-  style=round
+  #style=round
   width=6.0
-  blacklist="Screen Studio"
+  blacklist"Screen Studio"
 )
 
 borders "${options[@]}"

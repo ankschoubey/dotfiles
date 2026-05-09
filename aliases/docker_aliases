@@ -3,3 +3,31 @@ alias dc='docker compose'
 alias dcu='docker compose up'
 alias dp='docker ps'
 
+COLIMA_SOCK="unix://${HOME}/.colima/default/docker.sock"
+
+dctx() {
+  case "$1" in
+    desktop)
+      docker context use desktop-linux
+      ;;
+    colima)
+      if ! docker context ls -q | grep -q "^colima$"; then
+        docker context create colima --docker "host=${COLIMA_SOCK}"
+      fi
+      docker context use colima
+      ;;
+    *)
+      echo "Usage: dctx <desktop|colima>"
+      return 1
+      ;;
+  esac
+}
+
+dstatus() {
+  echo "Active context: $(docker context show)"
+  echo -n "Docker Desktop: "
+  if pgrep -q "Docker Desktop"; then echo "running"; else echo "stopped"; fi
+  echo -n "Colima: "
+  if colima status 2>/dev/null | grep -q "Running"; then echo "running"; else echo "stopped"; fi
+}
+

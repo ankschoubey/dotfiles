@@ -1,0 +1,184 @@
+# Dotfiles Workflow Improvements
+
+## Current Stack Summary
+
+**Core:** zsh + zinit → starship → ghostty → aerospace + sketchybar → tmux  
+**Editors:** nvim (minimal), IntelliJ (heavy IdeaVim), VSCode, Zed  
+**Dev:** Java/jenv/maven, JS/bun/node, Docker/colima, K8s, AWS  
+**AI:** opencode, claude, gemini, supermaven  
+**Productivity:** Trello→Day One pipeline, timers, Raycast, Heynote, OBS recording  
+
+---
+
+## 1. Setup / Maintainability
+
+- `setup.sh` mixes `stow` + manual `ln -s` → brittle, not idempotent
+- Missing `Brewfile.lock.json` handling
+- No `.env` template for Trello API keys / secrets
+- Scripts have hardcoded paths, inconsistent shebangs
+- No uninstall/restore script
+
+**Quick wins:**
+- [ ] Replace manual `ln -s` with `stow` or a single symlink loop
+- [ ] Add guard clauses (check if symlink already exists)
+- [ ] Create `.env.example` for secrets
+- [ ] Standardize all scripts to `#!/usr/bin/env bash` with `set -euo pipefail`
+
+---
+
+## 2. Project Context Switching (Critical for Freelancer)
+
+- **No direnv** → can't auto-load per-client env vars, Java versions, API keys
+- **No sesh config** despite installing it → missing tmux session wizard
+- **No project switcher** → jumping between client repos is manual
+- jenv is loaded every shell but no per-project `.java-version` workflow
+
+**Quick wins:**
+- [ ] Install & configure `direnv` with `.envrc` templates
+- [ ] Configure `sesh` with project bindings (`sesh connect`)
+- [ ] Add `zoxide` integration for project directories
+- [ ] Create `.java-version` + `.nvmrc` auto-switch aliases
+
+**Deeper impact:**
+- [ ] Tmuxinator/sesh project templates per client (frontend/backend/infra)
+- [ ] Single `work` command: `work <client>` → cd + tmux session + direnv + ide
+
+---
+
+## 3. Shell Performance
+
+- 5+ `eval "$(...)"` on every shell startup (starship, jenv, fzf, zoxide, carapace)
+- No lazy loading → shell starts slow
+- Missing **atuin** (synced shell history)
+
+**Quick wins:**
+- [ ] Lazy-load jenv via function wrapper (only on `java`/`mvn` call)
+- [ ] Lazy-load carapace completions
+- [ ] Install atuin + bind to Ctrl-R
+
+**Deeper impact:**
+- [ ] Profile shell startup (`zsh -xv` or `zsh-startup-timer`)
+- [ ] Move heavy inits to background or defer
+
+---
+
+## 4. Neovim — Too Minimal for Client Work
+
+- No LSP, no treesitter highlighting, no diagnostics, no formatting
+- No git integration (fugitive/gitsigns)
+- Only telescope + supermaven
+
+**Quick wins:**
+- [ ] Add treesitter for syntax highlighting
+- [ ] Add LSP config (lsp-zero or nvim-lspconfig) for Java/TS
+- [ ] Add conform.nvim for formatting
+
+**Deeper impact:**
+- [ ] Evaluate LazyVim vs maintaining own config
+- [ ] Add gitsigns + diffview for git workflow
+- [ ] Add harpoon for file navigation
+- [ ] Add which-key for discoverability
+
+---
+
+## 5. Git Workflow
+
+- `gpp` does `pull; push` blindly
+- No conventional commits helper
+- No branch naming convention enforcement
+- No PR/draft creation helpers
+- `gh-dash` installed but no custom config
+
+**Quick wins:**
+- [ ] Replace `gpp` with `gpl && gps` (fail on pull conflict)
+- [ ] Add `gc` helper for conventional commits (`gc feat "msg"`)
+- [ ] Add branch naming alias: `gbf` → `git checkout -b feat/TICKET-desc`
+
+**Deeper impact:**
+- [ ] gh-dash config with custom sections (drafts, review requested)
+- [ ] Pre-commit hooks for lint/format
+- [ ] Git worktree aliases for parallel PRs
+
+---
+
+## 6. Freelancer-Specific Missing
+
+- No time tracking CLI (toggl/clockify)
+- No invoice generation
+- No client/project note templates
+- No screenshot/recording asset organizer
+- No tunneling setup (ngrok/cloudflared) for demoing work
+- No expense tracking
+
+**Quick wins:**
+- [ ] Add toggl-cli or timewarrior aliases
+- [ ] Create `client-new` script: mkdir + README + contract template
+
+**Deeper impact:**
+- [ ] Invoice generation script from time logs
+- [ ] Project note template with standup checklist
+- [ ] Asset organizer: auto-sort screenshots by client/date
+
+---
+
+## 7. AI Tooling Sprawl
+
+- 3 separate AI CLIs with different aliases/styles
+- `AGENTS.md` duplicated in repo + `~/.config/opencode`
+- No unified prompt library across tools
+- `scripts/ai` only targets gemini
+
+**Quick wins:**
+- [ ] Single `ai` wrapper: `ai <prompt>` → route to active tool
+- [ ] Unify AGENTS.md: symlink from repo to config
+- [ ] Add model selector: `ai -m claude -p "prompt"`
+
+**Deeper impact:**
+- [ ] Central prompt library with YAML metadata
+- [ ] Auto-context injection (git diff, recent files)
+
+---
+
+## 8. macOS System Defaults
+
+- Only 2 `defaults write` commands in setup.sh
+- Could automate: dock, finder, keyboard, trackpad, screenshots, etc.
+
+**Quick wins:**
+- [ ] Dock: auto-hide, smaller icons, no recent apps
+- [ ] Finder: show path bar, default to list view
+- [ ] Screenshots: save to Downloads, disable shadow
+- [ ] Keyboard: key repeat rate, disable press-and-hold for keys
+
+**Deeper impact:**
+- [ ] Full `macos-defaults.sh` script (inspired by mathiasbynens/dotfiles)
+- [ ] Preference recorder (`pref-recorder.sh`) documented with examples
+
+---
+
+## Priority Matrix
+
+| Impact / Effort | Low Effort | High Effort |
+|----------------|------------|-------------|
+| **High Impact** | direnv + .envrc, atuin, git aliases, lazy loading | Full nvim IDE, work command, invoice system |
+| **Low Impact** | macOS defaults, Brewfile.lock | AI wrapper, asset organizer |
+
+---
+
+## Suggested First 5 Commits
+
+1. `fix(setup): idempotent symlinks + .env.example`
+2. `feat(shell): add direnv + atuin + lazy load jenv`
+3. `feat(git): conventional commit helper + safe pull-push`
+4. `feat(nvim): add lsp + treesitter + conform`
+5. `feat(freelance): client project template + time tracking alias`
+
+---
+
+## Questions to Resolve
+
+1. **Nvim stance** — Keep minimal or go full IDE?
+2. **Primary AI tool** — opencode vs claude vs gemini for daily driver?
+3. **Client count** — How many active projects? What's the biggest context-switch pain?
+4. **Time tracking** — Current tool or start fresh?
+5. **Scope** — Quick wins first or one big refactor?

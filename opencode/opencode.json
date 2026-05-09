@@ -1,0 +1,25 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["@mohak34/opencode-notifier@latest", "opencode-mobile@latest"],
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "gemma4:e2b": {
+          "name": "gemma4:e2b"
+        }
+      }
+    }
+  },
+  "mcp": {
+    "supabase": {
+      "type": "remote",
+      "url": "https://mcp.supabase.com/mcp?project_ref=otergzwwbcoaqruwajud&read_only=true&features=debugging%2Cdatabase%2Caccount%2Cfunctions%2Cdevelopment%2Cdocs%2Cbranching%2Cstorage",
+      "enabled": true
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{"status": "starting", "message": "Timer started for 20 seconds."}
+{"status": "running", "message": "Time remaining: 20 seconds", "estimated_time": "20", "progress": "0"}
+{"status": "running", "message": "Time remaining: 19 seconds", "estimated_time": "19", "progress": "5"}
+{"status": "running", "message": "Time remaining: 18 seconds", "estimated_time": "18", "progress": "10"}
+{"status": "running", "message": "Time remaining: 17 seconds", "estimated_time": "17", "progress": "15"}
+{"status": "running", "message": "Time remaining: 16 seconds", "estimated_time": "16", "progress": "20"}
+{"status": "running", "message": "Time remaining: 15 seconds", "estimated_time": "15", "progress": "25"}
+{"status": "running", "message": "Time remaining: 14 seconds", "estimated_time": "14", "progress": "30"}
+{"status": "running", "message": "Time remaining: 13 seconds", "estimated_time": "13", "progress": "35"}
+{"status": "running", "message": "Time remaining: 12 seconds", "estimated_time": "12", "progress": "40"}
+{"status": "running", "message": "Time remaining: 11 seconds", "estimated_time": "11", "progress": "45"}
+{"status": "running", "message": "Time remaining: 10 seconds", "estimated_time": "10", "progress": "50"}
+{"status": "running", "message": "Time remaining: 9 seconds", "estimated_time": "9", "progress": "55"}
+{"status": "running", "message": "Time remaining: 8 seconds", "estimated_time": "8", "progress": "60"}
+{"status": "running", "message": "Time remaining: 7 seconds", "estimated_time": "7", "progress": "65"}
+{"status": "running", "message": "Time remaining: 6 seconds", "estimated_time": "6", "progress": "70"}
+{"status": "running", "message": "Time remaining: 5 seconds", "estimated_time": "5", "progress": "75"}
+{"status": "running", "message": "Time remaining: 4 seconds", "estimated_time": "4", "progress": "80"}
+{"status": "running", "message": "Time remaining: 3 seconds", "estimated_time": "3", "progress": "85"}
+{"status": "running", "message": "Time remaining: 2 seconds", "estimated_time": "2", "progress": "90"}
+{"status": "running", "message": "Time remaining: 1 seconds", "estimated_time": "1", "progress": "95"}
+{"status": "completed", "message": "Timer finished."}

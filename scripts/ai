@@ -1,0 +1,21 @@
+#!/bin/bash
+
+AI_APPS_DIR="$DOTFILES_ROOT/ai/apps"
+
+# Check if fzf is installed
+if ! command -v fzf &> /dev/null; then
+    echo "fzf could not be found. Please install it first."
+    exit 1
+fi
+
+# Find and select a prompt file using fzf
+selected_prompt_file=$(find "$AI_APPS_DIR" -type f -name "*.yaml" | fzf)
+
+# Check if a file was selected
+if [ -z "$selected_prompt_file" ]; then
+    echo "No prompt file selected."
+    exit 0
+fi
+
+# Pass the content of the selected file to gemini
+gemini --allowed-tools "ShellTool(reminders)" -i "$(cat "$selected_prompt_file")"

@@ -207,10 +207,8 @@ done
 
 
 sketchybar --add item space_separator left \
-  --set space_separator icon="→" \
-  icon.padding_left=4 \
-  icon.color=$GREEN \
-  label.drawing=off \
+  --set space_separator drawing=off \
+  width=0 \
   background.drawing=off \
   script="$PLUGIN_DIR/space_windows.sh" \
   --subscribe space_separator aerospace_workspace_change front_app_switched space_windows_change timer_update
@@ -227,12 +225,6 @@ sketchybar --add item front_app left \
   icon.font="FiraCode Nerd Font:Regular:16.0" \
   script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched
-
-sketchybar --add item front_app_context_separator left \
-  --set front_app_context_separator icon="|" \
-  icon.color=$OVERLAY0 \
-  label.drawing=off \
-  background.drawing=off
 
 sketchybar --add item context_main right \
             --set context_main script="$DOTFILES_ROOT/sketchybar/plugins/context.sh" \
@@ -268,19 +260,6 @@ sketchybar --add item context_secondary center \
   drawing=on \
              --subscribe context_secondary aerospace_workspace_change
 
-sketchybar --add item reminders center \
-  --set reminders display=2 update_freq=30 script="$PLUGIN_DIR/reminders.sh" \
-  background.color=$SURFACE1 \
-  background.drawing=on \
-  background.height=32 \
-  background.corner_radius=0 \
-  background.padding_left=10 \
-  background.padding_right=10 \
-  icon.drawing=off \
-  label.drawing=on \
-  label.color=$TEXT \
-  drawing=on
-
 sketchybar --add item app_count right \
   --set app_count update_freq=1 script="$PLUGIN_DIR/app_count.sh" \
   background.drawing=off \
@@ -298,7 +277,9 @@ sketchybar --add item app_count right \
 # https://felixkratz.github.io/SketchyBar/config/events
 
 
-sketchybar --add item tmux_sessions left --set tmux_sessions update_freq=10 script="$PLUGIN_DIR/tmux.sh" icon.font="FiraCode Nerd Font:Bold:17.0" icon="❯" icon.color=$PEACH label.color=$TEXT background.color=$SURFACE1 background.border_color=$PEACH background.border_width=2 background.corner_radius=0 background.height=32 background.padding_left=5 background.padding_right=5 background.drawing=on width=50 align=center
+sketchybar --add item tmux_sessions left --set tmux_sessions update_freq=10 script="$PLUGIN_DIR/tmux.sh" icon.font="FiraCode Nerd Font:Bold:17.0" icon="❯" icon.color=$PEACH label.color=$TEXT background.color=$SURFACE1 background.border_color=$PEACH background.border_width=2 background.corner_radius=0 background.height=32 background.padding_left=5 background.padding_right=5 drawing=off background.drawing=on width=50 align=center popup.drawing=off click_script="$PLUGIN_DIR/tmux.sh"
+
+sketchybar --add item docker_containers left --set docker_containers update_freq=10 script="$PLUGIN_DIR/docker.sh" icon.font="FiraCode Nerd Font:Bold:15.0" icon="⬡" icon.color=$BLUE label.color=$TEXT background.color=$SURFACE1 background.border_color=$BLUE background.border_width=2 background.corner_radius=0 background.height=32 background.padding_left=10 background.padding_right=5 drawing=off background.drawing=on width=50 align=center popup.drawing=off click_script="$PLUGIN_DIR/docker.sh"
 
 sketchybar --add item clock right \
   --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
@@ -335,48 +316,7 @@ sketchybar --set battery \
    width=80 \
    align=center
 sketchybar --subscribe battery system_woke power_source_change
-sketchybar --add item swap right
-sketchybar --set swap \
-   update_freq=20 \
-   script="$PLUGIN_DIR/memswap.sh" \
-   background.color=$SURFACE1 \
-   background.drawing=on \
-   background.height=32 \
-   background.corner_radius=0 \
-   icon="" \
-   icon.font="FiraCode Nerd Font:Bold:17.0" \
-   label.font="FiraCode Nerd Font:Regular:12.0" \
-   icon.color=$TEXT \
-   label.color=$TEXT \
-   width=80 \
-   align=center
 
-sketchybar --add item weather right \
-  --set weather update_freq=1800 script="$PLUGIN_DIR/weather.sh" \
-  background.color=$SURFACE1 \
-  background.drawing=on \
-  background.height=32 \
-  background.corner_radius=0 \
-  background.padding_left=10 \
-  background.padding_right=10 \
-  icon.font="FiraCode Nerd Font:Bold:17.0" \
-  icon.color=$TEXT \
-  label.color=$TEXT \
-  display=2 \
-  align=center
-
-sketchybar --add item weather.moon right \
-  --set weather.moon icon="" \
-  background.color=$SURFACE1 \
-  background.drawing=on \
-  background.height=32 \
-  background.corner_radius=0 \
-  background.padding_left=5 \
-  background.padding_right=5 \
-  icon.font="FiraCode Nerd Font:Bold:17.0" \
-  icon.color=$TEXT \
-  label.drawing=off \
-  display=2
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update

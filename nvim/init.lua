@@ -567,6 +567,12 @@ vim.keymap.set('i', 'jk', '<Esc>', opts)
 vim.keymap.set('c', 'jk', '<C-c>', opts)
 vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
 
+-- Ctrl+Ctrl to command mode
+vim.keymap.set('n', '<C-c>', ':', opts)
+
 vim.opt.timeoutlen = 300
+
+-- Additional keymaps
+vim.keymap.set('n', '<C-c>', ':', { desc = 'Enter command mode' })
 
 require("config.lazy")

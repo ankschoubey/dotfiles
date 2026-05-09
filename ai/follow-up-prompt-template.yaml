@@ -1,0 +1,43 @@
+# FOLLOW-UP PROMPT (Based on RGCOA Continuation)
+
+role: 
+  # Same or updated role depending on next step 
+  # e.g. senior-developer, reviewer, mentor
+
+task: 
+  # Refine, debug, extend, verify, or simplify previous output
+  # e.g. "Refine the previous code to improve testability and performance"
+
+context:
+  - previous-output-summary: 
+      # Summarize or paste key result from the last run
+      # Optionally: specify what part you’re following up on
+  - refinement-goal: 
+      # What do you want improved/checked? (clarity, accuracy, nuance, structure)
+  - limit-context: 
+      # Keep or remove unrelated parts from last context
+  - use-tools: 
+      # Optional: tools to verify or test output (context7, search, etc.)
+  - ask-for:
+      # Ask model to clarify what was assumed, skipped, or generalized
+      # e.g. "List any assumptions made in your last response"
+
+output:
+  # Format for refined result (table, diff, updated mermaid, simplified code, etc.)
+
+agency:
+  # augmentation: collaborate to improve or fix last result
+  # automation: apply deterministic refinements (no rethinking entire thing)
+
+self-verification:
+  # Verify improvements or correctness — e.g. lint, compile, test, compare
+  # Ask model to show reasoning for changes ("why was this change needed?")
+
+after-completion:
+  - Teach me what improved and why it matters
+  - Show the before/after difference clearly
+  - If code: explain what pattern or anti-pattern was fixed
+
+before-starting:
+  - "Summarize what you understood from previous response."
+  - "Ask me to confirm or add details before making refinements."
