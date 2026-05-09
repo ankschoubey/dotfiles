@@ -13,7 +13,7 @@ cat > "$(dirname "$0")/chrome.sh" << SCRIPT
 # @raycast.schemaVersion 1
 # @raycast.title Chrome
 # @raycast.mode silent
-# @raycast.icon /Users/ankushchoubey/Documents/Github/dotfiles-1/icons/chrome.svg
+# @raycast.icon /Users/ankushchoubey/Documents/Github/dotfiles-1/raycast/scripts/icons/chrome.svg
 # @raycast.packageName Chrome
 # @raycast.argument1 { "type": "dropdown", "placeholder": "Profile", "optional": true, "data": $profiles }
 # TO REGENERATE DROPDOWN PROFILES (when Chrome profiles change):
