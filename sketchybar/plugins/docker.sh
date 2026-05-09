@@ -4,7 +4,7 @@ BLUE=0xff89b4fa
 TEXT=0xffcdd6f4
 SURFACE2=0xff585b70
 
-COUNT=$(docker ps -q 2>/dev/null | wc -l)
+COUNT=$(docker ps -q 2>/dev/null | grep -c .)
 if [ "$COUNT" -gt 0 ]; then
   sketchybar --set $NAME drawing=on label="$COUNT"
 else

@@ -31,6 +31,7 @@ get_app_icons() {
 TIMER_STATE=$(get_timer_state "$1")
 WORKSPACE_NUM="$1"
 APP_ICONS=$(get_app_icons "$1")
+FOCUSED_WORKSPACE="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused)}"
 
 if [[ "$TIMER_STATE" == "active:"* ]]; then
     FORMATTED=$(get_timer_display "$1")
