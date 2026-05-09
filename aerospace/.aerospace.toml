@@ -171,7 +171,7 @@ alt-shift-9 = 'move-node-to-workspace 9 --focus-follows-window'
 
 alt-b = 'exec-and-forget [ -d "/Applications/Arc.app" ] && open -a "Arc" || open -a "Safari"'
 alt-i = 'exec-and-forget [ -d "/Applications/Idea.app" ] && open -a "Idea" || open -a "VSCode"'
-alt-t = 'exec-and-forget open -a /Applications/Ghostty.app'
+alt-t = 'exec-and-forget $DOTFILES_ROOT/raycast/scripts/ghostty.sh'
 alt-n = 'exec-and-forget /Users/ankushchoubey/Documents/Github/dotfiles-1/scripts/handle_heynote.sh'
 alt-s = 'exec-and-forget $DOTFILES_ROOT/scripts/open-whisperflow-if-not-opened.sh'
 ctrl-space = 'exec-and-forget $DOTFILES_ROOT/scripts/open-chatgpt-if-not-opened.sh'
