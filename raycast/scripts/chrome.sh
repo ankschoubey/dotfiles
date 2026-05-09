@@ -22,13 +22,17 @@ for key, val in data['profile']['info_cache'].items():
 }
 
 if ! ps aux | grep -qi "[G]oogle Chrome"; then
-    open -a "/Applications/Google Chrome.app"
-    sleep 1
-fi
-
-if [ -n "$1" ] && [ "$1" != "undefined" ]; then
-    dir=$(profile_dir "$1")
-    open -n -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
+    if [ -n "$1" ] && [ "$1" != "undefined" ]; then
+        dir=$(profile_dir "$1")
+        open -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
+    else
+        open -a "/Applications/Google Chrome.app"
+    fi
 else
-    open -n -a "/Applications/Google Chrome.app"
+    if [ -n "$1" ] && [ "$1" != "undefined" ]; then
+        dir=$(profile_dir "$1")
+        open -n -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
+    else
+        open -n -a "/Applications/Google Chrome.app"
+    fi
 fi
