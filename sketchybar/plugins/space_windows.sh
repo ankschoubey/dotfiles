@@ -11,6 +11,8 @@ get_timer_state() {
 }
 
 if [ "$SENDER" = "aerospace_workspace_change" ]; then
+  sketchybar --set space.$PREV_WORKSPACE popup.drawing=off
+
   prevapps=$(aerospace list-windows --workspace "$PREV_WORKSPACE" | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
   if [ "${prevapps}" != "" ]; then
     sketchybar --set space.$PREV_WORKSPACE drawing=on

@@ -121,14 +121,8 @@ get_timer_display() {
     if [[ "$state" == "expired" ]]; then
         local timer_json
         timer_json=$(get_timer "$workspace")
-        
         local complete_action
         complete_action=$(echo "$timer_json" | jq -r '.complete_action')
-        
-        echo "$timer_json" | jq --argjson now "$(date +%s)" \
-            '.start as $s | .duration as $d | .complete_action as $ca |
-            if $ca == "alert" then "alert"
-            else ((.duration - (now - .start)) | if . < 0 then .duration else . end) | tostring | .[0:4] end' 2>/dev/null
         
         if [[ "$complete_action" == "alert" ]]; then
             echo "alert"

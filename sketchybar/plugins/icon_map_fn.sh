@@ -5,7 +5,7 @@ function icon_map() {
       icon_result=":ableton:"
       ;;
  "Activity Monitor")
-      icon_result=":activity_monitor:"
+      icon_result=""
       ;;
  "Adobe Bridge"*)
       icon_result=":adobe_bridge:"
@@ -764,7 +764,7 @@ function icon_map() {
       icon_result=":yuque:"
       ;;
  "Zed")
-      icon_result=":zed:"
+      icon_result=""
       ;;
  "Zen Browser" | "Zen")
       icon_result=":zen_browser:"

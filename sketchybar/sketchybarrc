@@ -30,14 +30,18 @@ SKY=0xff89dceb
 TEAL=0xff94e2d5
 GREEN=0xffa6e3a1
 YELLOW=0xfff9e2af
-PEACH=0xfffab387
-MAROON=0xffeba0ac
-RED=0xfff38ba8
-MAUVE=0xffcba6f7
+PEACH=0xffb0724a
+MAROON=0xffa06070
+RED=0xffc05060
+MAUVE=0xff7b5ea7
 PINK=0xfff5c2e7
 FLAMINGO=0xfff2cdcd
 ROSEWATER=0xfff5e0dc
 TRANSPARENT=0x00000000
+TOKYONIGHT_BG=0xff1a1b26
+TOKYONIGHT_DARK=0xff16161e
+
+TOKYONIGHT_BLACK=0xff0f1117
 
 # Bar and item styling
 sketchybar --bar position=top \
@@ -92,7 +96,7 @@ sketchybar --add item timer_ticker right \
 for sid in $(aerospace list-workspaces --all); do
   #for sid in "${SPACE_IDS[@]}"; do
   sketchybar --add item space.$sid left \
-    --subscribe space.$sid aerospace_workspace_change timer_update \
+    --subscribe space.$sid aerospace_workspace_change timer_update mouse.clicked \
     --set space.$sid \
     drawing=off \
     background.color=$SURFACE1 \
@@ -112,7 +116,6 @@ for sid in $(aerospace list-workspaces --all); do
     label.shadow.drawing=off \
     label.shadow.color=$OVERLAY0 \
     label.shadow.distance=4 \
-    click_script="sketchybar --set space.$sid popup.drawing=toggle" \
     script="$CONFIG_DIR/plugins/aerospace.sh $sid" \
     script_run_on_battery=true \
     popup.drawing=off
@@ -125,6 +128,16 @@ for sid in $(aerospace list-workspaces --all); do
       label="Timer" \
       label.color=$TEXT \
       background.drawing=off
+
+  sketchybar --add item timer_${sid}.1m popup.space.$sid \
+    --set timer_${sid}.1m \
+      icon="1m" \
+      icon.color=$TEXT \
+      label.drawing=off \
+      background.color=$SURFACE2 \
+      background.corner_radius=4 \
+      background.drawing=on \
+      click_script="$CONFIG_DIR/plugins/timer.sh set $sid 60 alert && sketchybar --trigger timer_update && sketchybar --set space.$sid popup.drawing=off"
 
   sketchybar --add item timer_${sid}.5m popup.space.$sid \
     --set timer_${sid}.5m \
@@ -260,11 +273,6 @@ sketchybar --add item context_secondary center \
   drawing=on \
              --subscribe context_secondary aerospace_workspace_change
 
-sketchybar --add item app_count right \
-  --set app_count update_freq=1 script="$PLUGIN_DIR/app_count.sh" \
-  background.drawing=off \
-
-
 ##### Adding Right Items #####
 # In the same way as the left items we can add items to the right side.
 # Additional position (e.g. center) are available, see:
@@ -283,12 +291,13 @@ sketchybar --add item docker_containers left --set docker_containers update_freq
 
 sketchybar --add item clock right \
   --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
-  background.color=$MAROON \
+  background.color=$MAUVE \
   background.drawing=on \
   background.height=32 \
   background.corner_radius=0 \
-  icon.color=$CRUST \
+  icon.drawing=off \
   label.color=$CRUST \
+  label.align=right \
 
 
 
