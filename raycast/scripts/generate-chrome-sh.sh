@@ -3,8 +3,8 @@ profiles=$(python3 -c "
 import json,sys
 data = json.load(sys.stdin)
 profiles = sorted(data['profile']['info_cache'].items(), key=lambda x: x[1].get('name', ''))
-names = [val['name'] for _, val in profiles]
-print(json.dumps(names))
+items = [{'title': val['name'], 'value': val['name']} for _, val in profiles]
+print(json.dumps(items))
 " < "$HOME/Library/Application Support/Google/Chrome/Local State")
 
 cat > "$(dirname "$0")/chrome.sh" << SCRIPT
@@ -12,10 +12,13 @@ cat > "$(dirname "$0")/chrome.sh" << SCRIPT
 
 # @raycast.schemaVersion 1
 # @raycast.title Chrome
-# @raycast.mode compact
-# @raycast.icon 💻
+# @raycast.mode silent
+# @raycast.icon /Users/ankushchoubey/Documents/Github/dotfiles-1/icons/chrome.svg
 # @raycast.packageName Chrome
-# @raycast.argument1 { "type": "dropdown", "placeholder": "Profile", "data": $profiles, "optional": true }
+# @raycast.argument1 { "type": "dropdown", "placeholder": "Profile", "optional": true, "data": $profiles }
+# TO REGENERATE DROPDOWN PROFILES (when Chrome profiles change):
+# 1. Run: bash raycast/scripts/generate-chrome-sh.sh
+# 2. Re-index Raycast
 
 profile_dir() {
   python3 -c "
@@ -25,7 +28,7 @@ for key, val in data['profile']['info_cache'].items():
     if val['name'] == sys.argv[1]:
         print(key)
         break
-" < "\$HOME/Library/Application Support/Google/Chrome/Local State"
+" "\$1" < "\$HOME/Library/Application Support/Google/Chrome/Local State"
 }
 
 if ! ps aux | grep -qi "[G]oogle Chrome"; then
