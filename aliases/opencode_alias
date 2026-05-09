@@ -1,1 +1,2 @@
 alias o='opencode'
+alias oc='opencode --continue'
