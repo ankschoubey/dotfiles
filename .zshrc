@@ -159,7 +159,14 @@ s() {
 
     if [ $# -eq 0 ]; then
         local selected_script
-        selected_script=$(find "${script_dirs[@]}" -maxdepth 1 -type f -print | fzf)
+        selected_script=$(
+            find "${script_dirs[@]}" -maxdepth 1 -name "*.sh" -type f -print \
+            | awk -F'/' '!seen[$NF]++' \
+            | sort \
+            | awk -F'/' '{n=$NF; sub(/\.sh$/,"",n); printf "%s\t%s\n", n, $0}' \
+            | fzf --delimiter='\t' --with-nth=1 \
+            | cut -f2
+        )
         if [ -n "$selected_script" ]; then
             bash "$selected_script"
         else
@@ -182,12 +189,34 @@ s() {
         bash "$script_path" "$@"
     else
         local selected_script
-        selected_script=$(find "${script_dirs[@]}" -maxdepth 1 -type f -print | fzf --query="$1")
+        selected_script=$(
+            find "${script_dirs[@]}" -maxdepth 1 -name "*.sh" -type f -print \
+            | awk -F'/' '!seen[$NF]++' \
+            | sort \
+            | awk -F'/' '{n=$NF; sub(/\.sh$/,"",n); printf "%s\t%s\n", n, $0}' \
+            | fzf --delimiter='\t' --with-nth=1 --query="$1" \
+            | cut -f2
+        )
         if [ -n "$selected_script" ]; then
             shift
             bash "$selected_script" "$@"
         else
         fi
+    fi
+}
+
+re() {
+    local script_dirs=("$DOTFILES_ROOT/scripts")
+    local selected_script
+    selected_script=$(
+        find "${script_dirs[@]}" -maxdepth 1 -name "ralph*.sh" -type f -print \
+        | sort \
+        | awk -F'/' '{n=$NF; sub(/\.sh$/,"",n); printf "%s\t%s\n", n, $0}' \
+        | fzf --delimiter='\t' --with-nth=1 \
+        | cut -f2
+    )
+    if [ -n "$selected_script" ]; then
+        bash "$selected_script"
     fi
 }
 
