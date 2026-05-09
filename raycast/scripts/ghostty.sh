@@ -11,4 +11,4 @@ if ! ps aux | grep -qi "[g]hostty"; then
     exit 0
 fi
 
-osascript -e 'tell app "Ghostty" to activate' -e 'tell app "System Events" to keystroke "n" using command down'
+open -n /Applications/Ghostty.app
