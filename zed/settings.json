@@ -7,8 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "icon_theme": "Catppuccin Frappé",
-  "base_keymap": "JetBrains",
+  "icon_theme": "JetBrains New UI Icons (Dark)",
   "session": {
     "trust_all_worktrees": true,
   },
@@ -20,6 +19,23 @@
     "light": "One Light",
     "dark": "Tokyo Night",
   },
+  "format_on_save": "on",
+  "formatter": "auto",
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+  },
+  "git": {
+    "inline_blame": {
+      "enabled": true,
+    },
+    "gutter": {
+      "show_commit_author": false,
+    },
+  },
+  "autosave": "on_focus_change",
+  "relative_line_numbers": true,
   "file_scan_exclusions": [
     "**/node_modules/**",
     "**/dist/**",
