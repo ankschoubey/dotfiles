@@ -205,7 +205,7 @@ s() {
     fi
 }
 
-re() {
+ra() {
     local script_dirs=("$DOTFILES_ROOT/scripts")
     local selected_script
     selected_script=$(

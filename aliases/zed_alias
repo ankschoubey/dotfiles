@@ -1,1 +1,2 @@
-
+alias z='zed .'
+alias ze='zed .; exit'
