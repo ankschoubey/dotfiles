@@ -146,6 +146,7 @@ export default function Command() {
   const [workspaces, setWorkspaces] = useState<WorkspaceInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetchWorkspaces()
@@ -176,9 +177,16 @@ export default function Command() {
     );
   }
 
-  const visibleWorkspaces = workspaces.filter(
-    (ws) => ws.windows.length > 0
-  );
+  const visibleWorkspaces = workspaces
+    .map((ws) => ({
+      ...ws,
+      windows: ws.windows.filter(
+        (win) =>
+          win.appName.toLowerCase().includes(searchText.toLowerCase()) ||
+          win.name.toLowerCase().includes(searchText.toLowerCase())
+      ),
+    }))
+    .filter((ws) => ws.windows.length > 0);
 
   if (visibleWorkspaces.length === 0) {
     return (
@@ -196,6 +204,8 @@ export default function Command() {
     <List
       searchBarPlaceholder="Search workspaces and apps..."
       navigationTitle="Workspace Switcher"
+      onSearchTextChange={setSearchText}
+      isShowingSearchBar={true}
     >
       {visibleWorkspaces.map((ws) => (
         <List.Section
