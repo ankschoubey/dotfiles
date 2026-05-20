@@ -5,15 +5,6 @@ import { useState, useEffect } from "react";
 
 const execAsync = promisify(exec);
 
-interface QuitTarget {
-  name: string;
-  description: string;
-  icon: Icon;
-  action: () => Promise<void>;
-  section: "system" | "dev" | "workspace" | "nuclear";
-  dangerous?: boolean;
-}
-
 async function quitDocker() {
   await execAsync(`colima stop 2>/dev/null || true`);
   await execAsync(`osascript -e 'tell application "Docker" to quit' 2>/dev/null || true`);
@@ -24,33 +15,8 @@ async function quitTmux() {
 }
 
 async function quitWorkspaceApps() {
-  const { stdout: currentWs } = await execAsync(`aerospace list-workspaces --focused`);
-  const ws = currentWs.trim();
-
-  const { stdout: windowsJson } = await execAsync(
-    `aerospace list-windows --workspace "${ws}" --json`
-  );
-
-  const windows = JSON.parse(windowsJson);
-
-  for (const w of windows) {
-    const wid = w["window-id"];
-    const app = w["app-name"];
-
-    await execAsync(`aerospace focus --window-id ${wid}`);
-
-    const { stdout: windowCount } = await execAsync(
-      `osascript -e 'tell application "System Events" to set frontApp to first application process whose frontmost is true' -e 'return count of windows of frontApp'`
-    );
-
-    const count = parseInt(windowCount.trim(), 10);
-
-    if (count === 1) {
-      await execAsync(`osascript -e 'tell application "${app}" to quit'`);
-    } else {
-      await execAsync(`aerospace close`);
-    }
-  }
+  const scriptPath = process.env.HOME + "/Documents/Github/dotfiles-1/raycast/scripts/quit-workspace-apps.sh";
+  await execAsync(`PATH="/opt/homebrew/bin:$PATH" bash "${scriptPath}"`);
 }
 
 const targets: QuitTarget[] = [
@@ -67,23 +33,6 @@ const targets: QuitTarget[] = [
     icon: Icon.Terminal,
     action: quitTmux,
     section: "dev",
-  },
-  {
-    name: "Workspace Apps",
-    description: "Quit all apps in current workspace",
-    icon: Icon.AppWindow,
-    action: quitWorkspaceApps,
-    section: "workspace",
-  },
-  {
-    name: "Shutdown",
-    description: "Run shutdown shortcut",
-    icon: Icon.Power,
-    action: async () => {
-      await execAsync(`shortcuts run "Shutdown"`);
-    },
-    section: "system",
-    dangerous: true,
   },
 ];
 
@@ -167,29 +116,31 @@ function KillPortInput() {
 export default function Command() {
   const [currentWs, setCurrentWs] = useState("");
   const [wsAppCount, setWsAppCount] = useState(0);
+  const [wsAppNames, setWsAppNames] = useState("");
 
   useEffect(() => {
-    execAsync("aerospace list-workspaces --focused")
+    execAsync("/opt/homebrew/bin/aerospace list-workspaces --focused")
       .then((r) => {
         const ws = r.stdout.trim();
         setCurrentWs(ws);
-        return execAsync(`aerospace list-windows --workspace "${ws}" --json`);
+        return execAsync(`/opt/homebrew/bin/aerospace list-windows --workspace "${ws}" --json`);
       })
       .then((r) => {
         const windows = JSON.parse(r.stdout);
         setWsAppCount(windows.length);
+        setWsAppNames(windows.map((w: any) => w["app-name"]).join(", "));
       })
       .catch(() => {
         setCurrentWs("");
         setWsAppCount(0);
+        setWsAppNames("");
       });
   }, []);
 
   const sections = [
-    { title: "Workspace", targets: targets.filter((t) => t.section === "workspace") },
+    { title: "Workspace", targets: [] },
     { title: "Process", targets: [] },
     { title: "Development", targets: targets.filter((t) => t.section === "dev") },
-    { title: "System", targets: targets.filter((t) => t.section === "system") },
   ];
 
   return (
@@ -202,9 +153,33 @@ export default function Command() {
           {section.title === "Workspace" && currentWs && (
             <List.Item
               key="workspace-apps"
-              title={`Workspace ${wsAppCount} Apps`}
-              accessories={[]}
-              actions={<TargetActions target={targets.find((t) => t.name === "Workspace Apps")!} />}
+              title={`Workspace ${currentWs}`}
+              subtitle={wsAppNames}
+              accessories={[
+                { tag: { value: `${wsAppCount}`, color: "primaryText" } },
+              ]}
+              actions={
+                <ActionPanel>
+                  <Action
+                    title="Quit"
+                    icon={Icon.Power}
+                    onAction={async () => {
+                      await showToast({ style: Toast.Style.Animated, title: "Quitting apps..." });
+                      try {
+                        await quitWorkspaceApps();
+                        await showToast({ style: Toast.Style.Success, title: "Quit apps" });
+                      } catch (error) {
+                        await showToast({
+                          style: Toast.Style.Failure,
+                          title: "Failed to quit apps",
+                          message: error instanceof Error ? error.message : "Unknown error",
+                        });
+                      }
+                    }}
+                    shortcut={{ modifiers: ["cmd"], key: "enter" }}
+                  />
+                </ActionPanel>
+              }
             />
           )}
           {section.title === "Process" && (
