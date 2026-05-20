@@ -1,4 +1,4 @@
-import { List, Icon, showToast, Toast, Action, ActionPanel, useExec } from "@raycast/api";
+import { List, Icon, showToast, Toast, Action, ActionPanel } from "@raycast/api";
 import { exec } from "child_process";
 import { promisify } from "util";
 import { useEffect, useState } from "react";
@@ -18,15 +18,17 @@ interface WorkspaceInfo {
   isFocused: boolean;
 }
 
+const AEROSPACE = "/opt/homebrew/bin/aerospace";
+
 async function fetchWorkspaces(): Promise<WorkspaceInfo[]> {
   const { stdout: wsList } = await execAsync(
-    `aerospace list-workspaces --all --format '%{name}' --json`
+    `${AEROSPACE} list-workspaces --all --json`
   );
 
-  const workspaces = JSON.parse(wsList) as { name: string }[];
+  const workspaces = JSON.parse(wsList) as { workspace: string }[];
 
   const { stdout: focusedWs } = await execAsync(
-    `aerospace list-workspaces --focused --format '%{name}'`
+    `${AEROSPACE} list-workspaces --focused`
   );
 
   const focused = focusedWs.trim();
@@ -34,27 +36,31 @@ async function fetchWorkspaces(): Promise<WorkspaceInfo[]> {
   const result: WorkspaceInfo[] = [];
 
   for (const ws of workspaces) {
+    const wsName = ws.workspace;
+    if (!/^\d+$/.test(wsName)) continue;
+
     try {
       const { stdout: windowsJson } = await execAsync(
-        `aerospace list-windows --workspace "${ws.name}" --json`
+        `${AEROSPACE} list-windows --workspace "${wsName}" --json`
       );
 
       const windows = JSON.parse(windowsJson) as any[];
 
       const windowInfos: WindowInfo[] = windows.map((w) => ({
-        id: w["window-id"],
-        name: w["title"] || w["app-name"],
+        id: String(w["window-id"]),
+        name: w["window-title"] || w["app-name"],
         appName: w["app-name"],
         appId: w["app-id"] || "",
       }));
 
       result.push({
-        name: ws.name,
+        name: wsName,
         windows: windowInfos,
-        isFocused: ws.name === focused,
+        isFocused: wsName === focused,
       });
-    } catch {
-      result.push({ name: ws.name, windows: [], isFocused: ws.name === focused });
+    } catch (err) {
+      console.error(`Error fetching workspace ${wsName}:`, err);
+      result.push({ name: wsName, windows: [], isFocused: wsName === focused });
     }
   }
 
@@ -62,17 +68,8 @@ async function fetchWorkspaces(): Promise<WorkspaceInfo[]> {
 }
 
 async function focusWorkspace(wsName: string) {
-  await showToast({
-    style: Toast.Style.Animated,
-    title: `Switching to Workspace ${wsName}...`,
-  });
-
   try {
-    await execAsync(`aerospace workspace "${wsName}"`);
-    await showToast({
-      style: Toast.Style.Success,
-      title: `Workspace ${wsName}`,
-    });
+    await execAsync(`${AEROSPACE} workspace "${wsName}"`);
   } catch (error) {
     await showToast({
       style: Toast.Style.Failure,
@@ -83,18 +80,9 @@ async function focusWorkspace(wsName: string) {
 }
 
 async function focusWindow(windowId: string, wsName: string) {
-  await showToast({
-    style: Toast.Style.Animated,
-    title: `Focusing window...`,
-  });
-
   try {
-    await execAsync(`aerospace workspace "${wsName}"`);
-    await execAsync(`aerospace focus --window-id "${windowId}"`);
-    await showToast({
-      style: Toast.Style.Success,
-      title: "Window focused",
-    });
+    await execAsync(`${AEROSPACE} workspace "${wsName}"`);
+    await execAsync(`${AEROSPACE} focus --window-id "${windowId}"`);
   } catch (error) {
     await showToast({
       style: Toast.Style.Failure,
@@ -139,11 +127,18 @@ function WindowActions({ window, wsName }: { window: WindowInfo; wsName: string 
 export default function Command() {
   const [workspaces, setWorkspaces] = useState<WorkspaceInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchWorkspaces()
-      .then(setWorkspaces)
-      .catch((err) => console.error(err))
+      .then((data) => {
+        setWorkspaces(data);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("fetchWorkspaces error:", err);
+        setError(err instanceof Error ? err.message : String(err));
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -151,12 +146,40 @@ export default function Command() {
     return <List isLoading={true} />;
   }
 
+  if (error) {
+    return (
+      <List>
+        <List.Item
+          title="Error loading workspaces"
+          subtitle={error}
+          icon={Icon.Warning}
+        />
+      </List>
+    );
+  }
+
+  const visibleWorkspaces = workspaces.filter(
+    (ws) => ws.windows.length > 0
+  );
+
+  if (visibleWorkspaces.length === 0) {
+    return (
+      <List>
+        <List.Item
+          title="No workspaces found"
+          subtitle="Make sure AeroSpace is running"
+          icon={Icon.Warning}
+        />
+      </List>
+    );
+  }
+
   return (
     <List
       searchBarPlaceholder="Search workspaces and apps..."
       navigationTitle="Workspace Switcher"
     >
-      {workspaces.map((ws) => (
+      {visibleWorkspaces.map((ws) => (
         <List.Section
           key={ws.name}
           title={`Workspace ${ws.name}${ws.isFocused ? " (focused)" : ""}`}
@@ -165,27 +188,18 @@ export default function Command() {
             tooltip: ws.isFocused ? "Currently focused" : `Workspace ${ws.name}`,
           }}
         >
-          {ws.windows.length === 0 ? (
+          {ws.windows.map((win) => (
             <List.Item
-              key={`${ws.name}-empty`}
-              title="(empty)"
-              icon={Icon.Minus}
-              actions={<WorkspaceActions ws={ws} />}
+              key={win.id}
+              title={win.appName}
+              subtitle={win.name !== win.appName ? win.name : undefined}
+              icon={Icon.AppWindow}
+              accessories={[
+                { tag: { value: `WS ${ws.name}`, color: ws.isFocused ? "green" : "secondaryText" } },
+              ]}
+              actions={<WindowActions window={win} wsName={ws.name} />}
             />
-          ) : (
-            ws.windows.map((win) => (
-              <List.Item
-                key={win.id}
-                title={win.appName}
-                subtitle={win.name !== win.appName ? win.name : undefined}
-                icon={Icon.AppWindow}
-                accessories={[
-                  { tag: { value: `WS ${ws.name}`, color: ws.isFocused ? "green" : "secondaryText" } },
-                ]}
-                actions={<WindowActions window={win} wsName={ws.name} />}
-              />
-            ))
-          )}
+          ))}
         </List.Section>
       ))}
     </List>
