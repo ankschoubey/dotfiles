@@ -5,10 +5,18 @@
 # @raycast.mode silent
 # @raycast.icon /Users/ankushchoubey/Documents/Github/dotfiles-1/raycast/scripts/icons/chrome.svg
 # @raycast.packageName Chrome
-# @raycast.argument1 { "type": "dropdown", "placeholder": "Profile", "optional": true, "data": [{"title": "Ankush", "value": "Ankush"}, {"title": "Business Ankush", "value": "Business Ankush"}, {"title": "Dev Flax", "value": "Dev Flax"}, {"title": "Feel And Heal", "value": "Feel And Heal"}, {"title": "Prod Svaaya", "value": "Prod Svaaya"}, {"title": "Your Chrome", "value": "Your Chrome"}] }
-# TO REGENERATE DROPDOWN PROFILES (when Chrome profiles change):
+# TO REGENERATE PROFILE LIST (when Chrome profiles change):
 # 1. Run: bash raycast/scripts/generate-chrome-sh.sh
-# 2. Re-index Raycast
+# 2. Update the PROFILES array below
+
+PROFILES=(
+  "Ankush"
+  "Business Ankush"
+  "Dev Flax"
+  "Feel And Heal"
+  "Prod Svaaya"
+  "Your Chrome"
+)
 
 profile_dir() {
   python3 -c "
@@ -21,18 +29,33 @@ for key, val in data['profile']['info_cache'].items():
 " "$1" < "$HOME/Library/Application Support/Google/Chrome/Local State"
 }
 
+# Build AppleScript dynamically
+script='tell application "Finder"
+    activate
+    set profileList to {'
+i=1
+for p in "${PROFILES[@]}"; do
+  [ $i -gt 1 ] && script="$script, "
+  script="$script\"$i. $p\""
+  ((i++))
+done
+script="$script}
+    delay 0.2
+    choose from list profileList with title \"Chrome Profile\" with prompt \"Pick a profile (or press number):\" default items {\"1. ${PROFILES[0]}\"}
+end tell"
+
+selected=$(osascript -e "$script" 2>/dev/null)
+
+[ "$selected" = "false" ] || [ -z "$selected" ] && exit 0
+
+# Strip number prefix
+profile="${selected#*. }"
+profile="${profile# }"
+
 if ! ps aux | grep -qi "[G]oogle Chrome"; then
-    if [ -n "$1" ] && [ "$1" != "undefined" ]; then
-        dir=$(profile_dir "$1")
-        open -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
-    else
-        open -a "/Applications/Google Chrome.app"
-    fi
+    dir=$(profile_dir "$profile")
+    open -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
 else
-    if [ -n "$1" ] && [ "$1" != "undefined" ]; then
-        dir=$(profile_dir "$1")
-        open -n -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
-    else
-        open -n -a "/Applications/Google Chrome.app"
-    fi
+    dir=$(profile_dir "$profile")
+    open -n -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
 fi
