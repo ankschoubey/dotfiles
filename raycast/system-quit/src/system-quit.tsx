@@ -117,6 +117,8 @@ export default function Command() {
   const [currentWs, setCurrentWs] = useState("");
   const [wsAppCount, setWsAppCount] = useState(0);
   const [wsAppNames, setWsAppNames] = useState("");
+  const [dockerCount, setDockerCount] = useState(0);
+  const [tmuxCount, setTmuxCount] = useState(0);
 
   useEffect(() => {
     execAsync("/opt/homebrew/bin/aerospace list-workspaces --focused")
@@ -135,6 +137,14 @@ export default function Command() {
         setWsAppCount(0);
         setWsAppNames("");
       });
+
+    execAsync("PATH=\"/opt/homebrew/bin:$PATH\" docker ps --format '{{.ID}}' 2>/dev/null | wc -l")
+      .then((r) => setDockerCount(parseInt(r.stdout.trim(), 10) || 0))
+      .catch(() => setDockerCount(0));
+
+    execAsync("PATH=\"/opt/homebrew/bin:$PATH\" tmux list-sessions 2>/dev/null | wc -l")
+      .then((r) => setTmuxCount(parseInt(r.stdout.trim(), 10) || 0))
+      .catch(() => setTmuxCount(0));
   }, []);
 
   const sections = [
@@ -214,7 +224,9 @@ export default function Command() {
             <List.Item
               key={target.name}
               title={target.name}
-              accessories={[]}
+              accessories={[
+                { tag: { value: `${target.name === "Docker" ? dockerCount : tmuxCount}`, color: "primaryText" } },
+              ]}
               actions={<TargetActions target={target} />}
             />
           ))}
