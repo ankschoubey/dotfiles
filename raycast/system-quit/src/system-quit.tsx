@@ -1,6 +1,7 @@
-import { List, Icon, showToast, Toast, Action, ActionPanel, confirmAlert } from "@raycast/api";
+import { List, Icon, showToast, Toast, Action, ActionPanel, confirmAlert, Form, open } from "@raycast/api";
 import { exec } from "child_process";
 import { promisify } from "util";
+import { useState, useEffect } from "react";
 
 const execAsync = promisify(exec);
 
@@ -11,12 +12,6 @@ interface QuitTarget {
   action: () => Promise<void>;
   section: "system" | "dev" | "workspace" | "nuclear";
   dangerous?: boolean;
-}
-
-async function quitAerospace() {
-  await execAsync(`osascript -e 'quit app "Aerospace"'`);
-  await execAsync(`brew services stop sketchybar`);
-  await execAsync(`brew services stop borders`);
 }
 
 async function quitDocker() {
@@ -60,14 +55,6 @@ async function quitWorkspaceApps() {
 
 const targets: QuitTarget[] = [
   {
-    name: "AeroSpace",
-    description: "Quit AeroSpace, SketchyBar, and Borders",
-    icon: Icon.Window,
-    action: quitAerospace,
-    section: "system",
-    dangerous: true,
-  },
-  {
     name: "Docker",
     description: "Stop Colima and quit Docker",
     icon: Icon.Docker,
@@ -89,16 +76,13 @@ const targets: QuitTarget[] = [
     section: "workspace",
   },
   {
-    name: "Everything",
-    description: "Quit AeroSpace, Docker, Tmux, and Workspace Apps",
+    name: "Shutdown",
+    description: "Run shutdown shortcut",
     icon: Icon.Power,
     action: async () => {
-      await quitAerospace();
-      await quitDocker();
-      await quitTmux();
-      await quitWorkspaceApps();
+      await execAsync(`shortcuts run "Shutdown"`);
     },
-    section: "nuclear",
+    section: "system",
     dangerous: true,
   },
 ];
@@ -150,12 +134,62 @@ function TargetActions({ target }: { target: QuitTarget }) {
   );
 }
 
+function KillPortInput() {
+  return (
+    <Form
+      actions={
+        <ActionPanel>
+          <Action.SubmitForm
+            title="Kill Process"
+            onSubmit={async (values: { port: string }) => {
+              if (!values.port) {
+                await showToast({ style: Toast.Style.Failure, title: "Port required" });
+                return;
+              }
+              const encodedPort = encodeURIComponent(JSON.stringify({ port: values.port }));
+              await showToast({ style: Toast.Style.Animated, title: "Opening Port Manager..." });
+              await open(`raycast://extensions/lucaschultz/port-manager/kill-listening-process?arguments=${encodedPort}`);
+            }}
+            shortcut={{ modifiers: ["cmd"], key: "enter" }}
+          />
+        </ActionPanel>
+      }
+    >
+      <Form.TextField
+        id="port"
+        title="Port"
+        placeholder="Enter port number (e.g. 3000)"
+      />
+    </Form>
+  );
+}
+
 export default function Command() {
+  const [currentWs, setCurrentWs] = useState("");
+  const [wsAppCount, setWsAppCount] = useState(0);
+
+  useEffect(() => {
+    execAsync("aerospace list-workspaces --focused")
+      .then((r) => {
+        const ws = r.stdout.trim();
+        setCurrentWs(ws);
+        return execAsync(`aerospace list-windows --workspace "${ws}" --json`);
+      })
+      .then((r) => {
+        const windows = JSON.parse(r.stdout);
+        setWsAppCount(windows.length);
+      })
+      .catch(() => {
+        setCurrentWs("");
+        setWsAppCount(0);
+      });
+  }, []);
+
   const sections = [
-    { title: "System", targets: targets.filter((t) => t.section === "system") },
-    { title: "Development", targets: targets.filter((t) => t.section === "dev") },
     { title: "Workspace", targets: targets.filter((t) => t.section === "workspace") },
-    { title: "Nuclear", targets: targets.filter((t) => t.section === "nuclear") },
+    { title: "Process", targets: [] },
+    { title: "Development", targets: targets.filter((t) => t.section === "dev") },
+    { title: "System", targets: targets.filter((t) => t.section === "system") },
   ];
 
   return (
@@ -165,17 +199,47 @@ export default function Command() {
     >
       {sections.map((section) => (
         <List.Section key={section.title} title={section.title}>
+          {section.title === "Workspace" && currentWs && (
+            <List.Item
+              key="workspace-apps"
+              title={`Workspace ${wsAppCount} Apps`}
+              accessories={[]}
+              actions={<TargetActions target={targets.find((t) => t.name === "Workspace Apps")!} />}
+            />
+          )}
+          {section.title === "Process" && (
+            <>
+              <List.Item
+                title="Process"
+                actions={
+                  <ActionPanel>
+                    <Action.Open
+                      title="Open Process"
+                      target="raycast://extensions/rolandleth/kill-process/index"
+                      shortcut={{ modifiers: [], key: "enter" }}
+                    />
+                  </ActionPanel>
+                }
+              />
+              <List.Item
+                title="Listening Process"
+                actions={
+                  <ActionPanel>
+                    <Action.Push
+                      title="Enter Port"
+                      target={<KillPortInput />}
+                      shortcut={{ modifiers: ["cmd", "shift"], key: "enter" }}
+                    />
+                  </ActionPanel>
+                }
+              />
+            </>
+          )}
           {section.targets.map((target) => (
             <List.Item
               key={target.name}
               title={target.name}
-              subtitle={target.description}
-              icon={target.icon}
-              accessories={
-                target.dangerous
-                  ? [{ tag: { value: "Destructive", color: "red" } }]
-                  : []
-              }
+              accessories={[]}
               actions={<TargetActions target={target} />}
             />
           ))}
