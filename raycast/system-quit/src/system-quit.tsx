@@ -10,10 +10,6 @@ async function quitDocker() {
   await execAsync(`osascript -e 'tell application "Docker" to quit' 2>/dev/null || true`);
 }
 
-async function quitTmux() {
-  await execAsync(`tmux kill-server`);
-}
-
 async function quitWorkspaceApps() {
   const scriptPath = process.env.HOME + "/Documents/Github/dotfiles-1/raycast/scripts/quit-workspace-apps.sh";
   await execAsync(`PATH="/opt/homebrew/bin:$PATH" bash "${scriptPath}"`);
@@ -31,10 +27,61 @@ const targets: QuitTarget[] = [
     name: "Tmux Sessions",
     description: "Kill all tmux sessions",
     icon: Icon.Terminal,
-    action: quitTmux,
+    action: async () => {},
     section: "dev",
   },
 ];
+
+function TmuxSessionsList() {
+  const [sessions, setSessions] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    execAsync("PATH=\"/opt/homebrew/bin:$PATH\" tmux list-sessions -F '#{session_name}' 2>/dev/null")
+      .then((r) => setSessions(r.stdout.trim().split("\n").filter(Boolean)))
+      .catch(() => setSessions([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  return (
+    <List
+      searchBarPlaceholder="Search tmux sessions..."
+      navigationTitle="Tmux Sessions"
+      isLoading={loading}
+    >
+      {sessions.map((session) => (
+        <List.Item
+          key={session}
+          title={session}
+          icon={Icon.Terminal}
+          actions={
+            <ActionPanel>
+              <Action
+                title="Kill Session"
+                icon={Icon.Power}
+                onAction={async () => {
+                  await showToast({ style: Toast.Style.Animated, title: `Killing ${session}...` });
+                  try {
+                    await execAsync(`PATH="/opt/homebrew/bin:$PATH" tmux kill-session -t "${session}"`);
+                    setSessions((prev) => prev.filter((s) => s !== session));
+                    await showToast({ style: Toast.Style.Success, title: `Killed ${session}` });
+                  } catch (error) {
+                    await showToast({
+                      style: Toast.Style.Failure,
+                      title: `Failed to kill ${session}`,
+                      message: error instanceof Error ? error.message : "Unknown error",
+                    });
+                  }
+                }}
+                shortcut={{ modifiers: ["cmd"], key: "enter" }}
+              />
+            </ActionPanel>
+          }
+        />
+      ))}
+    </List>
+  );
+}
 
 async function confirmAndQuit(target: QuitTarget) {
   if (target.dangerous) {
@@ -142,8 +189,8 @@ export default function Command() {
       .then((r) => setDockerCount(parseInt(r.stdout.trim(), 10) || 0))
       .catch(() => setDockerCount(0));
 
-    execAsync("PATH=\"/opt/homebrew/bin:$PATH\" tmux list-sessions 2>/dev/null | wc -l")
-      .then((r) => setTmuxCount(parseInt(r.stdout.trim(), 10) || 0))
+    execAsync("PATH=\"/opt/homebrew/bin:$PATH\" tmux list-sessions -F '#{session_name}' 2>/dev/null")
+      .then((r) => setTmuxCount(r.stdout.trim().split("\n").filter(Boolean).length))
       .catch(() => setTmuxCount(0));
   }, []);
 
@@ -221,14 +268,34 @@ export default function Command() {
             </>
           )}
           {section.targets.map((target) => (
-            <List.Item
-              key={target.name}
-              title={target.name}
-              accessories={[
-                { tag: { value: `${target.name === "Docker" ? dockerCount : tmuxCount}`, color: "primaryText" } },
-              ]}
-              actions={<TargetActions target={target} />}
-            />
+            target.name === "Tmux Sessions" ? (
+              <List.Item
+                key={target.name}
+                title={target.name}
+                accessories={[
+                  { tag: { value: `${tmuxCount}`, color: "primaryText" } },
+                ]}
+                actions={
+                  <ActionPanel>
+                    <Action.Push
+                      title="View Sessions"
+                      icon={Icon.Terminal}
+                      target={<TmuxSessionsList />}
+                      shortcut={{ modifiers: ["cmd"], key: "enter" }}
+                    />
+                  </ActionPanel>
+                }
+              />
+            ) : (
+              <List.Item
+                key={target.name}
+                title={target.name}
+                accessories={[
+                  { tag: { value: `${dockerCount}`, color: "primaryText" } },
+                ]}
+                actions={<TargetActions target={target} />}
+              />
+            )
           ))}
         </List.Section>
       ))}
