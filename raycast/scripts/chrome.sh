@@ -41,7 +41,7 @@ for p in "${PROFILES[@]}"; do
 done
 script="$script}
     delay 0.2
-    choose from list profileList with title \"Chrome Profile\" with prompt \"Pick a profile (or press number):\" default items {\"1. ${PROFILES[0]}\"}
+    choose from list profileList with title \"Chrome\" with prompt \"Select Profile:\" default items {\"1. ${PROFILES[0]}\"} OK button name \"Open\" Cancel button name \"Cancel\"
 end tell"
 
 selected=$(osascript -e "$script" 2>/dev/null)
