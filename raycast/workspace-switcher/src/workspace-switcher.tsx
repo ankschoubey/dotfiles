@@ -10,6 +10,7 @@ interface WindowInfo {
   name: string;
   appName: string;
   appId: string;
+  icon?: string;
 }
 
 interface WorkspaceInfo {
@@ -19,6 +20,16 @@ interface WorkspaceInfo {
 }
 
 const AEROSPACE = "/opt/homebrew/bin/aerospace";
+
+async function resolveAppIcon(appId: string): Promise<string | undefined> {
+  try {
+    const { stdout } = await execAsync(`mdfind "kMDItemCFBundleIdentifier == '${appId}'" -max 1`);
+    const path = stdout.trim();
+    return path || undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 async function fetchWorkspaces(): Promise<WorkspaceInfo[]> {
   const { stdout: wsList } = await execAsync(
@@ -46,12 +57,19 @@ async function fetchWorkspaces(): Promise<WorkspaceInfo[]> {
 
       const windows = JSON.parse(windowsJson) as any[];
 
-      const windowInfos: WindowInfo[] = windows.map((w) => ({
-        id: String(w["window-id"]),
-        name: w["window-title"] || w["app-name"],
-        appName: w["app-name"],
-        appId: w["app-id"] || "",
-      }));
+      const windowInfos: WindowInfo[] = await Promise.all(
+        windows.map(async (w) => {
+          const appId = w["app-id"] || "";
+          const icon = appId ? await resolveAppIcon(appId) : undefined;
+          return {
+            id: String(w["window-id"]),
+            name: w["window-title"] || w["app-name"],
+            appName: w["app-name"],
+            appId,
+            icon,
+          };
+        })
+      );
 
       result.push({
         name: wsName,
@@ -193,7 +211,7 @@ export default function Command() {
               key={win.id}
               title={win.appName}
               subtitle={win.name !== win.appName ? win.name : undefined}
-              icon={Icon.AppWindow}
+              icon={win.icon ? { fileIcon: win.icon } : Icon.AppWindow}
               accessories={[
                 { tag: { value: `WS ${ws.name}`, color: ws.isFocused ? "green" : "secondaryText" } },
               ]}
