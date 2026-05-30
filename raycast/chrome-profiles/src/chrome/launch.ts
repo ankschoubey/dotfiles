@@ -33,7 +33,7 @@ export async function openUrlsInProfile(config: ChromeConfig, urls: string[], pr
   try {
     const urlArgs = urls.map((u) => `"${u}"`).join(" ");
     await execAsync(
-      `nohup "${config.chromePath}" --profile-directory="${profileDir}" ${urlArgs} > /dev/null 2>&1 &`,
+      `nohup "${config.chromePath}" --new-window --profile-directory="${profileDir}" ${urlArgs} > /dev/null 2>&1 &`,
     );
   } catch (error) {
     await showToast({
