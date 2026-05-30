@@ -3,7 +3,6 @@ import {
   Icon,
   Action,
   ActionPanel,
-  open,
 } from "@raycast/api";
 import { useState, useEffect } from "react";
 import { defaultChromeConfig } from "./chrome/config";
@@ -60,14 +59,14 @@ function DeprecatedProfiles() {
   );
 }
 
-function BookmarkItemActions({ url }: { url: string }) {
+function BookmarkItemActions({ url, profileDir }: { url: string; profileDir: string }) {
   return (
     <ActionPanel>
       <Action
         title="Open Bookmark"
         icon={Icon.Globe}
         onAction={async () => {
-          await open(url);
+          await openUrlsInProfile(chromeConfig, [url], profileDir);
         }}
         shortcut={{ modifiers: ["cmd"], key: "enter" }}
       />
@@ -97,7 +96,7 @@ function BookmarkFolderView({
           key={`item-${item.url}`}
           title={item.name}
           icon={Icon.Globe}
-          actions={<BookmarkItemActions url={item.url} />}
+          actions={<BookmarkItemActions url={item.url} profileDir={profileDir} />}
         />
       ))}
       {folders.map((f) => (
@@ -189,7 +188,7 @@ function ProfileBookmarks({
               key={item.url}
               title={item.name}
               icon={Icon.Globe}
-              actions={<BookmarkItemActions url={item.url} />}
+              actions={<BookmarkItemActions url={item.url} profileDir={profileDir} />}
             />
           ))}
         </List.Section>
