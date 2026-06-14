@@ -55,8 +55,7 @@ function title {
 export DOTFILES_ROOT="${${(%):-%x}:A:h}"
 
 alias ls='ls -lh --color=always'
-alias vi='nvim'
-alias vim='nvim'
+
 alias ge="npm update -g @gemini-cli/cli && gemini"
 alias gey="gemini --yolo"
 alias restartAerospace='sh $DOTFILES_ROOT/scripts/restartAerospace.sh'
@@ -265,3 +264,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="/Users/ankushchoubey/.bun/bin:$PATH"
+export PATH="$PATH:/Users/ankushchoubey/Library/pnpm/bin"
+
+# bun completions
+[ -s "/Users/ankushchoubey/.bun/_bun" ] && source "/Users/ankushchoubey/.bun/_bun"

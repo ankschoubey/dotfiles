@@ -1,164 +1,9 @@
-import { List, Icon, showToast, Toast, Action, ActionPanel, confirmAlert, Form, open } from "@raycast/api";
-import { exec } from "child_process";
-import { promisify } from "util";
+import { List, Icon, showToast, Toast, Action, ActionPanel } from "@raycast/api";
 import { useState, useEffect } from "react";
-
-const execAsync = promisify(exec);
-
-async function quitDocker() {
-  await execAsync(`colima stop 2>/dev/null || true`);
-  await execAsync(`osascript -e 'tell application "Docker" to quit' 2>/dev/null || true`);
-}
-
-async function quitWorkspaceApps() {
-  const scriptPath = process.env.HOME + "/Documents/Github/dotfiles-1/raycast/scripts/quit-workspace-apps.sh";
-  await execAsync(`PATH="/opt/homebrew/bin:$PATH" bash "${scriptPath}"`);
-}
-
-const targets: QuitTarget[] = [
-  {
-    name: "Docker",
-    description: "Stop Colima and quit Docker",
-    icon: Icon.Docker,
-    action: quitDocker,
-    section: "dev",
-  },
-  {
-    name: "Tmux Sessions",
-    description: "Kill all tmux sessions",
-    icon: Icon.Terminal,
-    action: async () => {},
-    section: "dev",
-  },
-];
-
-function TmuxSessionsList() {
-  const [sessions, setSessions] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    execAsync("PATH=\"/opt/homebrew/bin:$PATH\" tmux list-sessions -F '#{session_name}' 2>/dev/null")
-      .then((r) => setSessions(r.stdout.trim().split("\n").filter(Boolean)))
-      .catch(() => setSessions([]))
-      .finally(() => setLoading(false));
-  }, []);
-
-  return (
-    <List
-      searchBarPlaceholder="Search tmux sessions..."
-      navigationTitle="Tmux Sessions"
-      isLoading={loading}
-    >
-      {sessions.map((session) => (
-        <List.Item
-          key={session}
-          title={session}
-          icon={Icon.Terminal}
-          actions={
-            <ActionPanel>
-              <Action
-                title="Kill Session"
-                icon={Icon.Power}
-                onAction={async () => {
-                  await showToast({ style: Toast.Style.Animated, title: `Killing ${session}...` });
-                  try {
-                    await execAsync(`PATH="/opt/homebrew/bin:$PATH" tmux kill-session -t "${session}"`);
-                    setSessions((prev) => prev.filter((s) => s !== session));
-                    await showToast({ style: Toast.Style.Success, title: `Killed ${session}` });
-                  } catch (error) {
-                    await showToast({
-                      style: Toast.Style.Failure,
-                      title: `Failed to kill ${session}`,
-                      message: error instanceof Error ? error.message : "Unknown error",
-                    });
-                  }
-                }}
-                shortcut={{ modifiers: ["cmd"], key: "enter" }}
-              />
-            </ActionPanel>
-          }
-        />
-      ))}
-    </List>
-  );
-}
-
-async function confirmAndQuit(target: QuitTarget) {
-  if (target.dangerous) {
-    const confirmed = await confirmAlert({
-      title: `Quit ${target.name}?`,
-      message: target.description,
-      icon: Icon.Warning,
-      primaryAction: { title: "Quit", style: "destructive" },
-      dismissAction: { title: "Cancel" },
-    });
-
-    if (!confirmed) return;
-  }
-
-  await showToast({
-    style: Toast.Style.Animated,
-    title: `Quitting ${target.name}...`,
-  });
-
-  try {
-    await target.action();
-    await showToast({
-      style: Toast.Style.Success,
-      title: `Quit ${target.name}`,
-    });
-  } catch (error) {
-    await showToast({
-      style: Toast.Style.Failure,
-      title: `Failed to quit ${target.name}`,
-      message: error instanceof Error ? error.message : "Unknown error",
-    });
-  }
-}
-
-function TargetActions({ target }: { target: QuitTarget }) {
-  return (
-    <ActionPanel>
-      <Action
-        title={target.dangerous ? "Confirm & Quit" : "Quit"}
-        icon={Icon.Power}
-        onAction={() => confirmAndQuit(target)}
-        shortcut={{ modifiers: ["cmd"], key: "enter" }}
-        style={target.dangerous ? "destructive" : undefined}
-      />
-    </ActionPanel>
-  );
-}
-
-function KillPortInput() {
-  return (
-    <Form
-      actions={
-        <ActionPanel>
-          <Action.SubmitForm
-            title="Kill Process"
-            onSubmit={async (values: { port: string }) => {
-              if (!values.port) {
-                await showToast({ style: Toast.Style.Failure, title: "Port required" });
-                return;
-              }
-              const encodedPort = encodeURIComponent(JSON.stringify({ port: values.port }));
-              await showToast({ style: Toast.Style.Animated, title: "Opening Port Manager..." });
-              await open(`raycast://extensions/lucaschultz/port-manager/kill-listening-process?arguments=${encodedPort}`);
-            }}
-            shortcut={{ modifiers: ["cmd"], key: "enter" }}
-          />
-        </ActionPanel>
-      }
-    >
-      <Form.TextField
-        id="port"
-        title="Port"
-        placeholder="Enter port number (e.g. 3000)"
-      />
-    </Form>
-  );
-}
+import { runAerospace, runBrewCommand, runScript } from "./shell";
+import { confirmAndQuit, runQuit } from "./quit-runner";
+import { targets } from "./targets";
+import { ListeningPortList } from "./listening-ports";
 
 export default function Command() {
   const [currentWs, setCurrentWs] = useState("");
@@ -168,11 +13,11 @@ export default function Command() {
   const [tmuxCount, setTmuxCount] = useState(0);
 
   useEffect(() => {
-    execAsync("/opt/homebrew/bin/aerospace list-workspaces --focused")
+    runAerospace("list-workspaces --focused")
       .then((r) => {
         const ws = r.stdout.trim();
         setCurrentWs(ws);
-        return execAsync(`/opt/homebrew/bin/aerospace list-windows --workspace "${ws}" --json`);
+        return runAerospace(`list-windows --workspace "${ws}" --json`);
       })
       .then((r) => {
         const windows = JSON.parse(r.stdout);
@@ -185,14 +30,19 @@ export default function Command() {
         setWsAppNames("");
       });
 
-    execAsync("PATH=\"/opt/homebrew/bin:$PATH\" docker ps --format '{{.ID}}' 2>/dev/null | wc -l")
+    runBrewCommand("docker", "ps --format '{{.ID}}' 2>/dev/null | wc -l")
       .then((r) => setDockerCount(parseInt(r.stdout.trim(), 10) || 0))
       .catch(() => setDockerCount(0));
 
-    execAsync("PATH=\"/opt/homebrew/bin:$PATH\" tmux list-sessions -F '#{session_name}' 2>/dev/null")
+    runBrewCommand("tmux", "list-sessions -F '#{session_name}' 2>/dev/null")
       .then((r) => setTmuxCount(r.stdout.trim().split("\n").filter(Boolean).length))
       .catch(() => setTmuxCount(0));
   }, []);
+
+  const counts: Record<string, number> = {
+    Docker: dockerCount,
+    "Tmux Sessions": tmuxCount,
+  };
 
   const sections = [
     { title: "Workspace", targets: [] },
@@ -220,19 +70,9 @@ export default function Command() {
                   <Action
                     title="Quit"
                     icon={Icon.Power}
-                    onAction={async () => {
-                      await showToast({ style: Toast.Style.Animated, title: "Quitting apps..." });
-                      try {
-                        await quitWorkspaceApps();
-                        await showToast({ style: Toast.Style.Success, title: "Quit apps" });
-                      } catch (error) {
-                        await showToast({
-                          style: Toast.Style.Failure,
-                          title: "Failed to quit apps",
-                          message: error instanceof Error ? error.message : "Unknown error",
-                        });
-                      }
-                    }}
+                    onAction={() =>
+                      runQuit("Workspace Apps", () => runScript("quit-workspace-apps.sh"))
+                    }
                     shortcut={{ modifiers: ["cmd"], key: "enter" }}
                   />
                 </ActionPanel>
@@ -254,12 +94,12 @@ export default function Command() {
                 }
               />
               <List.Item
-                title="Listening Process"
+                title="Listening Ports"
                 actions={
                   <ActionPanel>
                     <Action.Push
-                      title="Enter Port"
-                      target={<KillPortInput />}
+                      title="View Listening Ports"
+                      target={<ListeningPortList />}
                       shortcut={{ modifiers: ["cmd", "shift"], key: "enter" }}
                     />
                   </ActionPanel>
@@ -267,20 +107,21 @@ export default function Command() {
               />
             </>
           )}
-          {section.targets.map((target) => (
-            target.name === "Tmux Sessions" ? (
+          {section.targets.map((target) =>
+            target.submenu ? (
               <List.Item
                 key={target.name}
                 title={target.name}
+                icon={target.icon}
                 accessories={[
-                  { tag: { value: `${tmuxCount}`, color: "primaryText" } },
+                  { tag: { value: `${counts[target.name] ?? ""}`, color: "primaryText" } },
                 ]}
                 actions={
                   <ActionPanel>
                     <Action.Push
                       title="View Sessions"
-                      icon={Icon.Terminal}
-                      target={<TmuxSessionsList />}
+                      icon={target.icon}
+                      target={<target.submenu />}
                       shortcut={{ modifiers: ["cmd"], key: "enter" }}
                     />
                   </ActionPanel>
@@ -290,13 +131,24 @@ export default function Command() {
               <List.Item
                 key={target.name}
                 title={target.name}
+                icon={target.icon}
                 accessories={[
-                  { tag: { value: `${dockerCount}`, color: "primaryText" } },
+                  { tag: { value: `${counts[target.name] ?? ""}`, color: "primaryText" } },
                 ]}
-                actions={<TargetActions target={target} />}
+                actions={
+                  <ActionPanel>
+                    <Action
+                      title={target.dangerous ? "Confirm & Quit" : "Quit"}
+                      icon={Icon.Power}
+                      onAction={() => confirmAndQuit(target)}
+                      shortcut={{ modifiers: ["cmd"], key: "enter" }}
+                      style={target.dangerous ? "destructive" : undefined}
+                    />
+                  </ActionPanel>
+                }
               />
-            )
-          ))}
+            ),
+          )}
         </List.Section>
       ))}
     </List>

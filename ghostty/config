@@ -58,7 +58,7 @@ window-padding-x = 8
 window-padding-y = 0,2
 
 # Don't hang around
-quit-after-last-window-closed = false
+quit-after-last-window-closed = true
 
 # Fixes issues with Ctrl-R
 term = xterm-256color
@@ -124,3 +124,5 @@ copy-on-select = clipboard
 
 macos-titlebar-style = hidden 
 window-decoration = none
+
+confirm-close-surface = false

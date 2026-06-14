@@ -1,3 +1,9 @@
+SCRIPT_DIR="$(dirname "$0")"
+
+if [ "$(defaults read com.apple.controlcenter AutoHideMenuBarOption)" != "0" ]; then
+  "$SCRIPT_DIR/toggle-menubar.sh" true
+fi
+
 brew services stop sketchybar
 brew services stop borders
 pkill Breaktimer

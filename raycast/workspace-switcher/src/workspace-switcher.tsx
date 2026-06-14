@@ -10,7 +10,6 @@ interface WindowInfo {
   name: string;
   appName: string;
   appId: string;
-  icon?: string;
 }
 
 interface WorkspaceInfo {
@@ -19,17 +18,13 @@ interface WorkspaceInfo {
   isFocused: boolean;
 }
 
-const AEROSPACE = "/opt/homebrew/bin/aerospace";
-
-async function resolveAppIcon(appId: string): Promise<string | undefined> {
-  try {
-    const { stdout } = await execAsync(`mdfind "kMDItemCFBundleIdentifier == '${appId}'" -max 1`);
-    const path = stdout.trim();
-    return path || undefined;
-  } catch {
-    return undefined;
-  }
+interface RunningApp {
+  bundleId: string;
+  appName: string;
+  windowCount: number;
 }
+
+const AEROSPACE = "/opt/homebrew/bin/aerospace";
 
 async function fetchWorkspaces(): Promise<WorkspaceInfo[]> {
   const { stdout: wsList } = await execAsync(
@@ -57,19 +52,12 @@ async function fetchWorkspaces(): Promise<WorkspaceInfo[]> {
 
       const windows = JSON.parse(windowsJson) as any[];
 
-      const windowInfos: WindowInfo[] = await Promise.all(
-        windows.map(async (w) => {
-          const appId = w["app-id"] || "";
-          const icon = appId ? await resolveAppIcon(appId) : undefined;
-          return {
-            id: String(w["window-id"]),
-            name: w["window-title"] || w["app-name"],
-            appName: w["app-name"],
-            appId,
-            icon,
-          };
-        })
-      );
+      const windowInfos: WindowInfo[] = windows.map((w) => ({
+        id: String(w["window-id"]),
+        name: w["window-title"] || w["app-name"],
+        appName: w["app-name"],
+        appId: w["app-id"] || "",
+      }));
 
       result.push({
         name: wsName,
@@ -83,6 +71,58 @@ async function fetchWorkspaces(): Promise<WorkspaceInfo[]> {
   }
 
   return result;
+}
+
+async function fetchAllManagedAppIds(): Promise<Set<string>> {
+  const { stdout: wsList } = await execAsync(
+    `${AEROSPACE} list-workspaces --all --json`
+  );
+  const workspaces = JSON.parse(wsList) as { workspace: string }[];
+  const appIds = new Set<string>();
+
+  for (const ws of workspaces) {
+    try {
+      const { stdout: windowsJson } = await execAsync(
+        `${AEROSPACE} list-windows --workspace "${ws.workspace}" --json`
+      );
+      const windows = JSON.parse(windowsJson) as any[];
+      for (const w of windows) {
+        if (w["app-id"]) {
+          appIds.add(w["app-id"]);
+        }
+      }
+    } catch (err) {
+      console.error(`Error fetching windows for workspace ${ws.workspace}:`, err);
+    }
+  }
+
+  return appIds;
+}
+
+async function fetchRunningApps(): Promise<RunningApp[]> {
+  const script = `tell application "System Events"
+    set runningProcs to every process whose background only is false
+    set output to ""
+    repeat with proc in runningProcs
+      try
+        set bundleID to bundle identifier of proc
+        set procName to name of proc
+        set winCount to count of windows of proc
+        if winCount > 0 then
+          set output to output & bundleID & "|||" & procName & "|||" & winCount & linefeed
+        end if
+      end try
+    end repeat
+    return output
+  end tell`;
+
+  const { stdout } = await execAsync(`osascript -e '${script}'`);
+  const lines = stdout.trim().split("\n").filter(Boolean);
+
+  return lines.map((line) => {
+    const [bundleId, appName, winCount] = line.split("|||");
+    return { bundleId, appName, windowCount: parseInt(winCount, 10) };
+  });
 }
 
 async function focusWorkspace(wsName: string) {
@@ -105,6 +145,18 @@ async function focusWindow(windowId: string, wsName: string) {
     await showToast({
       style: Toast.Style.Failure,
       title: "Failed to focus window",
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+}
+
+async function focusApp(appName: string) {
+  try {
+    await execAsync(`open -a "${appName.replace(/"/g, '\\"')}"`);
+  } catch (error) {
+    await showToast({
+      style: Toast.Style.Failure,
+      title: "Failed to focus app",
       message: error instanceof Error ? error.message : "Unknown error",
     });
   }
@@ -142,20 +194,38 @@ function WindowActions({ window, wsName }: { window: WindowInfo; wsName: string 
   );
 }
 
+function AppActions({ app }: { app: RunningApp }) {
+  return (
+    <ActionPanel>
+      <Action
+        title="Focus App"
+        icon={Icon.AppWindow}
+        onAction={() => focusApp(app.appName)}
+        shortcut={{ modifiers: ["cmd"], key: "enter" }}
+      />
+    </ActionPanel>
+  );
+}
+
 export default function Command() {
   const [workspaces, setWorkspaces] = useState<WorkspaceInfo[]>([]);
+  const [unassignedApps, setUnassignedApps] = useState<RunningApp[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    fetchWorkspaces()
-      .then((data) => {
-        setWorkspaces(data);
+    Promise.all([fetchWorkspaces(), fetchAllManagedAppIds(), fetchRunningApps()])
+      .then(([wsData, managedIds, runningApps]) => {
+        setWorkspaces(wsData);
+        const unassigned = runningApps.filter(
+          (app) => !managedIds.has(app.bundleId)
+        );
+        setUnassignedApps(unassigned);
         setError(null);
       })
       .catch((err) => {
-        console.error("fetchWorkspaces error:", err);
+        console.error("fetch error:", err);
         setError(err instanceof Error ? err.message : String(err));
       })
       .finally(() => setLoading(false));
@@ -169,13 +239,15 @@ export default function Command() {
     return (
       <List>
         <List.Item
-          title="Error loading workspaces"
+          title="Error loading data"
           subtitle={error}
           icon={Icon.Warning}
         />
       </List>
     );
   }
+
+  const hasUnassigned = unassignedApps.length > 0;
 
   const visibleWorkspaces = workspaces
     .map((ws) => ({
@@ -188,11 +260,15 @@ export default function Command() {
     }))
     .filter((ws) => ws.windows.length > 0);
 
-  if (visibleWorkspaces.length === 0) {
+  const filteredUnassigned = unassignedApps.filter(
+    (app) => app.appName.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  if (visibleWorkspaces.length === 0 && filteredUnassigned.length === 0) {
     return (
       <List>
         <List.Item
-          title="No workspaces found"
+          title="No results found"
           subtitle="Make sure AeroSpace is running"
           icon={Icon.Warning}
         />
@@ -221,7 +297,7 @@ export default function Command() {
               key={win.id}
               title={win.appName}
               subtitle={win.name !== win.appName ? win.name : undefined}
-              icon={win.icon ? { fileIcon: win.icon } : Icon.AppWindow}
+              icon={win.appId ? { appIcon: win.appId } : Icon.AppWindow}
               accessories={[
                 { tag: { value: `WS ${ws.name}`, color: ws.isFocused ? "green" : "secondaryText" } },
               ]}
@@ -230,6 +306,25 @@ export default function Command() {
           ))}
         </List.Section>
       ))}
+      {hasUnassigned && filteredUnassigned.length > 0 && (
+        <List.Section
+          title="Unassigned Apps"
+          subtitle="Running apps not in any workspace"
+        >
+          {filteredUnassigned.map((app) => (
+            <List.Item
+              key={app.bundleId}
+              title={app.appName}
+              subtitle={`${app.windowCount} window${app.windowCount > 1 ? "s" : ""}`}
+              icon={{ appIcon: app.bundleId }}
+              accessories={[
+                { tag: { value: "Unassigned", color: "orange" } },
+              ]}
+              actions={<AppActions app={app} />}
+            />
+          ))}
+        </List.Section>
+      )}
     </List>
   );
 }

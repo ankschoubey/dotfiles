@@ -145,7 +145,7 @@ alt-shift-minus = 'resize smart -50'
 alt-shift-equal = 'resize smart +50'
 
 # Reload config
-alt-shift-r = 'reload-config'
+alt-shift-r = 'exec-and-forget $DOTFILES_ROOT/scripts/reload-aerospace.sh'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1'
@@ -169,12 +169,14 @@ alt-shift-7 = 'move-node-to-workspace 7 --focus-follows-window'
 alt-shift-8 = 'move-node-to-workspace 8 --focus-follows-window'
 alt-shift-9 = 'move-node-to-workspace 9 --focus-follows-window'
 
-alt-b = 'exec-and-forget $DOTFILES_ROOT/raycast/scripts/chrome.sh'
+#alt-b = 'exec-and-forget $DOTFILES_ROOT/raycast/scripts/chrome.sh'
 alt-i = 'exec-and-forget [ -d "/Applications/Idea.app" ] && open -a "Idea" || open -a "VSCode"'
 alt-t = 'exec-and-forget $DOTFILES_ROOT/raycast/scripts/ghostty.sh'
 alt-n = 'exec-and-forget /Users/ankushchoubey/Documents/Github/dotfiles-1/scripts/handle_heynote.sh'
+alt-w = 'exec-and-forget $DOTFILES_ROOT/scripts/handle_whatsapp.sh'
 #alt-s = 'exec-and-forget $DOTFILES_ROOT/scripts/open-whisperflow-if-not-opened.sh'
 ctrl-space = 'exec-and-forget $DOTFILES_ROOT/scripts/open-chatgpt-if-not-opened.sh'
+alt-d = 'exec-and-forget $DOTFILES_ROOT/scripts/handle_dayone.sh'
 alt-backspace = 'exec-and-forget open -a "Activity Monitor"'
 # alt-backspace is Cmd+Delete on Mac keyboards
 
@@ -219,6 +221,10 @@ alt-shift-s= 'mode service'
 # if.window-title-regex-substring = 'Raycast'
 [[on-window-detected]]
 if.app-id = 'com.heynote.app'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'net.whatsapp.WhatsApp'
 run = 'layout floating'
 
 

@@ -1,0 +1,6 @@
+export EDITOR='nvim'
+
+alias vi='nvim'
+alias vim='nvim'
+alias v='vi .'
+alias vR='rm -rf ~/.local/share/nvim ~/.cache/nvim ~/.local/state/nvim'

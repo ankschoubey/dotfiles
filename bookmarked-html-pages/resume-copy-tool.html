@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Copy Tool</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; padding: 20px; max-width: 900px; margin: 0 auto; }
+h1 { font-size: 1.5rem; margin-bottom: 20px; color: #111; }
+h2 { font-size: 1.1rem; margin-bottom: 8px; color: #222; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+h3 { font-size: 0.95rem; margin-bottom: 4px; color: #444; }
+.entry { background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.field { margin-bottom: 8px; }
+.field-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.field-value { font-size: 0.9rem; color: #222; white-space: pre-wrap; word-break: break-word; }
+.copy-btn { float: right; font-size: 0.75rem; padding: 4px 10px; border: 1px solid #ccc; border-radius: 4px; background: #fafafa; cursor: pointer; color: #555; }
+.copy-btn:hover { background: #e8e8e8; }
+.copy-btn.copied { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+.section { margin-bottom: 24px; }
+.clearfix::after { content: ""; clear: both; display: table; }
+pre { display: inline; }
+</style>
+</head>
+<body>
+<h1>Resume Copy Tool</h1>
+
+<div class="section">
+  <h2>Work Experience</h2>
+
+  <div class="entry">
+    <div class="clearfix"><h3>Freelance Full Stack Developer</h3><button class="copy-btn" data-target="we1">Copy All</button></div>
+    <div id="we1">
+      <div class="field"><div class="field-label">Company</div><div class="field-value">Self Employed</div></div>
+      <div class="field"><div class="field-label">Dates</div><div class="field-value">10/2025 – Present</div></div>
+      <div class="field"><div class="field-label">Role Description</div><div class="field-value">Built a full-service aggregation product for a startup (svaaya.com) as a solo developer using React (with Tailwind & React Query), Spring Boot, and Postgres — owning everything end-to-end. Implemented multi-user roles, payment receiving and routing, email and WhatsApp integrations, image uploads, mobile responsive design, and took all architectural and deployment decisions from infrastructure setup to production rollout, and helped the founders refine product features.
+Building internal tools + subscription-based web app for flax using Supabase and CloudFlare Workers.</div></div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="clearfix"><h3>Backend Developer L4</h3><button class="copy-btn" data-target="we2">Copy All</button></div>
+    <div id="we2">
+      <div class="field"><div class="field-label">Company</div><div class="field-value">The Real Brokerage (Product-Based)</div></div>
+      <div class="field"><div class="field-label">Dates</div><div class="field-value">2/2024 – 9/2025</div></div>
+      <div class="field"><div class="field-label">Role Description</div><div class="field-value">Developed Backend APIs over Spring Data JPA with PostgreSQL. Messages with Kafka. Also, worked with DynamoDB.
+Worked on problems with a rich domain implemented with DDD principles. Delivered a large feature involving major changes to the existing system.
+Created RFCs. Read PRDs. Collaborated with multiple teams.
+Practiced Continuous Deployment to PROD, ensuring deployments are backwards compatible.
+Engineering Culture:
+Suggested improvements for clean code and better maintainable architecture. Grouping to pack. Introducing Linters in the pipeline. Backward Compatibility Testing. Automating code review points with ArchUnit.</div></div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="clearfix"><h3>Full Stack Developer</h3><button class="copy-btn" data-target="we3">Copy All</button></div>
+    <div id="we3">
+      <div class="field"><div class="field-label">Company</div><div class="field-value">NimbleWork</div></div>
+      <div class="field"><div class="field-label">Dates</div><div class="field-value">11/2021 – 2/2024</div></div>
+      <div class="field"><div class="field-label">Role Description</div><div class="field-value">Frontend:
+- Built a table component in React with Drag and Drop of columns, data entry, pagination, and filtering.
+- Architected redux state for performance and maintainability with normalization and optimistic updates (updates where UI changes first and backend actions happen in the background).
+- Architected and guided team for implementation of resilient tests with Page Object design and other clean test strategies. Wrote tests in Jest, Enzyme, and TestCafe.
+
+Backend:
+- Architected and implemented a crucial Event Sourcing Framework used for multiple entities.
+- Built two REST API Query languages (EL), including an OData Evaluator that transpiles to MongoDB queries.
+- Architected and developed the OAuth 2.0 Server and made scoping policy and gateway configuration decisions.
+- Built 6 event-driven reactive microservices with Spring Webflux, Kafka, and MongoDB that support 5 products.
+- Build synchronous request-response over Kafka using Redis. Developed integration apps for Slack, Tray, and Zapier. Consumed GraphQL.
+- Streaming file upload and streaming from AWS S3; OAuth flow with 3rd party; API documentation using OpenAPI.
+- Practiced Test Driven Development (TDD); Automated with Selenium.
+
+Architecture:
+- Introduced architecture testing, page object model, and conventional commits to increase code quality and maintainability. Initiated a plugin architecture idea and implementation strategy for a significant product revamp.
+
+Engineering Culture:
+- Conducted training sessions on BDD, TDD, Scrum, and other practices for developers and product teams.
+- Wrote technical blog posts. Improved the team's deployment frequency when I was the scrum master.</div></div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="clearfix"><h3>System Engineer</h3><button class="copy-btn" data-target="we4">Copy All</button></div>
+    <div id="we4">
+      <div class="field"><div class="field-label">Company</div><div class="field-value">Tata Consultancy Services</div></div>
+      <div class="field"><div class="field-label">Dates</div><div class="field-value">7/2018 – 11/2021</div></div>
+      <div class="field"><div class="field-label">Role Description</div><div class="field-value">Frontend:
+- Developed 20+ features in Angular. Reduced response time per click from 8 seconds to 300ms. Designed a customizable infographics library for Angular. Made apps responsive from 4K TV to mobile; upgraded Angular from v4 to v12: developed and released Progressive Web App (PWA).
+
+Backend:
+- Developed an approval pipeline involving multiple approvers and approver groups, Spring Boot REST API endpoints, Spring Batch job for loading data into the application, Unit Testing with Mockito, Spring Data JPA CRUD operations, and upgraded Spring Boot from 1.5 to 2.5.
+
+Database:
+- Reduced data processing time for an application from 4 hours to 2 minutes compared to the previous method (Excel) by designing data pipelines and batch jobs in SQL Server. Made an Oracle SQL script for data migration from an old application. Created an automated DB Deployment script for Liquibase in XML and SQL Format.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Education</h2>
+
+  <div class="entry">
+    <div class="clearfix"><h3>Mumbai University</h3><button class="copy-btn" data-target="edu1">Copy All</button></div>
+    <div id="edu1">
+      <div class="field"><div class="field-label">Degree</div><div class="field-value">B.A.</div></div>
+      <div class="field"><div class="field-label">GPA</div><div class="field-value">7.14</div></div>
+      <div class="field"><div class="field-label">Years</div><div class="field-value">2015 – 2018</div></div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="clearfix"><h3>MSBTE</h3><button class="copy-btn" data-target="edu2">Copy All</button></div>
+    <div id="edu2">
+      <div class="field"><div class="field-label">Degree</div><div class="field-value">B.E. in Computer Engineering</div></div>
+      <div class="field"><div class="field-label">GPA</div><div class="field-value">82.18%</div></div>
+      <div class="field"><div class="field-label">Years</div><div class="field-value">– 2015</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Links</h2>
+  <div class="entry">
+    <div class="clearfix"><h3>Website</h3><button class="copy-btn" data-target="links">Copy All</button></div>
+    <div id="links">
+      <div class="field"><div class="field-value">https://ankushchoubey.com</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const target = document.getElementById(this.dataset.target);
+    const text = target.innerText.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      this.textContent = 'Copied!';
+      this.classList.add('copied');
+      setTimeout(() => {
+        this.textContent = 'Copy All';
+        this.classList.remove('copied');
+      }, 2000);
+    });
+  });
+});
+</script>
+</body>
+</html>
