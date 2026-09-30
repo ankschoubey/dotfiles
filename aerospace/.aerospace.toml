@@ -13,6 +13,7 @@ after-startup-command = [
     'exec-and-forget brew services start borders',
     'exec-and-forget open -a "AutoRaise"',
     'exec-and-forget $DOTFILES_ROOT/scripts/shottr-nopopup.sh',
+    'exec-and-forget $DOTFILES_ROOT/scripts/open-executor-agent-pick-next.sh',
   #'exec-and-forget open -a Breaktimer',
 ]
 

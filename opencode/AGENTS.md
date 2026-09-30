@@ -11,15 +11,17 @@ Code/commits/PRs: normal. Off: "stop caveman" / "normal mode".
 - Use diagram/arrows where ever possible to show flow
 - Todo list should be list of test names
 
-Use `npm run typecheck` for type checking.
+Repo has an `npm` `typecheck` script? Use `npm run typecheck` for type checking.
+No root `package.json`? Scripts are verified by running them.
 
-Check [./CONTEXT.md](./CONTEXT.md) for terminology questions.
-
-For user-facing changes, add a changeset to `.changeset`. Check all changesets there first to see if there are duplicates. We use `@changesets/cli`, but you can create/edit the file manually. Make all changesets `patch` (since we're pre-1.0). Use `package.json#name` for the name.
+For user-facing changes in a package repo, add a changeset to `.changeset`. Check all changesets there first to see if there are duplicates. We use `@changesets/cli`, but you can create/edit the file manually. Make all changesets `patch` (since we're pre-1.0). Use `package.json#name` for the name.
 
 When changing public-facing behavior, check `README.md` to see if the documentation needs updating.
 
 ## Agent skills
+
+These three apply to the `mattpocock/sandcastle` repo only. Elsewhere, read that
+repo's own `AGENTS.md` first.
 
 ### Issue tracker
 
