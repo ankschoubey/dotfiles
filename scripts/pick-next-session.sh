@@ -2,6 +2,6 @@
 
 export PATH="$HOME/.local/bin:$PATH"
 
-cd /Users/ankushchoubey/Documents/Github/executor-agent || exit 1
+cd "${1:?usage: pick-next-session.sh <project-dir>}" || exit 1
 
 exec "$HOME/.local/bin/agent" "/pick-next"
