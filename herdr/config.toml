@@ -1,0 +1,48 @@
+# Herdr config — keybindings aligned with tmux/.tmux.conf
+# Symlinked to ~/.config/herdr/config.toml (see setup.sh).
+# After edits: herdr server reload-config
+
+onboarding = false
+
+[ui.toast]
+delivery = "herdr"
+
+[ui]
+status_indicators = "dots"
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[keys]
+# tmux: set -g prefix C-s
+prefix = "ctrl+s"
+
+# tmux: bind v split-window -v (panes stacked)
+split_vertical = "prefix+v"
+# tmux: bind b split-window -h (panes side by side)
+split_horizontal = "prefix+b"
+toggle_sidebar = "prefix+a"
+
+# tmux: bind h/j/k/l select-pane (k → herdr-bar command bar below)
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+shift+k"
+focus_pane_right = "prefix+l"
+
+# tmux: bind r source-file ~/.tmux.conf (Herdr default resize_mode uses prefix+r)
+reload_config = "prefix+r"
+resize_mode = "prefix+shift+r"
+
+# Keep familiar tmux-style pane/tab helpers from Herdr defaults
+close_pane = "prefix+x"
+zoom = "prefix+z"
+new_tab = "prefix+c"
+detach = "prefix+q"
+
+# herdr-bar: command palette (plugin install: jeffarese/herdr-bar)
+[[keys.command]]
+key = "prefix+k"
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"

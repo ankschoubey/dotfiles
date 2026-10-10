@@ -11,6 +11,11 @@ ln -s "$SCRIPT_DIR/agents" ~/.agents
 ln -s "$SCRIPT_DIR/sketchybar" ~/.config/sketchybar
 ln -s "$SCRIPT_DIR/ghostty" ~/.config/ghostty
 ln -s "$SCRIPT_DIR/neofetch" ~/.config/neofetch
+mkdir -p ~/.config/herdr
+if [ -f ~/.config/herdr/config.toml ] && [ ! -L ~/.config/herdr/config.toml ]; then
+  mv ~/.config/herdr/config.toml ~/.config/herdr/config.toml.bak."$(date +%Y%m%d%H%M%S)"
+fi
+ln -sf "$SCRIPT_DIR/herdr/config.toml" ~/.config/herdr/config.toml
 
 ln -s "$SCRIPT_DIR/jankyborders" ~/.config/borders
 ln -s "$SCRIPT_DIR/starship/tokyo-night.toml" ~/.config/starship.toml
