@@ -21,4 +21,3 @@ declare namespace Arguments {
   /** Arguments passed to the `chrome-profiles` command */
   export type ChromeProfiles = {}
 }
-

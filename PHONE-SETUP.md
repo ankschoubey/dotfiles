@@ -10,7 +10,7 @@ The following document is an 45-min alternative to setup my phone from scratch.
 
 - WhatsApp - [iOS](https://apps.apple.com/in/app/whatsapp-messenger/id310633997)
 - Trello - [iOS](https://apps.apple.com/in/app/trello-organize-anything/id461504587)
-- YouTube Music 
+- YouTube Music
 
 - Day One - [iOS](https://apps.apple.com/in/app/day-one-journal-private-diary/id1044867788)
 
@@ -19,7 +19,7 @@ The following document is an 45-min alternative to setup my phone from scratch.
 - Google Maps
 - Truecaller
 
-- Banking 
+- Banking
   - Google Pay
   - Kotal Neo
   - iMobile
@@ -42,7 +42,7 @@ The following document is an 45-min alternative to setup my phone from scratch.
 
 2 Pages
 
-1. First Page 
+1. First Page
 
 Safari Reading List - Widget (4x4)
 
@@ -52,7 +52,7 @@ Reminders App - List: 'Skim, Group, Select and Start' (A modified name for Today
 
 Music App (4x2)
 
-## Glance view 
+## Glance view
 
 Calendar (4x4)
 Reminders List (4x4)
@@ -61,4 +61,3 @@ Reading List (4x2)
 ## Wallaper
 
 ## Settings
-

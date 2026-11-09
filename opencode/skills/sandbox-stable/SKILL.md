@@ -103,8 +103,8 @@ This path does **not** switch you to `@next`.
 
 ## 4. Before you ship
 
-- Worker package and container image on the **same stable** line  
-- Typecheck against installed stable types  
-- No live secrets in sandbox env  
-- If using deprecated transports/helpers, finish or track [2026 deprecation](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) cleanup  
-- When the team is ready for 1.0, use **`sandbox-migrate-to-next`**—do not force cutover unprompted  
+- Worker package and container image on the **same stable** line
+- Typecheck against installed stable types
+- No live secrets in sandbox env
+- If using deprecated transports/helpers, finish or track [2026 deprecation](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) cleanup
+- When the team is ready for 1.0, use **`sandbox-migrate-to-next`**—do not force cutover unprompted

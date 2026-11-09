@@ -13,9 +13,9 @@ fi
 
 if [ "$SENDER" = "clicked" ]; then
   sketchybar --set tmux_sessions popup.drawing=toggle
-  
+
   sketchybar --remove "popup.tmux_sessions.*" 2>/dev/null
-  
+
   tmux list-sessions -F '#{session_name}' 2>/dev/null | while IFS= read -r session; do
     [ -z "$session" ] && continue
     windows=$(tmux list-windows -t "$session" -F '#{window_index}: #{window_name}' 2>/dev/null | tr '\n' ' ')
@@ -31,6 +31,6 @@ if [ "$SENDER" = "clicked" ]; then
         background.padding_left=5 \
         background.padding_right=5
   done
-  
+
   sketchybar --update
 fi

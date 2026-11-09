@@ -21,4 +21,3 @@ declare namespace Arguments {
   /** Arguments passed to the `app-launcher` command */
   export type AppLauncher = {}
 }
-

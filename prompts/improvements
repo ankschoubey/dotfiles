@@ -2,11 +2,11 @@
 
 ## Current Stack Summary
 
-**Core:** zsh + zinit → starship → ghostty → aerospace + sketchybar → tmux  
-**Editors:** nvim (minimal), IntelliJ (heavy IdeaVim), VSCode, Zed  
-**Dev:** Java/jenv/maven, JS/bun/node, Docker/colima, K8s, AWS  
-**AI:** opencode, claude, gemini, supermaven  
-**Productivity:** Trello→Day One pipeline, timers, Raycast, Heynote, OBS recording  
+**Core:** zsh + zinit → starship → ghostty → aerospace + sketchybar → tmux
+**Editors:** nvim (minimal), IntelliJ (heavy IdeaVim), VSCode, Zed
+**Dev:** Java/jenv/maven, JS/bun/node, Docker/colima, K8s, AWS
+**AI:** opencode, claude, gemini, supermaven
+**Productivity:** Trello→Day One pipeline, timers, Raycast, Heynote, OBS recording
 
 ---
 

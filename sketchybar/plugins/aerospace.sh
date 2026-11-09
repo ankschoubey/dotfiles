@@ -24,12 +24,12 @@ get_app_icons() {
     local sid="$1"
     local apps
     apps=$(aerospace list-windows --workspace "$sid" 2>/dev/null | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
-    
+
     if [[ -z "$apps" ]]; then
         echo ""
         return
     fi
-    
+
     local icon_strip=""
     while read -r app; do
         icon_strip+=" $("$PLUGIN_DIR/icon_map_fn.sh" "$app")"

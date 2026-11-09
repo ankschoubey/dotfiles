@@ -1,15 +1,20 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 brew bundle
-stow .
+
+# Stow packages explicitly (never `stow .`: repo root holds non-package
+# dirs like scripts/, ai/, raycast/ that must not link into $HOME).
+# Each package dir mirrors $HOME, e.g. ghostty/.config/ghostty/config.
+stow -t ~ zsh ghostty aerospace nvim
+
+# Bind pre-commit hooks for this clone (no-op if pre-commit absent).
+command -v pre-commit >/dev/null && pre-commit install --install-hooks
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ln -s "$SCRIPT_DIR/aerospace/.aerospace.toml" ~/.aerospace.toml
 ln -s "$SCRIPT_DIR/agents" ~/.agents
 ln -s "$SCRIPT_DIR/sketchybar" ~/.config/sketchybar
-ln -s "$SCRIPT_DIR/ghostty" ~/.config/ghostty
 ln -s "$SCRIPT_DIR/neofetch" ~/.config/neofetch
 mkdir -p ~/.config/herdr
 if [ -f ~/.config/herdr/config.toml ] && [ ! -L ~/.config/herdr/config.toml ]; then
@@ -24,11 +29,8 @@ if [ -f ~/.zshrc ] && [ ! -L ~/.zshrc ]; then
   mv ~/.zshrc ~/.local-zshrc
 fi
 mkdir -p ~/config
-ln -s "$SCRIPT_DIR/.zshrc" ~/.zshrc
-ln -s "$SCRIPT_DIR/.local-zshrc" ~/.local-zshrc
 ln -s "$SCRIPT_DIR/.ideavimrc" ~/.ideavimrc
 ln -s "$SCRIPT_DIR/.vimrc" ~/.vimrc
-ln -s "$SCRIPT_DIR/nvim" ~/.config/nvim
 ln -s "$SCRIPT_DIR/tmux" ~/.config/tmux
 ln -s "$SCRIPT_DIR/tmux/.tmux.conf" ~/.tmux.conf
 ln -s "$SCRIPT_DIR/.ideavimrc" ~/.config/ideavim/ideavimrc

@@ -26,7 +26,7 @@ for key, val in data['profile']['info_cache'].items():
     if val['name'] == sys.argv[1]:
         print(key)
         break
-" "$1" < "$HOME/Library/Application Support/Google/Chrome/Local State"
+" "$1" <"$HOME/Library/Application Support/Google/Chrome/Local State"
 }
 
 # Build AppleScript dynamically
@@ -53,9 +53,9 @@ profile="${selected#*. }"
 profile="${profile# }"
 
 if ! ps aux | grep -qi "[G]oogle Chrome"; then
-    dir=$(profile_dir "$profile")
-    open -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
+  dir=$(profile_dir "$profile")
+  open -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
 else
-    dir=$(profile_dir "$profile")
-    open -n -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
+  dir=$(profile_dir "$profile")
+  open -n -a "/Applications/Google Chrome.app" --args --profile-directory="$dir"
 fi

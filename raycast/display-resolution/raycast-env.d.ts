@@ -21,4 +21,3 @@ declare namespace Arguments {
   /** Arguments passed to the `display-resolution` command */
   export type DisplayResolution = {}
 }
-

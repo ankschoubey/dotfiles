@@ -88,7 +88,7 @@ keybind = cmd+s>x=close_surface
 
 keybind = cmd+s>n=new_window
 
-# tabs 
+# tabs
 keybind = cmd+s>c=new_tab
 keybind = cmd+s>shift+l=next_tab
 keybind = cmd+s>shift+h=previous_tab
@@ -122,7 +122,7 @@ keybind = cmd+s>e=equalize_splits
 # other
 copy-on-select = clipboard
 
-macos-titlebar-style = hidden 
+macos-titlebar-style = hidden
 window-decoration = none
 
 confirm-close-surface = false

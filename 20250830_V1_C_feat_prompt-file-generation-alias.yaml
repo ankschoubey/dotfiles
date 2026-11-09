@@ -3,7 +3,7 @@ task: Generate Aliases / Functions to be able to create and use Prompt Tempalte 
 context:
   - background: I have a prompts template in ai folder
   - requirement:
-    - To create an alias or function that creates prompt file in following format. 
+    - To create an alias or function that creates prompt file in following format.
       `P_YYYYMMDD_V{no}_{N/C}_{type}_{description separated-by-hyphen}.yaml`
     - once the name is gathered, you need to copy prompt template and put it in the current working directory.
 output:

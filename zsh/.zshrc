@@ -52,7 +52,7 @@ function title {
   printf "\033]0;%s\007" "$1"
 }
 #neofetch
-export DOTFILES_ROOT="${${(%):-%x}:A:h}"
+export DOTFILES_ROOT="${${(%):-%x}:A:h:h}"
 
 alias ls='ls -lh --color=always'
 

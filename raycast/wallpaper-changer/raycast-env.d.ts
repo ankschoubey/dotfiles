@@ -24,4 +24,3 @@ declare namespace Arguments {
   /** Arguments passed to the `wallpaper-changer` command */
   export type WallpaperChanger = {}
 }
-

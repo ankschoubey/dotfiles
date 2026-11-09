@@ -21,7 +21,7 @@ if [ "$SENDER" = "aerospace_workspace_change" ]; then
     do
       icon_strip+=" $($CONFIG_DIR/plugins/icon_map_fn.sh "$app")"
     done <<< "${prevapps}"
-    
+
     # Check for timer
     TIMER_STATE=$(get_timer_state "$PREV_WORKSPACE")
     if [[ "$TIMER_STATE" == "active:"* ]]; then

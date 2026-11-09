@@ -15,7 +15,8 @@ while [ -s "$TEST_FILE" ]; do
 
   echo "$output"
 
-  prompt=$(cat <<EOF
+  prompt=$(
+    cat <<EOF
 This is the output of ./run-one-mutation.sh $file:
 
 $output
@@ -25,12 +26,12 @@ Goal: Categorize whether mutations are pointing to actual issues.
 - If there are mutations pointing to critical assertions, fix them and rerun tests until no critical mutations are left.
 - If you believe there are no critical mutations left, respond with <NO_CRITICAL_MUTATIONS_LEFT>.
 EOF
-)
+  )
 
   agentOutput=$(opencode run "$prompt")
 
-  if [[ "$agentOutput" == *"<ONLY_CSS_LEFT>"* || \
-        "$agentOutput" == *"<NO_CRITICAL_MUTATIONS_LEFT>"* ]]; then
+  if [[ "$agentOutput" == *"<ONLY_CSS_LEFT>"* ||
+    "$agentOutput" == *"<NO_CRITICAL_MUTATIONS_LEFT>"* ]]; then
     sed -i '' '1d' "$TEST_FILE"
   fi
   pkill node

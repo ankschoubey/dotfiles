@@ -7,8 +7,7 @@
 # @raycast.argument1 { "type": "text", "placeholder": "Search query" }
 # @raycast.argument2 { "type": "dropdown", "placeholder": "Search type", "data": ["Repositories", "Code", "Users", "Issues", "Pull Requests", "Commits", "Wikis"], "optional": true }
 
-if [ -z "$2" ]
-then
+if [ -z "$2" ]; then
   type="repositories"
 else
   type=$(echo "$2" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')

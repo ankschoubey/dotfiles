@@ -7,7 +7,7 @@
 "" ========================================================
 
 set scrolloff=20
-set relativenumber 
+set relativenumber
 set showmode
 set showcmd
 
@@ -18,7 +18,7 @@ set hlsearch
 set visualbell
 
 " Use system clipboard
-set clipboard+=unnamed   
+set clipboard+=unnamed
 
 let mapleader = " "
 
@@ -294,7 +294,7 @@ map <leader>ee <action>(EvaluateExpression)
 " Continue running until cursor
 map <leader>rr <action>(RunToCursor)
 
-" Plugins from https://github.com/JetBrains/ideavim/wiki/IdeaVim-Plugins 
+" Plugins from https://github.com/JetBrains/ideavim/wiki/IdeaVim-Plugins
 " 21 Oct 2025
 " Requires https://plugins.jetbrains.com/plugin/28333-vim-anyobject
 set anyobject

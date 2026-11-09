@@ -14,4 +14,7 @@ simple-update-notifier/
 .idea/
 .idea/
 
-**/node_modules
+**/node_modules/
+ios/scriptable/trello-auth.js
+opencode/service.json
+opencode/opencode-notifier-state.json

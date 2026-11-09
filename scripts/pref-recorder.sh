@@ -11,7 +11,7 @@ find ~/Library/Preferences -type f -name "*.plist" \
   ! -name "com.apple.*d.plist" \
   ! -name "com.apple.tcc*" \
   ! -name "com.apple.security*" \
-  -exec shasum {} \; > "$BEFORE"
+  -exec shasum {} \; >"$BEFORE"
 
 read -r
 
@@ -20,7 +20,7 @@ find ~/Library/Preferences -type f -name "*.plist" \
   ! -name "com.apple.*d.plist" \
   ! -name "com.apple.tcc*" \
   ! -name "com.apple.security*" \
-  -exec shasum {} \; > "$AFTER"
+  -exec shasum {} \; >"$AFTER"
 
 CHANGED=$(comm -13 <(sort "$BEFORE") <(sort "$AFTER") | awk '{print $2}')
 

@@ -5,9 +5,9 @@ data = json.load(sys.stdin)
 profiles = sorted(data['profile']['info_cache'].items(), key=lambda x: x[1].get('name', ''))
 items = [{'title': val['name'], 'value': val['name']} for _, val in profiles]
 print(json.dumps(items))
-" < "$HOME/Library/Application Support/Google/Chrome/Local State")
+" <"$HOME/Library/Application Support/Google/Chrome/Local State")
 
-cat > "$(dirname "$0")/chrome.sh" << SCRIPT
+cat >"$(dirname "$0")/chrome.sh" <<SCRIPT
 #!/bin/bash
 
 # @raycast.schemaVersion 1

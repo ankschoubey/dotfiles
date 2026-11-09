@@ -21,4 +21,3 @@ declare namespace Arguments {
   /** Arguments passed to the `workspace-switcher` command */
   export type WorkspaceSwitcher = {}
 }
-

@@ -30,4 +30,3 @@ dstatus() {
   echo -n "Colima: "
   if colima status 2>/dev/null | grep -q "Running"; then echo "running"; else echo "stopped"; fi
 }
-

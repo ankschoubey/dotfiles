@@ -14,17 +14,17 @@ set_timer() {
     local workspace="$1"
     local duration="$2"
     local complete_action="$3"
-    
+
     local now
     now=$(date +%s)
-    
+
     local timers
     timers=$(get_timers)
-    
+
     if [[ "$timers" == "{}" ]] || [[ -z "$timers" ]]; then
         timers="{}"
     fi
-    
+
     local timer_json
     timer_json=$(jq -n \
         --argjson dur "$duration" \
@@ -36,20 +36,20 @@ set_timer() {
             complete_action: $act,
             active: true
         }')
-    
+
     timers=$(echo "$timers" | jq --arg wid "$workspace" --argjson timer "$timer_json" \
         '.[$wid] = $timer')
-    
+
     echo "$timers" > "$TIMER_FILE"
 }
 
 clear_timer() {
     local workspace="$1"
-    
+
     local timers
     timers=$(get_timers)
     timers=$(echo "$timers" | jq --arg wid "$workspace" 'del(.[$wid])')
-    
+
     echo "$timers" > "$TIMER_FILE"
 }
 
@@ -64,28 +64,28 @@ get_timer_state() {
     local workspace="$1"
     local timer_json
     timer_json=$(get_timer "$workspace")
-    
+
     if [[ "$timer_json" == "null" ]] || [[ -z "$timer_json" ]]; then
         echo "inactive"
         return
     fi
-    
+
     local active
     active=$(echo "$timer_json" | jq -r '.active')
-    
+
     if [[ "$active" == "false" ]]; then
         echo "completed"
         return
     fi
-    
+
     local now duration start
     now=$(date +%s)
     duration=$(echo "$timer_json" | jq -r '.duration')
     start=$(echo "$timer_json" | jq -r '.start')
-    
+
     local elapsed=$((now - start))
     local remaining=$((duration - elapsed))
-    
+
     if [[ $remaining -le 0 ]]; then
         echo "expired"
     else
@@ -97,17 +97,17 @@ get_timer_display() {
     local workspace="$1"
     local state
     state=$(get_timer_state "$workspace")
-    
+
     if [[ "$state" == "inactive" ]]; then
         return
     fi
-    
+
     if [[ "$state" == "completed" ]]; then
         local timer_json
         timer_json=$(get_timer "$workspace")
         local complete_action
         complete_action=$(echo "$timer_json" | jq -r '.complete_action')
-        
+
         if [[ "$complete_action" == "alert" ]]; then
             echo "alert"
         else
@@ -117,13 +117,13 @@ get_timer_display() {
         fi
         return
     fi
-    
+
     if [[ "$state" == "expired" ]]; then
         local timer_json
         timer_json=$(get_timer "$workspace")
         local complete_action
         complete_action=$(echo "$timer_json" | jq -r '.complete_action')
-        
+
         if [[ "$complete_action" == "alert" ]]; then
             echo "alert"
         else
@@ -133,19 +133,19 @@ get_timer_display() {
         fi
         return
     fi
-    
+
     local remaining="${state#active:}"
     format_time "$remaining"
 }
 
 format_time() {
     local total_seconds="$1"
-    
+
     local hours minutes seconds
     hours=$((total_seconds / 3600))
     minutes=$(((total_seconds % 3600) / 60))
     seconds=$((total_seconds % 60))
-    
+
     if [[ $hours -gt 0 ]]; then
         printf "%d:%02d:%02d" "$hours" "$minutes" "$seconds"
     else
@@ -155,13 +155,13 @@ format_time() {
 
 expire_timer() {
     local workspace="$1"
-    
+
     local timers
     timers=$(get_timers)
-    
+
     local complete_action
     complete_action=$(echo "$timers" | jq -r --arg wid "$workspace" '.[$wid].complete_action // "alert"')
-    
+
     if [[ "$complete_action" == "alert" ]]; then
         timers=$(echo "$timers" | jq --arg wid "$workspace" \
             '.[$wid].active = false')
@@ -172,13 +172,13 @@ expire_timer() {
 get_next_expiry() {
     local timers
     timers=$(get_timers)
-    
+
     local now
     now=$(date +%s)
-    
+
     local next_expiry=""
-    
-    echo "$timers" | jq -r 'to_entries[] | select(.value.active == true) | 
+
+    echo "$timers" | jq -r 'to_entries[] | select(.value.active == true) |
         (.key | tonumber) as $wid |
         (.value.start + .value.duration) as $expiry |
         {workspace: $wid, expiry: $expiry}' | jq -s '

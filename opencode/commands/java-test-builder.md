@@ -7,7 +7,7 @@ Instructions:
    - Create a builder class named `Test{ClassName}Builder` (e.g., `TestUserBuilder`)
    - Save it to `src/test/java/com/svaaya/app/testutils/Test{ClassName}Builder.java` (create the directory if needed)
    - The package should be `com.svaaya.app.testutils`
-   
+
    The builder should follow this pattern:
    - Class properties with sensible default values (use `TestUtils.faker()` for random data)
    - Constructor with no arguments
@@ -15,7 +15,7 @@ Instructions:
    - Any enum properties should have convenience methods (e.g., `.admin()` for setting role to Admin)
    - A `build()` method that returns the full typed object
    - Use `ReflectionTestUtils.setField()` for setting private fields if needed
-   
+
 4. For embedded/nested objects in the class:
    - Check if there's already an existing builder in `com.svaaya.app.testutils`
    - If a builder exists (e.g., `TestUserBuilder` for a `user` property), use it in the `build()` method

@@ -187,7 +187,7 @@ add_task() {
   local task_id=$(_get_next_task_id)
   local new_task_line="$task_id todo $description"
   local current_tasks=$(_read_tasks)
-  
+
   if [ -z "$current_tasks" ]; then
     _write_tasks "$new_task_line"
   else

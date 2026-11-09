@@ -10,7 +10,7 @@ PROJECT="/Users/ankushchoubey/Documents/Github/safari-highlighter"
 # "VFS is already closed (disposed)" and IDEA exits. Reusing the live instance
 # avoids that and is what you want anyway — the project is already open.
 if ! pgrep -f "MacOS/idea$" >/dev/null; then
-    open -b com.jetbrains.intellij "$PROJECT"
+  open -b com.jetbrains.intellij "$PROJECT"
 fi
 
 open -a Xcode "$PROJECT/apple-xcode/Fast Highlighter.xcodeproj"

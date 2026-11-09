@@ -13,9 +13,9 @@ fi
 
 if [ "$SENDER" = "clicked" ]; then
   sketchybar --set docker_containers popup.drawing=toggle
-  
+
   sketchybar --remove "popup.docker_containers.*" 2>/dev/null
-  
+
   docker ps --format '{{.Names}}|{{.Image}}|{{.Status}}|{{.RunningFor}}' 2>/dev/null | while IFS= read -r line; do
     [ -z "$line" ] && continue
     name=$(echo "$line" | cut -d'|' -f1)
@@ -34,6 +34,6 @@ if [ "$SENDER" = "clicked" ]; then
         background.padding_left=5 \
         background.padding_right=5
   done
-  
+
   sketchybar --update
 fi

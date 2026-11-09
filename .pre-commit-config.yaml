@@ -1,0 +1,36 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  # zsh Raycast wrappers + improve-prompts.sh (prose-as-code, needs rewrite)
+  # are excluded; scripts/lint.sh documents the same scope.
+  # koalaman/shellcheck-precommit runs via Docker; shellcheck-py ships a
+  # local binary instead (no daemon needed).
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        args: [--severity=warning]
+        files: ^(scripts|raycast/scripts)/
+        exclude: ^raycast/scripts/(quit-aerospace|restart-aerospace|toggle-wallpaper|set-(primary|secondary)-[^/]*|setup-recording|improve-prompts)\.sh$
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.14.1-1
+    hooks:
+      - id: shfmt
+        args: [-i, '2', -ci, -w]
+        files: ^(scripts|raycast/scripts)/
+        exclude: ^raycast/scripts/(quit-aerospace|restart-aerospace|toggle-wallpaper|set-(primary|secondary)-[^/]*|setup-recording|improve-prompts)\.sh$

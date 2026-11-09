@@ -1,17 +1,17 @@
 role: shell-scripter
-task: install kafka via brew and add kafka aliases 
-context: 
-  - background: 
+task: install kafka via brew and add kafka aliases
+context:
+  - background:
     - I use kafka. I want to be able to connect kafka consumer.
-  - requirement: 
+  - requirement:
     - install kafka via brew
     - add kafka aliases to connect to kafka brokers.
     - use k prefix for kafka related aliases
-    - the aliases you use should resemble the starting letters example if it's `kafka start` -> ks , `kafka-bro start` -> kBs (just examples) 
-output: 
+    - the aliases you use should resemble the starting letters example if it's `kafka start` -> ks , `kafka-bro start` -> kBs (just examples)
+output:
   - aliases
   - brew file updated
-self-verification: 
+self-verification:
   - aliases exist
   - the letter pattern is followed
   - aliases are kept in alias folder`

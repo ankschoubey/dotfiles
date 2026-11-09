@@ -1,0 +1,13 @@
+title = "dotfiles-1 gitleaks config"
+
+[extend]
+useDefault = true
+
+# Allowlist entries go here only for verified false positives in tracked
+# files. Machine-local secrets (e.g. Trello tokens) live in gitignored
+# .local* files and never reach commits, so they need no entry.
+
+[allowlist]
+description = "placeholder token in Cloudflare docs example"
+paths = ['opencode/skills/workers-best-practices/references/configuration\\.md$']
+regexes = ['sk-live-abc123']

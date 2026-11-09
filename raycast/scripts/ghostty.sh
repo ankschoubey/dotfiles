@@ -7,8 +7,8 @@
 # @raycast.packageName Ghostty
 
 if ! ps aux | grep -qi "[g]hostty"; then
-    open -a /Applications/Ghostty.app
-    exit 0
+  open -a /Applications/Ghostty.app
+  exit 0
 fi
 
 open -n /Applications/Ghostty.app

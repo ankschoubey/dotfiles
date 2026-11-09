@@ -21,4 +21,3 @@ declare namespace Arguments {
   /** Arguments passed to the `dayone-journals` command */
   export type DayoneJournals = {}
 }
-

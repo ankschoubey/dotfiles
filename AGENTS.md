@@ -74,5 +74,10 @@ the end of a `-c` string if you need the shell to survive instead.
 
 ## Tooling
 
-No CI, no pre-commit hooks, no root `package.json`. `shellcheck` and `shfmt` are not
-installed. Scripts are verified by running them — see above.
+Pre-commit hooks active: see `.pre-commit-config.yaml` (gitleaks, shellcheck,
+shfmt, yaml/whitespace hygiene). `scripts/lint.sh` is the manual gate with the
+same scope. `shellcheck` and `shfmt` come from Brewfile. Setup runs
+`pre-commit install`, so hooks bind on fresh clones. Install hooks with
+`pre-commit install`, validate tree with `pre-commit run --all-files`.
+Repo has no root `package.json`. Scripts verified two ways: lint gate above
+plus launchd-env run — see above.

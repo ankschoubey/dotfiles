@@ -6,13 +6,13 @@ Instructions:
 3. Once you have the interface:
    - Create a builder class named `{InterfaceName}Builder` (e.g., `TestUserResponseBuilder`)
    - Save it to `/src/test/builders/Test{InterfaceName}Builder.ts` (create the directory if needed)
-   
+
    The builder should follow this pattern:
    - Class properties with sensible default values
    - `set{Property}` methods for each property that return `this`
    - Any enum properties should have convenience methods (e.g., `.admin()` for setting role to Admin)
    - A `build()` method that returns the full typed object
-   
+
 4. For embedded/nested objects in the interface:
    - Check if there's already an existing builder in `/src/test/builders/`
    - If a builder exists (e.g., `TestUserResponseBuilder` for a `user` property), use it in the `build()` method

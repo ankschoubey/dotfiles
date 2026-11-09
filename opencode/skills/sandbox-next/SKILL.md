@@ -86,7 +86,7 @@ Fetch the page before implementing. Installed `@next` types win over guesses.
 
 ## 4. Before you ship
 
-- Lockfile and Dockerfile on the **same** `@next` line  
-- Typecheck against installed `@next` types  
-- No live secrets in sandbox env  
-- Production preview hostnames need wildcard DNS on a custom domain when using those URL patterns  
+- Lockfile and Dockerfile on the **same** `@next` line
+- Typecheck against installed `@next` types
+- No live secrets in sandbox env
+- Production preview hostnames need wildcard DNS on a custom domain when using those URL patterns

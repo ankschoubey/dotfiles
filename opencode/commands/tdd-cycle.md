@@ -31,4 +31,3 @@ Do not break this loop.
 If implementation exceeds 15 lines, STOP and ask if design is too complex.
 If adding abstractions, justify them.
 Prefer duplication over premature abstraction.
-

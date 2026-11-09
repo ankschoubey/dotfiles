@@ -92,7 +92,7 @@ make_follow_up_prompt() {
 
     local date_suffix=$(date +%y%m%d)
     local desc_hyphenated=$(echo "$description" | tr ' ' '-')
-    
+
     # New filename format: P<new_version>_follow-up-<original_prompt_id>_<description>_<model>.<date>.yaml
     local filename="P${new_version}_follow-up-${original_prompt_id}_${desc_hyphenated}_${model}.${date_suffix}.yaml"
 

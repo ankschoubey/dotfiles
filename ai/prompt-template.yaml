@@ -1,29 +1,29 @@
 # Prompt Template Based on RGCOA based on w/KMo's prompt: https://www.youtube.com/watch?v=4PKO3fcFCKc&t=173s
-# & Antropic 
-role: 
+# & Antropic
+role:
 # Eg: instructor, coach, senior-developer, principal-developer, writer, socratic-thinker
-task: 
-# Eg: Generating Boiler-Plate for 
-context: 
-  - background: 
-  - requirement: 
+task:
+# Eg: Generating Boiler-Plate for
+context:
+  - background:
+  - requirement:
   # Add steps optionally
-    # Think in Patterns: Provide mental models & design patterns: Like Socratic Reasoning, Builder Pattern, etc 
+    # Think in Patterns: Provide mental models & design patterns: Like Socratic Reasoning, Builder Pattern, etc
       # For Design Patterns refer Head First Design Pattern Cheatsheet
     # Can it perform tasks in patterns like TDD or ATDD
   # Limit Context
     # References? Examples?
   # Nuance?
   # How can requirement be more deterministic
-  - use-tools: 
+  - use-tools:
     # List of MCP tools you would like Agent to consider: context7, search
-output: 
+output:
   # Eg: Mermaid? Table? Bullet? EARS, BDD, Bold Changes Etc
 agency: # Not Tested Yet
   # - automation you have enough info to complete the task
   # - augmentation: collaborate with me to complete this task
   # - agent - Complete the task yourself. Take decisions along the way.
-self-verification: 
+self-verification:
   # Linting etc
   # - compile using `mvn clean compile test-compile`
   # - execute the test
@@ -33,7 +33,7 @@ after-completion:
   # - Describe all the tools you used and give me equivalent of those so that I can run them myself
   # - Give steps to ...
   # How will you fully understand LLMs output?
-  # Learn how LLM executed the task so that you can do it more efficiently next time. 
+  # Learn how LLM executed the task so that you can do it more efficiently next time.
   # Eg: Teach me how git worktree command works so that I can do it myself efficiently later.
 before-starting:
   - "Ask me any questions that you feel could help you craft a better response."

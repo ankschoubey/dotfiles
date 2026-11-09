@@ -11,7 +11,7 @@ notify_completion() {
     local workspace="$1"
     local title="$2"
     local message="$3"
-    
+
     if command -v terminal-notifier &> /dev/null; then
         terminal-notifier -title "$title" -message "$message" -sound default &
     elif command -v osascript &> /dev/null; then
@@ -22,11 +22,11 @@ notify_completion() {
 process_expired_timers() {
     local timers
     timers=$(jq -s '.[0] // {}' "$HOME/.workspace_timers.json" 2>/dev/null || echo "{}")
-    
+
     local now
     now=$(date +%s)
-    
-    echo "$timers" | jq -r 'to_entries[] | 
+
+    echo "$timers" | jq -r 'to_entries[] |
         select(.value.active == true) |
         .key as $wid |
         .value.start as $start |
@@ -49,25 +49,25 @@ process_expired_timers() {
 sleep_until_next_expiry() {
     local next_info
     next_info=$("$SCRIPT_DIR/timer.sh" next-expiry)
-    
+
     if [[ -z "$next_info" ]] || [[ "$next_info" == "null" ]]; then
         sleep 60
         return
     fi
-    
+
     local expiry workspace
     expiry=$(echo "$next_info" | jq -r '.expiry')
     workspace=$(echo "$next_info" | jq -r '.workspace')
-    
+
     local now
     now=$(date +%s)
-    
+
     local sleep_time=$((expiry - now))
-    
+
     if [[ $sleep_time -lt 1 ]]; then
         sleep_time=1
     fi
-    
+
     sleep "$sleep_time"
 }
 

@@ -21,4 +21,3 @@ declare namespace Arguments {
   /** Arguments passed to the `system-quit` command */
   export type SystemQuit = {}
 }
-
