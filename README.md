@@ -60,6 +60,18 @@ https://www.freepik.com/free-photo/pathway-middle-buildings-dark-sky-japan_17230
 
 via https://www.reddit.com/r/mac/comments/1ecp1lq/mac_menu_bar_and_dock_on_every_display_who_knew/
 
+## External monitor not detected
+
+1. Disconnect all displays
+2. Run in terminal:
+```bash
+sudo rm /Library/Preferences/com.apple.windowserver.displays.plist
+```
+3. Enter password / YES when prompted
+4. Reboot, reconnect displays
+
+via https://www.reddit.com/r/MacOS/comments/1k2jjdq/external_monitor_suddenly_not_recognized_by_m1/
+
 ## More mac default tips and configs
 
 Change macOS Prefs from command line: https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/
