@@ -17,8 +17,8 @@ Raycast, AeroSpace, and `brew services` all launch scripts through **launchd**, 
 your shell. launchd's `PATH` is the bare macOS default, so anything your interactive
 shell adds is invisible to them.
 
-`.zshrc` extends `PATH` past what launchd provides — `~/.local/bin` (holds `agent`),
-`/opt/homebrew/bin`, `~/.bun/bin`, `~/Library/pnpm/bin`.
+`.zshrc` extends `PATH` past what launchd provides — `~/.local/bin`,
+`/opt/homebrew/bin` (holds `opencode`), `~/.bun/bin`, `~/Library/pnpm/bin`.
 
 **Consequence:** a script that works when you run it in a terminal fails when
 Raycast or AeroSpace runs it, with `command not found`.

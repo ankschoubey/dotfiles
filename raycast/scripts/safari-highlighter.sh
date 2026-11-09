@@ -2,7 +2,7 @@
 
 # @raycast.schemaVersion 1
 # @raycast.title Safari Highlighter
-# @raycast.description Open safari-highlighter in Xcode and IntelliJ, plus agent /pick-next
+# @raycast.description Open safari-highlighter in Xcode and IntelliJ, plus opencode /pick-next
 # @raycast.mode silent
 # @raycast.icon /Users/ankushchoubey/Documents/Github/dotfiles-1/raycast/scripts/icons/ghostty.svg
 # @raycast.packageName IntelliJ IDEA

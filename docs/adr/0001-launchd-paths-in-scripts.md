@@ -2,7 +2,8 @@
 
 Scripts reached by Raycast, AeroSpace, or `brew services` run under **launchd**, not
 your login shell. launchd's `PATH` is the bare macOS default, so the `PATH` extensions
-in `.zshrc` — including `~/.local/bin`, where `agent` lives — are absent. A script that
+in `.zshrc` — including `~/.local/bin` and `/opt/homebrew/bin`, where dev tools
+like `opencode` live — are absent. A script that
 works when you run it in a terminal then fails with `command not found` when a
 launcher invokes it.
 
