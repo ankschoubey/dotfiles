@@ -12,5 +12,6 @@
 # Optional parameters:
 # @raycast.icon 🛰️
 # @raycast.packageName Raycast Scripts
-source ~/.zshrc
-restartAerospace
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export DOTFILES_ROOT="$HOME/Documents/Github/dotfiles-1"
+"$DOTFILES_ROOT/scripts/restartAerospace.sh"

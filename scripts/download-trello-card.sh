@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+
 # download-trello-card.sh
 #
 # Description:
@@ -83,4 +85,3 @@ fi
 
 echo "---"
 echo "✅ Download complete for card ${CARD_ID}."
-

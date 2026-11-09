@@ -1,8 +1,10 @@
 #!/bin/bash
 
+DOTFILES_ROOT="${DOTFILES_ROOT:-$HOME/Documents/Github/dotfiles-1}"
+
 # Function to set wallpaper
 set_wallpaper() {
-    osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$1\""
+  osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$1\""
 }
 
 # Get the list of wallpapers
@@ -14,14 +16,14 @@ CURRENT_WALLPAPER=$(osascript -e 'tell application "System Events" to get pictur
 
 # Find the index of the current wallpaper
 for i in "${!WALLPAPERS[@]}"; do
-    if [[ "$CURRENT_WALLPAPER" == *"${WALLPAPERS[$i]}"* ]]; then
-        CURRENT_INDEX=$i
-        break
-    fi
+  if [[ "$CURRENT_WALLPAPER" == *"${WALLPAPERS[$i]}"* ]]; then
+    CURRENT_INDEX=$i
+    break
+  fi
 done
 
 # Calculate the index of the next wallpaper
-NEXT_INDEX=$(( (CURRENT_INDEX + 1) % ${#WALLPAPERS[@]} ))
+NEXT_INDEX=$(((CURRENT_INDEX + 1) % ${#WALLPAPERS[@]}))
 
 # Set the next wallpaper
 set_wallpaper "${WALLPAPERS[$NEXT_INDEX]}"

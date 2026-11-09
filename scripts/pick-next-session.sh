@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
 
 cd "${1:?usage: pick-next-session.sh <project-dir>}" || exit 1
 

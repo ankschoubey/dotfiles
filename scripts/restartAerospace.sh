@@ -1,3 +1,7 @@
+#!/bin/bash
+
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+
 SCRIPT_DIR="$(dirname "$0")"
 
 if [ "$(defaults read com.apple.controlcenter AutoHideMenuBarOption)" != "0" ]; then
@@ -18,7 +22,7 @@ while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
     SUCCESS=true
     break
   fi
-  RETRY_COUNT=$((RETRY_COUNT+1))
+  RETRY_COUNT=$((RETRY_COUNT + 1))
   sleep 1
 done
 

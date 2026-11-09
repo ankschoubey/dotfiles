@@ -14,6 +14,9 @@
 set -e
 set -o pipefail
 
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+DOTFILES_ROOT="${DOTFILES_ROOT:-$HOME/Documents/Github/dotfiles-1}"
+
 # --- Validation ---
 if [[ $# -ne 1 ]]; then
   echo "Usage: $0 <CARD_ID>"
@@ -111,5 +114,3 @@ if [[ -n "$COMMENTS_BODY" ]]; then
 fi
 
 echo -e "$FULL_ENTRY"
-
-

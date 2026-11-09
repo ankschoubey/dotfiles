@@ -52,6 +52,8 @@ brew "watch"
 brew "yazi"
 brew "zoxide"
 brew "displayplacer"
+brew "shellcheck"
+brew "shfmt"
 brew "anomalyco/tap/opencode"
 brew "caarlos0/tap/timer"
 brew "felixkratz/formulae/borders", args: ["HEAD"]

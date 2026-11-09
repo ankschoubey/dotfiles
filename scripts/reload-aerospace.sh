@@ -1,4 +1,7 @@
 #!/bin/bash
+
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+
 aerospace reload-config 2>&1
 if [ $? -eq 0 ]; then
   osascript -e 'display notification "AeroSpace config reloaded successfully" with title "AeroSpace" sound name "Glass"'

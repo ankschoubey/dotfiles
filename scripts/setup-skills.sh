@@ -1,3 +1,10 @@
+#!/bin/bash
+#
+# Description: install agent skills toolsets (one-shot).
+
+set -euo pipefail
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+
 npx skills@latest add mattpocock/skills -g --all
 npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices -g
 npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-composition-patterns -g

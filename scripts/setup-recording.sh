@@ -2,6 +2,8 @@
 
 set -e
 
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+
 DOTFILES_ROOT="${DOTFILES_ROOT:-$HOME/Documents/Github/dotfiles-1}"
 
 echo "🎬 Setting up recording environment..."

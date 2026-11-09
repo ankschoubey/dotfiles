@@ -17,6 +17,9 @@
 set -e
 set -o pipefail
 
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+DOTFILES_ROOT="${DOTFILES_ROOT:-$HOME/Documents/Github/dotfiles-1}"
+
 # --- Validation ---
 if ! command -v dayone2 &>/dev/null; then
   echo "Error: dayone2 is not installed or not in your PATH."
@@ -144,4 +147,3 @@ FULL_ENTRY_TEMP_FILE=$(mktemp)
 echo -e "$FULL_ENTRY" >"$FULL_ENTRY_TEMP_FILE"
 cat "$FULL_ENTRY_TEMP_FILE" | "${DAYONE_CMD[@]}"
 rm "$FULL_ENTRY_TEMP_FILE"
-
