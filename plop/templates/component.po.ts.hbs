@@ -1,0 +1,10 @@
+import { PO } from '@/test/po/POs'
+import type { UserEvent } from '@storybook/test'
+
+export const {{pascalCase name}}PO = (context: { userEvent: UserEvent }) => {
+  const po = PO(context.userEvent)
+  return {
+    submitButton: po.btn('Submit'),
+    nameInput: po.input('Name'),
+  }
+}

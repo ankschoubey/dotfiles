@@ -1,0 +1,5 @@
+import type { {{pascalCase name}}Props } from './{{pascalCase name}}'
+
+export const createTest{{pascalCase name}} = (overrides?: Partial<{{pascalCase name}}Props>): {{pascalCase name}}Props => ({
+  ...overrides,
+} as {{pascalCase name}}Props)

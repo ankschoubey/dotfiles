@@ -268,3 +268,6 @@ export PATH="$PATH:/Users/ankushchoubey/Library/pnpm/bin"
 
 # bun completions
 [ -s "/Users/ankushchoubey/.bun/_bun" ] && source "/Users/ankushchoubey/.bun/_bun"
+
+# Added by Antigravity IDE
+export PATH="/Users/ankushchoubey/.antigravity-ide/antigravity-ide/bin:$PATH"

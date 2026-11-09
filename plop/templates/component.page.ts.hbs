@@ -1,0 +1,19 @@
+import { Page } from '@playwright/test'
+
+export class {{pascalCase name}}Page {
+  constructor(private page: Page) {}
+
+  static url = '/{{kebabCase name}}'
+
+  async goto() {
+    await this.page.goto({{pascalCase name}}Page.url)
+  }
+
+  get submitButton() {
+    return this.page.getByRole('button', { name: 'Submit' })
+  }
+
+  get nameInput() {
+    return this.page.getByLabel('Name')
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "plop-scaffolder",
+  "type": "module",
+  "dependencies": {
+    "chokidar": "^4.0.0",
+    "node-plop": "^0.32.0",
+    "plop": "^4.0.0"
+  }
+}

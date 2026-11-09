@@ -13,3 +13,5 @@ simple-update-notifier/
 .local_zshrc
 .idea/
 .idea/
+
+**/node_modules

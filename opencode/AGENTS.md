@@ -40,3 +40,5 @@ Single-context layout: `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/ag
 At the start of every conversation, load the following skills using the `skill` tool before responding to the user:
 
 1. **caveman** — Always use caveman mode (full intensity) for all responses
+
+When interacting with Cloudflare, use the cf CLI unless the project has a Wrangler configuration file.
