@@ -1,15 +1,25 @@
 
 # Ankush's Dot Files
 
+macOS workstation config: zsh, AeroSpace, Sketchybar, Ghostty, Raycast.
+
 ## Setup
 
-Run followign in terminal
+Run in terminal:
 
 ```bash
-git clone https://github.com/ankschoubey/dotfiles.git $HOME/Documents/Github/dotfiles
-cd $HOME/Documents/Github/dotfiles
+git clone https://github.com/ankschoubey/dotfiles.git $HOME/Documents/Github/dotfiles-1
+cd $HOME/Documents/Github/dotfiles-1
 ./setup.sh
 ```
+
+Flags compose (`--apps`, `--dotfiles`, `--defaults`); default is `--all`.
+`just setup "--dotfiles"` does the same via justfile. Fresh clones get
+pre-commit hooks automatically; validate with `just check`.
+
+Stow packages (`stow -t ~ <pkg>`) mirror `$HOME`: `zsh/`, `ghostty/`,
+`aerospace/`, `nvim/`. Other configs link via `setup.sh`. See
+`CONTEXT.md` for the full map, `CHEATSHEET.md` for keys and commands.
 
 Inspirations:
 - https://www.youtube.com/watch?v=ud7YxC33Z3w

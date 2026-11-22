@@ -1,17 +1,8 @@
 #!/bin/bash
+# Ralph loop for vitest. Delegates mechanics to _internal/ralph.sh.
+# shellcheck disable=SC1091
+source "$(dirname "$0")/_internal/ralph.sh"
 
-MAX_ITER=200
-i=1
-while [ $i -le $MAX_ITER ]; do
-  ((i++))
-  pkill node
-  output=$(npx vitest --bail=1 --silent | grep -v '❯ ' 2>&1)
-  pkill node
-  if [[ "$output" == *"1 failed"* ]]; then
-    opencode run "Fix the failing test using this test output: $output. Follow guidelines in AGENTS.md"
-  else
-    echo "Tests passed!"
-    break
-  fi
-  pkill node
-done
+ralph_loop "${MAX_ITER:-200}" "1 failed" "Fix the failing test using this test output:" \
+  "pkill node 2>/dev/null; npx vitest --bail=1 --silent | grep -v '❯ '; pkill node 2>/dev/null" \
+  "pkill node 2>/dev/null || true"

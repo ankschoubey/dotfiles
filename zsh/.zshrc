@@ -9,6 +9,9 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+# Dedupe PATH: entries accumulate across tools and edits; keep first hit.
+typeset -U path PATH
+
 export LEFT_SYMBOL="$TERM_PROGRAM"
 
 zinit ice as"command" from"gh-r" \
@@ -18,7 +21,7 @@ zinit light starship/starship
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
-# zinit light Aloxaf/fzf-tab
+zinit light Aloxaf/fzf-tab
 
 
 # Add in snippets
@@ -53,8 +56,6 @@ function title {
 }
 #neofetch
 export DOTFILES_ROOT="${${(%):-%x}:A:h:h}"
-
-alias ls='ls -lh --color=always'
 
 alias ge="npm update -g @gemini-cli/cli && gemini"
 alias gey="gemini --yolo"
@@ -116,7 +117,7 @@ idea() {
 zinit cdreplay -q
 
 # History
-HISTSIZE=5000
+HISTSIZE=50000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
 HISTDUP=erase
@@ -132,8 +133,8 @@ setopt hist_find_no_dups
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # zstyle ':completion:*' menu no
-# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-# zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Shell integrations
 eval "$(fzf --zsh)"
@@ -254,20 +255,46 @@ zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 source <(carapace _carapace)
 
 
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+# Lazy-load jenv: shims on PATH now, full init on first java-family call.
+# Saves a JVM fork on every shell. nvm intentionally absent: never sourced,
+# node resolves to brew (/opt/homebrew/bin/node).
+if [ -d "$HOME/.jenv" ]; then
+  export PATH="$HOME/.jenv/bin:$HOME/.jenv/shims:$PATH"
+  __jenv_lazy_init() {
+    unset -f java javac jenv mvn gradle 2>/dev/null
+    eval "$(jenv init -)"
+  }
+  for __jenv_cmd in java javac jenv mvn gradle; do
+    eval "$__jenv_cmd() { __jenv_lazy_init; $__jenv_cmd \"\$@\"; }"
+  done
+  unset __jenv_cmd
+fi
 
 # Added by Antigravity
-export PATH="/Users/ankushchoubey/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-export PATH="/Users/ankushchoubey/.bun/bin:$PATH"
-export PATH="$PATH:/Users/ankushchoubey/Library/pnpm/bin"
+export PATH="$HOME/.bun/bin:$PATH"
+export PATH="$PATH:$HOME/Library/pnpm/bin"
 
 # bun completions
-[ -s "/Users/ankushchoubey/.bun/_bun" ] && source "/Users/ankushchoubey/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # Added by Antigravity IDE
-export PATH="/Users/ankushchoubey/.antigravity-ide/antigravity-ide/bin:$PATH"
+export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+# Open shells in home-repo, launch opencode
+if [[ -o interactive ]]; then
+  cd /Users/ankushchoubey/Documents/Github/home-repo
+  if [[ -z "$HOME_REPO_SHELL" ]] && command -v opencode >/dev/null 2>&1; then
+    # upgrade at most once a day
+    if [[ -z "$(find "$HOME/.cache/opencode-upgrade" -mtime -1 2>/dev/null)" ]]; then
+      mkdir -p "$HOME/.cache" && touch "$HOME/.cache/opencode-upgrade"
+      opencode upgrade
+    fi
+    HOME_REPO_SHELL=1 opencode
+  fi
+fi

@@ -1,17 +1,8 @@
 #!/bin/bash
+# Ralph loop for eslint. Delegates mechanics to _internal/ralph.sh.
+# shellcheck disable=SC1091
+source "$(dirname "$0")/_internal/ralph.sh"
 
-MAX_ITER=200
-i=1
-while [ $i -le $MAX_ITER ]; do
-  ((i++))
-  pkill node
-  output=$(npx eslint . | head -n 50 2>&1)
-  pkill node
-  if [[ "$output" == *" error "* ]]; then
-    opencode run "Fix $(npx eslint . | head -n 50) output: $output. Follow guidelines in AGENTS.md"
-  else
-    echo "Tests passed!"
-    break
-  fi
-  ./ralphjs-fix-test.sh
-done
+ralph_loop "${MAX_ITER:-200}" " error " "Fix eslint" \
+  "pkill node 2>/dev/null; npx eslint . | head -n 50" \
+  "./ralphjs-fix-test.sh"
