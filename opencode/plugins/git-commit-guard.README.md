@@ -1,6 +1,6 @@
 # git-commit-guard
 
-Block `git commit --no-verify` / `git commit -n` in agent shell calls. Hooks must always run.
+Block `--no-verify` in any agent shell call, plus `git commit -n`. Hooks must always run.
 
 ## Location
 
@@ -18,12 +18,15 @@ Auto-loaded at startup, no config entry needed.
 | Command | Result |
 |---|---|
 | `git commit -m "msg" --no-verify` | Blocked |
+| `git push --no-verify` | Blocked |
+| `git merge --no-verify` | Blocked |
+| any command with `--no-verify` | Blocked |
 | `git commit -n -m "msg"` | Blocked |
 | `git commit -amn "msg"` | Blocked |
 | `git commit -m "msg"` | Allowed |
 | `git commit -m "--no-verify"` | Allowed (quoted message text stripped before check) |
 
-Error: `Blocked: "git commit --no-verify" / "-n" bypasses hooks. ...`
+Error: `Blocked: "--no-verify" / "git commit -n" bypasses hooks. ...`
 
 ## Limits
 

@@ -7,8 +7,9 @@ function stripQuoted(command: string): string {
 
 function isBypassedCommit(command: string): boolean {
   const code = stripQuoted(command)
-  if (!/\bgit\b[\s\S]*\bcommit\b/.test(code)) return false
+  // Any --no-verify anywhere: commit, push, merge, rebase, etc. Never bypass hooks.
   if (/(^|[\s=])--no-verify\b/.test(code)) return true
+  if (!/\bgit\b[\s\S]*\bcommit\b/.test(code)) return false
   const afterCommit = code.slice(code.search(/\bcommit\b/) + "commit".length)
   return /(^|\s)-[a-zA-Z]*n[a-zA-Z]*(\s|$|=)/.test(afterCommit)
 }
@@ -32,7 +33,7 @@ function checkCommand(command: string): void {
   if (!command) return
   if (isBypassedCommit(command)) {
     throw new Error(
-      `Blocked: "git commit --no-verify" / "-n" bypasses hooks. Commit without it so hooks run. Offending command: ${command}`,
+      `Blocked: "--no-verify" / "git commit -n" bypasses hooks. Run without it so hooks run. Offending command: ${command}`,
     )
   }
 }
